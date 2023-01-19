@@ -7,7 +7,7 @@ import ebit_util
 import pandas as pd
 
 d = 'C:\\Users\\ahosi\\OneDrive\\Desktop\\tesdata'
-today = "20221215"
+today = "20221220"
 rn = "0001"
 datdest = 'C:\\Users\\ahosi\\OneDrive\\Desktop\\calibratedTES_Dec2022'
 
@@ -16,8 +16,8 @@ datdest = 'C:\\Users\\ahosi\\OneDrive\\Desktop\\calibratedTES_Dec2022'
 #calstates = ["B", "C"]
 
 #12/15 ##run0001        
-calstates = ["A", "B", "I", "M", "S", "W", "AF"]
-scistates = ["G", "K", "O", "Q", "U" ,"Y", "Z", "AB", "AD", "AH", "AO"]
+# calstates = ["A", "B", "I", "M", "S", "W", "AF"]
+# scistates = ["G", "K", "O", "Q", "U" ,"Y", "Z", "AB", "AD", "AH", "AO"]
 
 #12/16
 # calstates = ["A", "B", "F", "J", "N", "R"]    ##run0000
@@ -38,8 +38,8 @@ scistates = ["G", "K", "O", "Q", "U" ,"Y", "Z", "AB", "AD", "AH", "AO"]
 # scistates = ["H", "J", "L", "P"]
 
 #calstates = ["B","D", "J"]        ##run0001 
-# calstates = ["D", "J"]  
-# # scistates = ["F", "N"]
+calstates = ["D", "J"]  
+scistates = ["F", "N"]
 # scistates = ["F"]
 
 #12/21
@@ -50,13 +50,18 @@ scistates = ["G", "K", "O", "Q", "U" ,"Y", "Z", "AB", "AD", "AH", "AO"]
 
 fltoday = getOffFileListFromOneFile(os.path.join(d, f"{today}", f"{rn}", 
 f"{today}_run{rn}_chan1.off"), maxChans=300)
-
-
+external_trigger_filename =  os.path.join(d, f"{today}", f"{rn}", 
+f"{today}_run{rn}_external_trigger.bin")
+external_trigger_rowcount = ebit_util.get_external_triggers(external_trigger_filename, good_only=True)
 data = ChannelGroup(fltoday)
 
 defbinsize = 0.5
 data.setDefaultBinsize(defbinsize)
 data.learnResidualStdDevCut()
+
+for ds in data.values():
+    ebit_util.calc_external_trigger_timing(ds, external_trigger_rowcount)
+
 
 
 ds = data[1]
@@ -65,13 +70,13 @@ ds = data[1]
 # sfasd
 ds.calibrationPlanInit("filtValue")
 
-#12/15 
-ds.calibrationPlanAddPoint(8950, "AlKAlpha", states=calstates)
-ds.calibrationPlanAddPoint(10443, "SiKAlpha", states=calstates)
-ds.calibrationPlanAddPoint(15546, "ClKAlpha", states=calstates)
-ds.calibrationPlanAddPoint(19440, "KKAlpha", states=calstates)
-ds.calibrationPlanAddPoint(25950, "TiKAlpha", states=calstates)
-ds.calibrationPlanAddPoint(35590, "FeKAlpha", states=calstates)
+# #12/15 
+# ds.calibrationPlanAddPoint(8950, "AlKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(10443, "SiKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(15546, "ClKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(19440, "KKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(25950, "TiKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(35590, "FeKAlpha", states=calstates)
 
 
 # #12/16   
@@ -113,13 +118,13 @@ ds.calibrationPlanAddPoint(35590, "FeKAlpha", states=calstates)
 # ds.calibrationPlanAddPoint(27350, "TiKAlpha", states=calstates)
 # ds.calibrationPlanAddPoint(37302, "FeKAlpha", states=calstates)
 
-##run0001
-# ds.calibrationPlanAddPoint(9740, "AlKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(11308, "SiKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(16595, "ClKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(20580, "KKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(27240, "TiKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(37180, "FeKAlpha", states=calstates)
+#run0001
+ds.calibrationPlanAddPoint(9740, "AlKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(11308, "SiKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(16595, "ClKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(20580, "KKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(27240, "TiKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(37180, "FeKAlpha", states=calstates)
 
 
 
@@ -153,7 +158,6 @@ data.calibrateFollowingPlan("filtValuePCDCTC", calibratedName="energy", overwrit
 
 # data.plotHist(np.arange(0,60000,10),"energy", states=scistates, coAddStates=True)
 # ds.plotHist(np.arange(0,60000,10),"filtValue", states=scistates, coAddStates=True)
-
 #data.plotHist( np.arange(0,14000,1), "energy", coAddStates=False, states=scistates)
 
 for sta in scistates:
@@ -164,11 +168,13 @@ for sta in scistates:
 
     energy = []
     time = []
+    t_ext = []
     for i in data:
         ds = data[i] 
         energy.extend(list(ds.getAttr('energy', sta)))
         time.extend(list(ds.getAttr('unixnano', sta)))
-    plist = np.array([energy, time], dtype=object).T
+        t_ext.extend(list(ds.seconds_after_external_trigger[ds.getStatesIndicies(states=sta)[0]]))
+    plist = np.array([energy, time, t_ext], dtype=object).T
 
-    photlist = pd.DataFrame(data=plist, columns=['energy', 'time'])
+    photlist = pd.DataFrame(data=plist, columns=['energy', 'time', 'external_trigger_time'])
     photlist.to_csv(datdest + '/' + str(today) + '_' + str(rn) + '_' + str(sta)+str('photonlist')+'.csv', index=False)
