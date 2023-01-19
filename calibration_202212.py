@@ -160,21 +160,21 @@ data.calibrateFollowingPlan("filtValuePCDCTC", calibratedName="energy", overwrit
 # ds.plotHist(np.arange(0,60000,10),"filtValue", states=scistates, coAddStates=True)
 #data.plotHist( np.arange(0,14000,1), "energy", coAddStates=False, states=scistates)
 
-for sta in scistates:
-    histall = np.array(data.hist(np.arange(0, 14000, defbinsize), "energy", states=sta))
-    stadat = pd.DataFrame(data=histall)
-    #stadat = stadat.transpose
-    stadat.to_csv(datdest + '/' + str(today) + '_' + str(rn) + '_' + str(sta)+'.csv', index=False)
+# for sta in scistates:
+#     histall = np.array(data.hist(np.arange(0, 14000, defbinsize), "energy", states=sta))
+#     stadat = pd.DataFrame(data=histall)
+#     #stadat = stadat.transpose
+#     stadat.to_csv(datdest + '/' + str(today) + '_' + str(rn) + '_' + str(sta)+'.csv', index=False)
 
-    energy = []
-    time = []
-    t_ext = []
-    for i in data:
-        ds = data[i] 
-        energy.extend(list(ds.getAttr('energy', sta)))
-        time.extend(list(ds.getAttr('unixnano', sta)))
-        t_ext.extend(list(ds.seconds_after_external_trigger[ds.getStatesIndicies(states=sta)[0]]))
-    plist = np.array([energy, time, t_ext], dtype=object).T
+#     energy = []
+#     time = []
+#     t_ext = []
+#     for i in data:
+#         ds = data[i] 
+#         energy.extend(list(ds.getAttr('energy', sta)))
+#         time.extend(list(ds.getAttr('unixnano', sta)))
+#         t_ext.extend(list(ds.seconds_after_external_trigger[ds.getStatesIndicies(states=sta)[0]]))
+#     plist = np.array([energy, time, t_ext], dtype=object).T
 
-    photlist = pd.DataFrame(data=plist, columns=['energy', 'time', 'external_trigger_time'])
-    photlist.to_csv(datdest + '/' + str(today) + '_' + str(rn) + '_' + str(sta)+str('photonlist')+'.csv', index=False)
+#     photlist = pd.DataFrame(data=plist, columns=['energy', 'time', 'external_trigger_time'])
+#     photlist.to_csv(datdest + '/' + str(today) + '_' + str(rn) + '_' + str(sta)+str('photonlist')+'.csv', index=False)

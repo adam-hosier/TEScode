@@ -76,7 +76,7 @@ energies = np.hstack([ds.getAttr("energy", states_for_2dhist) for ds in data.val
 seconds_after_external_triggers = np.hstack([ds.seconds_after_external_trigger[ds.getStatesIndicies(states=states_for_2dhist)] for ds in data.values()])
 
 for states_for_2dhist in states_for_2dhist_list[1:]:
-    print(states_for_2dhist)
+    print(states_for_2dhist)    
     energies = np.append(energies,np.hstack([ds.getAttr("energy", states_for_2dhist) for ds in data.values()]))
     print([ds.seconds_after_external_trigger[ds.getStatesIndicies(states=states_for_2dhist)] for ds in data.values()])
     seconds_after_external_triggers = np.append(seconds_after_external_triggers,np.hstack([ds.seconds_after_external_trigger[ds.getStatesIndicies(states=states_for_2dhist)] for ds in data.values()]))
