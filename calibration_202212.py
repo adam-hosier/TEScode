@@ -161,9 +161,9 @@ firstsci = scistates[0]
 energies = np.hstack([ds.getAttr("energy", firstsci) for ds in data.values()])
 seconds_after_external_triggers = np.hstack([ds.seconds_after_external_trigger[ds.getStatesIndicies(states=firstsci)[0]] for ds in data.values()])
 
-for scistate2 in scistates: 
-    energies = np.append(energies,np.hstack([ds.getAttr("energy", scistate2) for ds in data.values()]))
-    seconds_after_external_triggers = np.append(seconds_after_external_triggers,np.hstack([ds.seconds_after_external_trigger[ds.getStatesIndicies(states=scistate2)[0]] for ds in data.values()]))
+# for scistate2 in scistates: 
+#     energies = np.append(energies,np.hstack([ds.getAttr("energy", scistate2) for ds in data.values()]))
+#     seconds_after_external_triggers = np.append(seconds_after_external_triggers,np.hstack([ds.seconds_after_external_trigger[ds.getStatesIndicies(states=scistate2)[0]] for ds in data.values()]))
 
 dat2 = np.vstack((energies,seconds_after_external_triggers))
 dat2 = dat2.T 

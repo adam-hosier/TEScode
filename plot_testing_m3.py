@@ -82,5 +82,5 @@ print(data.shortName)
 #     seconds_after_external_triggers = np.append(seconds_after_external_triggers,np.hstack([ds.seconds_after_external_trigger[ds.getStatesIndicies(states=states_for_2dhist)] for ds in data.values()]))
 
 data2 = np.vstack((energies,seconds_after_external_triggers))
-data2 = data.T
+data2 = data2.T
 np.save('C:\\Users\\ahosi\\OneDrive\\Desktop\\testfilem3', data2)
