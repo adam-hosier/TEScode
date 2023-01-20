@@ -50,17 +50,12 @@ scistates = ["F", "N"]
 
 fltoday = getOffFileListFromOneFile(os.path.join(d, f"{today}", f"{rn}", 
 f"{today}_run{rn}_chan1.off"), maxChans=300)
-external_trigger_filename =  os.path.join(d, f"{today}", f"{rn}", 
-f"{today}_run{rn}_external_trigger.bin")
-external_trigger_rowcount = ebit_util.get_external_triggers(external_trigger_filename, good_only=True)
+
 data = ChannelGroup(fltoday)
 
 defbinsize = 0.5
 data.setDefaultBinsize(defbinsize)
 data.learnResidualStdDevCut()
-
-for ds in data.values():
-    ebit_util.calc_external_trigger_timing(ds, external_trigger_rowcount)
 
 
 
@@ -152,7 +147,29 @@ data.learnDriftCorrection(indicatorName="pretriggerMean", uncorrectedName="filtV
 data.learnTimeDriftCorrection(indicatorName="relTimeSec", uncorrectedName="filtValuePCDC", correctedName = "filtValuePCDCTC", states=calstates, _rethrow=True) 
 #data.learnTimeDriftCorrection(indicatorName="relTimeSec", uncorrectedName="filtValuePCDC", correctedName = "filtValuePCDCTC", states=calstates, _rethrow=True, cutRecipeName="cutForLearnDC",) 
 
-data.calibrateFollowingPlan("filtValuePCDCTC", calibratedName="energy", overwriteRecipe=True)               #         
+data.calibrateFollowingPlan("filtValuePCDCTC", calibratedName="energy", overwriteRecipe=True)      
+
+
+
+external_trigger_filename =  os.path.join(d, f"{today}", f"{rn}", 
+f"{today}_run{rn}_external_trigger.bin")
+external_trigger_rowcount = ebit_util.get_external_triggers(external_trigger_filename, good_only=True)
+for ds in data.values():
+    ebit_util.calc_external_trigger_timing(ds, external_trigger_rowcount)
+
+firstsci = scistates[0]
+energies = np.hstack([ds.getAttr("energy", firstsci) for ds in data.values()])
+seconds_after_external_triggers = np.hstack([ds.seconds_after_external_trigger[ds.getStatesIndicies(states=firstsci)[0]] for ds in data.values()])
+
+for scistate2 in scistates: 
+    energies = np.append(energies,np.hstack([ds.getAttr("energy", scistate2) for ds in data.values()]))
+    seconds_after_external_triggers = np.append(seconds_after_external_triggers,np.hstack([ds.seconds_after_external_trigger[ds.getStatesIndicies(states=scistate2)[0]] for ds in data.values()]))
+
+dat2 = np.vstack((energies,seconds_after_external_triggers))
+dat2 = dat2.T 
+
+np.save(datdest+'\\'+str(today)+'_'+str(rn), dat2)
+
 #data.plotHist(np.arange(0,10000,1),"energy", states=scistates, coAddStates=False)
 
 
