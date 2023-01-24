@@ -8,8 +8,9 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 from mass.off import ChannelGroup, getOffFileListFromOneFile, Channel, labelPeak, labelPeaks
 import ebit_util
-plt.ion()
-d = "C:\\Users\\ahosi\\OneDrive\\Desktop\\tesdata"
+#plt.ion()
+#d = "C:\\Users\\ahosi\\OneDrive\\Desktop\\tesdata"
+d = "C:\\data\\tesdata"
 date = "20221220"                       #date
 rn = "0001"                             #run number, can be found in dastard command 
 state1 = "D"                #calibration state
@@ -20,7 +21,7 @@ data.setDefaultBinsize(0.4)
 
 #calibrate and inspect one channel
 ds = data[1]                       #selection of individual channel
-ds.plotHist( np.arange(0, 60000, 20), "filtValue", coAddStates=False, states=state1 )   #states=None by default uses all states
+#ds.plotHist( np.arange(0, 60000, 20), "filtValue", coAddStates=False, states=state1 )   #states=None by default uses all states
 
 
 ds.learnDriftCorrection(overwriteRecipe=True, states=state1)
@@ -33,7 +34,7 @@ ds.calibrationPlanAddPoint(20580, "KKAlpha", states=state1)
 ds.calibrationPlanAddPoint(27240, "TiKAlpha", states=state1)
 ds.calibrationPlanAddPoint(37180, "FeKAlpha", states=state1)
 
-ds.plotHist( np.arange(0, 10000, 1), "energyRough", coAddStates=False, states=state1 )   #states=None by default uses all states
+#ds.plotHist( np.arange(0, 10000, 1), "energyRough", coAddStates=False, states=state1 )   #states=None by default uses all states
 #ds.plotAvsB("relTimeSec", "pretriggerMean")
 #ds.plotAvsB("relTimeSec", "energyRough")
 #plt.ylim(1100,1600)
@@ -43,9 +44,9 @@ ds.learnPhaseCorrection(linePositionsFunc = lambda ds: ds.recipes["energyRough"]
 #ds.plotHist( np.arange(0,8500,2), "energyRough", coAddStates=False, states=state1)
 
 ds.calibrateFollowingPlan("filtValuePC")
-ds.diagnoseCalibration()
-ds.plotAvsB("filtPhase", "energy")
-ds.plotAvsB("pretriggerMean","energy")
+#ds.diagnoseCalibration()
+#ds.plotAvsB("filtPhase", "energy")
+#ds.plotAvsB("pretriggerMean","energy")
 
 data.learnDriftCorrection(overwriteRecipe=True, states=state1)
 data.alignToReferenceChannel(ds, "filtValueDC", np.arange(0,40000,30))
@@ -74,8 +75,9 @@ states_for_2dhist_list = ["F"]
 states_for_2dhist = states_for_2dhist_list[0]
 energies = np.hstack([ds.getAttr("energy", states_for_2dhist) for ds in data.values()])
 seconds_after_external_triggers = np.hstack([ds.seconds_after_external_trigger[ds.getStatesIndicies(states=states_for_2dhist)[0]] for ds in data.values()])
+seconds_after_external_triggers_test = np.hstack([ds.seconds_after_external_trigger[ds.getStatesIndicies()[0]] for ds in data.values()])
 
-print(data.shortName)
+#print(data.shortName)
 
 # for states_for_2dhist in states_for_2dhist_list[1:]:
 #     energies = np.append(energies,np.hstack([ds.getAttr("energy", states_for_2dhist) for ds in data.values()]))
@@ -83,4 +85,5 @@ print(data.shortName)
 
 data2 = np.vstack((energies,seconds_after_external_triggers))
 data2 = data2.T
-np.save('C:\\Users\\ahosi\\OneDrive\\Desktop\\testfilem3', data2)
+#np.save('C:\\Users\\ahosi\\OneDrive\\Desktop\\testfilem3', data2)
+np.save('C:\\data\\calibrated_data\\test_file1', data2)

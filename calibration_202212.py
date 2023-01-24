@@ -6,10 +6,13 @@ import os
 import ebit_util
 import pandas as pd
 
-d = 'C:\\Users\\ahosi\\OneDrive\\Desktop\\tesdata'
+#d = 'C:\\Users\\ahosi\\OneDrive\\Desktop\\tesdata'
+d = "C:\\data\\tesdata"
 today = "20221220"
 rn = "0001"
-datdest = 'C:\\Users\\ahosi\\OneDrive\\Desktop\\calibratedTES_Dec2022'
+#datdest = 'C:\\Users\\ahosi\\OneDrive\\Desktop\\calibratedTES_Dec2022'
+#datdest = 'C:\\data\\calibrated_data'
+datdest = 'C:\\data\\test_folder'
 
 
 #12/14 
@@ -133,7 +136,7 @@ ds.calibrationPlanAddPoint(37180, "FeKAlpha", states=calstates)
 # ds.calibrationPlanAddPoint(31720, "FeKAlpha", states=calstates)
 #ds.plotAvsB("relTimeSec", "filtValue", states=calstates)
 
-#data.learnResidualStdDevCut()
+
 data.alignToReferenceChannel(referenceChannel=ds, binEdges=np.arange(0,60000,10), attr="filtValue", states=calstates)
 #data.alignToReferenceChannel(referenceChannel=ds, binEdges=np.arange(0,60000,10), attr="filtValue", states=calstates)
 # Phase, drift, and time drift correct on pulses in the rough 400-2500 eV range
@@ -157,9 +160,12 @@ external_trigger_rowcount = ebit_util.get_external_triggers(external_trigger_fil
 for ds in data.values():
     ebit_util.calc_external_trigger_timing(ds, external_trigger_rowcount)
 
-firstsci = scistates[0]
+#firstsci = scistates[0]
+firstsci = "F"
 energies = np.hstack([ds.getAttr("energy", firstsci) for ds in data.values()])
 seconds_after_external_triggers = np.hstack([ds.seconds_after_external_trigger[ds.getStatesIndicies(states=firstsci)[0]] for ds in data.values()])
+
+#np.hstack([ds.seconds_after_external_trigger[ds.getStatesIndicies(states=firstsci)[0]][ds.getAttr("cutResidualStdDev", firstsci)] for ds in data.values()])
 
 # for scistate2 in scistates: 
 #     energies = np.append(energies,np.hstack([ds.getAttr("energy", scistate2) for ds in data.values()]))
@@ -168,7 +174,7 @@ seconds_after_external_triggers = np.hstack([ds.seconds_after_external_trigger[d
 dat2 = np.vstack((energies,seconds_after_external_triggers))
 dat2 = dat2.T 
 
-np.save(datdest+'\\'+str(today)+'_'+str(rn), dat2)
+np.save(datdest+'\\'+str(today)+'_'+str(rn)+'_'+str(firstsci), dat2)
 
 #data.plotHist(np.arange(0,10000,1),"energy", states=scistates, coAddStates=False)
 
