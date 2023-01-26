@@ -8,8 +8,8 @@ import pandas as pd
 
 d = 'C:\\Users\\ahosi\\OneDrive\\Desktop\\tesdata'
 #d = "C:\\data\\tesdata"
-today = "20221219"
-rn = "0000"
+today = "20221220"
+rn = "0001"
 #datdest = 'C:\\Users\\ahosi\\OneDrive\\Desktop\\calibratedTES_Dec2022'
 datdest = 'C:\\data\\processed_NO_RMS'
 #datdest = 'C:\\data\\test_folder'
@@ -30,17 +30,17 @@ datdest = 'C:\\data\\processed_NO_RMS'
 # scistates = ["D"]
 
 #12/19          ## run 0000
-calstates = ["A", "B", "C", "D", "AC"]
-#scistates = ["H", "K", "P", "W", "Y", "AA", "R", "T", "U"]
-scistates = ["H", "K", "W", "Y", "AA", "R", "T", "U"]
+# calstates = ["A", "B", "C", "D", "AC"]
+# #scistates = ["H", "K", "P", "W", "Y", "AA", "R", "T", "U"]
+# scistates = ["H", "K", "W", "Y", "AA", "R", "T", "U"]
 
 #12/20 
 # calstates = ["A", "B", "K"]       ##run0000
 # scistates = ["H", "J", "L", "P"]
 
 #calstates = ["B","D", "J"]        ##run0001 
-# calstates = ["D", "J"]  
-# scistates = ["F", "N"]
+calstates = ["D", "J"]  
+scistates = ["F", "N"]
 # scistates = ["F"]
 
 #12/21
@@ -97,12 +97,12 @@ ds.calibrationPlanInit("filtValue")
 
 
 # #12/19        ##run0000
-ds.calibrationPlanAddPoint(8970, "AlKAlpha", states=calstates)
-ds.calibrationPlanAddPoint(10460, "SiKAlpha", states=calstates)
-ds.calibrationPlanAddPoint(15377, "ClKAlpha", states=calstates)
-ds.calibrationPlanAddPoint(19030, "KKAlpha", states=calstates)
-ds.calibrationPlanAddPoint(25190, "TiKAlpha", states=calstates)
-ds.calibrationPlanAddPoint(34610, "FeKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(8970, "AlKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(10460, "SiKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(15377, "ClKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(19030, "KKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(25190, "TiKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(34610, "FeKAlpha", states=calstates)
 
 
 #12/20
@@ -115,12 +115,12 @@ ds.calibrationPlanAddPoint(34610, "FeKAlpha", states=calstates)
 # ds.calibrationPlanAddPoint(37302, "FeKAlpha", states=calstates)
 
 #run0001
-# ds.calibrationPlanAddPoint(9740, "AlKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(11308, "SiKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(16595, "ClKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(20580, "KKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(27240, "TiKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(37180, "FeKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(9740, "AlKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(11308, "SiKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(16595, "ClKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(20580, "KKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(27240, "TiKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(37180, "FeKAlpha", states=calstates)
 
 
 
@@ -136,27 +136,32 @@ ds.calibrationPlanAddPoint(34610, "FeKAlpha", states=calstates)
 
 
 data.alignToReferenceChannel(referenceChannel=ds, binEdges=np.arange(0,60000,10), attr="filtValue", states=calstates)
-#data.alignToReferenceChannel(referenceChannel=ds, binEdges=np.arange(0,60000,10), attr="filtValue", states=calstates)
-# Phase, drift, and time drift correct on pulses in the rough 400-2500 eV range
-#data.cutAdd("Cut1", lambda energyRough: np.logical_and(energyRough > 400, energyRough < 3000), _rethrow=True)
-data.learnPhaseCorrection(uncorrectedName="filtValue", correctedName = "filtValuePC", states=calstates)
+# #data.alignToReferenceChannel(referenceChannel=ds, binEdges=np.arange(0,60000,10), attr="filtValue", states=calstates)
+# # Phase, drift, and time drift correct on pulses in the rough 400-2500 eV range
+# #data.cutAdd("Cut1", lambda energyRough: np.logical_and(energyRough > 400, energyRough < 3000), _rethrow=True)
+# data.learnPhaseCorrection(uncorrectedName="filtValue", correctedName = "filtValuePC", states=calstates)
 
-data.learnDriftCorrection(indicatorName="pretriggerMean", uncorrectedName="filtValuePC", correctedName = "filtValuePCDC", states=calstates)
-#data.learnDriftCorrection(indicatorName="pretriggerMean", uncorrectedName="filtValue", correctedName = "filtValueDC", states=calstates, cutRecipeName="cutForLearnDC",)
-#data.learnDriftCorrection(uncorrectedName="filtValue", correctedName = "filtValueDC", states=calstates, cutRecipeName="cutForLearnDC",)
+# data.learnDriftCorrection(indicatorName="pretriggerMean", uncorrectedName="filtValuePC", correctedName = "filtValuePCDC", states=calstates)
+# #data.learnDriftCorrection(indicatorName="pretriggerMean", uncorrectedName="filtValue", correctedName = "filtValueDC", states=calstates, cutRecipeName="cutForLearnDC",)
+# #data.learnDriftCorrection(uncorrectedName="filtValue", correctedName = "filtValueDC", states=calstates, cutRecipeName="cutForLearnDC",)
 
-data.learnTimeDriftCorrection(indicatorName="relTimeSec", uncorrectedName="filtValuePCDC", correctedName = "filtValuePCDCTC", states=calstates, _rethrow=True) 
-#data.learnTimeDriftCorrection(indicatorName="relTimeSec", uncorrectedName="filtValuePCDC", correctedName = "filtValuePCDCTC", states=calstates, _rethrow=True, cutRecipeName="cutForLearnDC",) 
+# data.learnTimeDriftCorrection(indicatorName="relTimeSec", uncorrectedName="filtValuePCDC", correctedName = "filtValuePCDCTC", states=calstates, _rethrow=True) 
+# #data.learnTimeDriftCorrection(indicatorName="relTimeSec", uncorrectedName="filtValuePCDC", correctedName = "filtValuePCDCTC", states=calstates, _rethrow=True, cutRecipeName="cutForLearnDC",) 
 
-data.calibrateFollowingPlan("filtValuePCDCTC", calibratedName="energy", overwriteRecipe=True)      
+#data.calibrateFollowingPlan("filtValuePCDCTC", calibratedName="energy", overwriteRecipe=True)      
+data.calibrateFollowingPlan("filtValue", calibratedName="energy", overwriteRecipe=True)      
 
 
 
-external_trigger_filename =  os.path.join(d, f"{today}", f"{rn}", 
-f"{today}_run{rn}_external_trigger.bin")
+external_trigger_filename =  os.path.join(d, f"{today}", f"{rn}", f"{today}_run{rn}_external_trigger.bin")
 external_trigger_rowcount = ebit_util.get_external_triggers(external_trigger_filename, good_only=True)
 for ds in data.values():
     ebit_util.calc_external_trigger_timing(ds, external_trigger_rowcount)
+
+
+
+
+asdfas
 
 #firstsci = scistates[0]
 #firstsci = "F"
@@ -176,7 +181,10 @@ for scistate in scistates:
     dat2 = np.vstack((energies,seconds_after_external_triggers))
     dat2 = dat2.T 
 
-    np.save(datdest+'\\'+str(today)+'_'+str(rn)+'_'+str(scistate), dat2)
+    #np.save(datdest+'\\'+str(today)+'_'+str(rn)+'_'+str(scistate), dat2)
+
+
+
 
 #data.plotHist(np.arange(0,10000,1),"energy", states=scistates, coAddStates=False)
 
