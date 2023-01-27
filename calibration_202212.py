@@ -13,14 +13,16 @@ rn = "0000"
 #datdest = 'C:\\Users\\ahosi\\OneDrive\\Desktop\\calibratedTES_Dec2022'
 datdest = 'C:\\data\\processed_NO_RMS'
 #datdest = 'C:\\data\\test_folder'
-
+savedat = True
 
 #12/14 
 #calstates = ["B", "C"]
 
 #12/15 ##run0001        
-# calstates = ["A", "B", "I", "M", "S", "W", "AF"]
-# scistates = ["G", "K", "O", "Q", "U" ,"Y", "Z", "AB", "AD", "AH", "AO"]
+#calstates = ["A", "B", "I", "M", "S", "W", "AF"]
+#scistates = ["G", "K", "O", "Q", "U" ,"Y", "Z", "AB", "AD", "AH", "AO"]
+
+
 
 #12/16
 # calstates = ["A", "B", "F", "J", "N", "R"]    ##run0000
@@ -44,8 +46,8 @@ scistates = ["H", "K", "W", "Y", "AA", "R", "T", "U"]
 # scistates = ["F"]
 
 #12/21
-#calstates = ["A", "B", "I", "O", "AH"]
-#scistates = ["E", "G", "K", "M", "Q", "R", "T", "V", "X", "Z", "AB", "AD", "AF"]
+# calstates = ["A", "B", "I", "O", "AH"]
+# scistates = ["E", "G", "K", "M", "Q", "R", "T", "V", "X", "Z", "AB", "AD", "AF"]
 
 
 
@@ -132,6 +134,9 @@ ds.calibrationPlanAddPoint(34610, "FeKAlpha", states=calstates)
 # ds.calibrationPlanAddPoint(17550, "KKAlpha", states=calstates)
 # ds.calibrationPlanAddPoint(23270, "TiKAlpha", states=calstates)
 # ds.calibrationPlanAddPoint(31720, "FeKAlpha", states=calstates)
+
+
+
 #ds.plotAvsB("relTimeSec", "filtValue", states=calstates)
 
 
@@ -175,8 +180,8 @@ for scistate in scistates:
 
     dat2 = np.vstack((energies,seconds_after_external_triggers))
     dat2 = dat2.T 
-
-    np.save(datdest+'\\'+str(today)+'_'+str(rn)+'_'+str(scistate), dat2)
+    if savedat: 
+        np.save(datdest+'\\'+str(today)+'_'+str(rn)+'_'+str(scistate), dat2)
 
 #data.plotHist(np.arange(0,10000,1),"energy", states=scistates, coAddStates=False)
 

@@ -9,9 +9,9 @@ import pandas as pd
 d = 'C:\\Users\\ahosi\\OneDrive\\Desktop\\tesdata'
 #d = "C:\\data\\tesdata"
 today = "20221220"
-rn = "0001"
+rn = "0000"
 #datdest = 'C:\\Users\\ahosi\\OneDrive\\Desktop\\calibratedTES_Dec2022'
-datdest = 'C:\\data\\processed_NO_RMS'
+#datdest = 'C:\\data\\processed_NO_RMS'
 #datdest = 'C:\\data\\test_folder'
 
 
@@ -19,9 +19,7 @@ datdest = 'C:\\data\\processed_NO_RMS'
 #calstates = ["B", "C"]
 
 #12/15 ##run0001        
-# calstates = ["A", "B", "I", "M", "S", "W", "AF"]
-# scistates = ["G", "K", "O", "Q", "U" ,"Y", "Z", "AB", "AD", "AH", "AO"]
-
+# 
 #12/16
 # calstates = ["A", "B", "F", "J", "N", "R"]    ##run0000
 # scistates = ["E", "H", "L", "P"]
@@ -35,12 +33,12 @@ datdest = 'C:\\data\\processed_NO_RMS'
 # scistates = ["H", "K", "W", "Y", "AA", "R", "T", "U"]
 
 #12/20 
-# calstates = ["A", "B", "K"]       ##run0000
-# scistates = ["H", "J", "L", "P"]
+calstates = ["A", "B", "K"]       ##run0000
+scistates = ["H", "J", "L", "P"]
 
 #calstates = ["B","D", "J"]        ##run0001 
-calstates = ["D", "J"]  
-scistates = ["F", "N"]
+# calstates = ["D", "J"]  
+# scistates = ["F", "N"]
 # scistates = ["F"]
 
 #12/21
@@ -107,20 +105,20 @@ ds.calibrationPlanInit("filtValue")
 
 #12/20
 ##run0000       chan 1
-# ds.calibrationPlanAddPoint(9793, "AlKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(11363, "SiKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(16661, "ClKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(20668, "KKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(27350, "TiKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(37302, "FeKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(9793, "AlKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(11363, "SiKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(16661, "ClKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(20668, "KKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(27350, "TiKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(37302, "FeKAlpha", states=calstates)
 
 #run0001
-ds.calibrationPlanAddPoint(9740, "AlKAlpha", states=calstates)
-ds.calibrationPlanAddPoint(11308, "SiKAlpha", states=calstates)
-ds.calibrationPlanAddPoint(16595, "ClKAlpha", states=calstates)
-ds.calibrationPlanAddPoint(20580, "KKAlpha", states=calstates)
-ds.calibrationPlanAddPoint(27240, "TiKAlpha", states=calstates)
-ds.calibrationPlanAddPoint(37180, "FeKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(9740, "AlKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(11308, "SiKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(16595, "ClKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(20580, "KKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(27240, "TiKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(37180, "FeKAlpha", states=calstates)
 
 
 
@@ -151,6 +149,8 @@ data.alignToReferenceChannel(referenceChannel=ds, binEdges=np.arange(0,60000,10)
 #data.calibrateFollowingPlan("filtValuePCDCTC", calibratedName="energy", overwriteRecipe=True)      
 data.calibrateFollowingPlan("filtValue", calibratedName="energy", overwriteRecipe=True)      
 
+firstsci = scistates[0]
+firstsci = "P"
 
 
 external_trigger_filename =  os.path.join(d, f"{today}", f"{rn}", f"{today}_run{rn}_external_trigger.bin")
@@ -158,13 +158,29 @@ external_trigger_rowcount = ebit_util.get_external_triggers(external_trigger_fil
 for ds in data.values():
     ebit_util.calc_external_trigger_timing(ds, external_trigger_rowcount)
 
+plt.figure()
+#plt.plot(ds.seconds_after_external_trigger[50:int(len(ds.seconds_after_external_trigger)-1e3):1]+ds.seconds_until_next_external_trigger[50:int(len(ds.seconds_until_next_external_trigger)-1e3):1], c='r', marker = '.')
+plt.plot(ds.seconds_after_external_trigger[ds.getStatesIndicies(states=firstsci)[0]]+ds.seconds_until_next_external_trigger[ds.getStatesIndicies(states=firstsci)[0]], c='r', marker = '.')
+#ds.getStatesIndicies(states=firstsci)[0]
+plt.xlabel('index number')
+plt.ylabel('seconds after ext trig + secondds until next ext trig')
 
+plt.figure()
+#plt.plot(ds.seconds_until_next_external_trigger[50:int(len(ds.seconds_until_next_external_trigger)-1e3):1], c='b', marker = '.')
+plt.plot(ds.seconds_until_next_external_trigger[ds.getStatesIndicies(states=firstsci)[0]], c='b', marker = '.')
+plt.xlabel('index number')
+plt.ylabel('seconds until next ext trig')
 
+plt.figure()
+plt.xlabel('index number')
+plt.ylabel('seconds after next ext trig')
+#plt.plot(ds.seconds_after_external_trigger[50:int(len(ds.seconds_after_external_trigger)-1e3):1], c='g', marker='.', ls='none')
+plt.plot(ds.seconds_after_external_trigger[ds.getStatesIndicies(states=firstsci)[0]], c='g', marker='.', ls='none')
 
+plt.show()
 asdfas
 
-#firstsci = scistates[0]
-#firstsci = "F"
+
 # energies = np.hstack([ds.getAttr("energy", firstsci) for ds in data.values()])
 # seconds_after_external_triggers = np.hstack([ds.seconds_after_external_trigger[ds.getStatesIndicies(states=firstsci)[0]] for ds in data.values()])
 

@@ -88,9 +88,26 @@ seconds_after_external_triggers = np.append(seconds_after_external_triggers, sec
 seconds_after_external_triggers *=1000
 #seconds_after_external_triggers = seconds_after_external_triggers*1000
 
+energies = energies_N
+seconds_after_external_triggers = seconds_after_external_triggers_N
+
+
+# file1 = 'C:\\data\\processed_NO_RMS\\20221220_0000'
+# # states = ['H','J','L','P']
+# states = ['H','L','J']
+# #states = ['P']
+# summed = np.load(f'{file1}_{states[0]}.npy')
+# if len(states)>1:
+#     for state in states[1:]:
+#         np.append(summed,np.load(f'{file1}_{state}.npy'))
+
+
+# seconds_after_external_triggers = summed[:,1]
+# energies = summed[:,0]
+
 plt.figure()
 plt.hist2d(seconds_after_external_triggers, 
-    energies, bins=(np.arange(0,5100,5), np.arange(500,2500,1)),
+    energies, bins=(np.arange(0,1.1,0.005), np.arange(500,2500,1)),
     cmin = 1)
 plt.xlabel("time since external trigger (s)")
 plt.ylabel("energy(eV)")
@@ -99,13 +116,13 @@ plt.ylabel("energy(eV)")
 plt.colorbar()
 
 
-time_bin = 0.05
+time_bin = 0.005
 energy_bin = 1
-low = 1177
-high = 1187
+low = 795
+high = 805
 #def plot_hslice(low,high):
-binns = 500
-data2 = np.load(dat2d_N_loc)
+binns = 50
+data2 = np.load(dat2d_P_loc)
 
 x_bins = np.arange(np.min(data2[:,1]),np.max(data2[:,1]+time_bin),time_bin)
 #y_bins = np.arange(np.min(data2[:,0]),np.max(data2[:,0]+energy_bin),energy_bin)
@@ -136,12 +153,9 @@ bd2, xedg, yedg = stats.binned_statistic(nt, ne, statistic='count', bins=binns)
 
 
 
-# print(bin_data2)
-# print(x_edges)
-# print(y_edges)
 
-bwidth = np.round(xedg[1] - xedg[0], decimals = 5)
 
+#bwidth = np.round(xedg[1] - xedg[0], decimals = 5)
 # plt.figure()
 # plt.plot(xedg[:-1]+time_bin/2,bd2,marker='.', ls='none')
 # plt.ylabel('Counts per '+str(bwidth)+' (s) bins')
