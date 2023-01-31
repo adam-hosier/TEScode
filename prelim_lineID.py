@@ -55,6 +55,6 @@ time = df['time']
 state = 'T'
 arry = dfall[state+str(' counts')]
 arrx = dfall[state+str(' bin_edges')][:-1]
-a = MultiPeakGaussian(arr = arry, xs = arrx, num_peaks=60, num_poly=0)
-a.fit(same_sigma=True, function='gaussian')
-a.plot_fit(normalize_background=False)
+a = MultiPeakGaussian(arr = arry, xs = arrx, num_peaks=40, num_poly=3)
+a.fit(same_sigma=False, function='gaussian')
+a.plot_fit(normalize_background=True)

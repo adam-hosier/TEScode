@@ -318,7 +318,8 @@ class MultiPeakGaussian:
 
         if normalize_background:
             yFit = yFit  - self.poly(xFit, self.popt[:self.num_poly])
-            yArr = yArr - self.poly(xArr, self.popt[:self.num_poly])
+            yArr = yArr
+            #yArr = yArr - self.poly(xArr, self.popt[:self.num_poly])
 
         if xtransform:
             func, popt = xtransform
@@ -333,7 +334,7 @@ class MultiPeakGaussian:
             f, ax  = plt.subplots()
             show = True
 
-        plt.plot(xFit, yFit, linestyle , label = 'MultiGaussian Fit')
+        plt.plot(xFit, yFit, linestyle , label = 'MultiGaussian Fit', c='b')
         plt.plot(xArr, yArr, '--' + linestyle[-1], label = 'Original Data')
         plt.xlabel(xlabel)
         plt.ylabel('Intensity (ADU)')
