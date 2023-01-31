@@ -3,15 +3,15 @@ import numpy as np
 import pylab as plt 
 from mass.off import ChannelGroup, getOffFileListFromOneFile, Channel, labelPeak, labelPeaks
 import os 
-import ebit_util
+#import ebit_util
 import pandas as pd
 import matplotlib.colors as mcolors
 from scipy.stats import binned_statistic_2d
 from scipy import stats
 from fit_utils import MultiPeakGaussian
-
-floc = str('C:\\Users\\ahosi\\OneDrive\\Desktop\\calibratedTES_Dec2022')
-
+plt.ion()
+#floc = str('C:\\Users\\ahosi\\OneDrive\\Desktop\\calibratedTES_Dec2022')
+floc = str('C:\\data\\calibratedTES_Dec2022')
 date = str('202212')
 day = str('21')
 runnum = str('0002')
@@ -55,6 +55,8 @@ time = df['time']
 state = 'T'
 arry = dfall[state+str(' counts')]
 arrx = dfall[state+str(' bin_edges')][:-1]
-a = MultiPeakGaussian(arr = arry, xs = arrx, num_peaks=40, num_poly=3)
-a.fit(same_sigma=False, function='gaussian')
+res_dict = dict()
+a = MultiPeakGaussian(arr = arry, xs = arrx, num_peaks=35, num_poly=3)
+a.fit(return_dict = res_dict, same_sigma=True, function='voigt')
+t1 = res_dict['rez']
 a.plot_fit(normalize_background=True)

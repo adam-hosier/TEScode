@@ -246,23 +246,27 @@ class MultiPeakGaussian:
         out = M.fit(y, params, x = x, max_nfev = 10**7, verbose = True)
         print('Fit Completed.')
 
+        params.update(out.params)
         #stores vital parameters in list for later use
         popt = []
         for i in range(self.num_poly):
             popt.append(out.params[f'c{i}'].value)
         for i in range(len(self.get_peak_indices())):
-            popt.append(out.params[f'g{i}_amplitude'].value)
+            popt.append(out.params[f'g{i}_height'].value)
             popt.append(out.params[f'g{i}_center'].value)
             popt.append(out.params[f'g{i}_sigma'].value)
+            popt.append(out.params[f'g{i}_fwhm'].value)
         self.popt = popt
+
 
         #stores data for each peak in its own row.
         new = []
         for i in range(len(self.get_peak_indices())):
             temp = []
             temp.append([out.params[f'g{i}_center'].value, out.params[f'g{i}_center'].stderr])
-            temp.append([out.params[f'g{i}_amplitude'].value, out.params[f'g{i}_amplitude'].stderr])
+            temp.append([out.params[f'g{i}_height'].value, out.params[f'g{i}_height'].stderr])
             temp.append([out.params[f'g{i}_sigma'].value, out.params[f'g{i}_sigma'].stderr])
+            temp.append([out.params[f'g{i}_fwhm'].value, out.params[f'g{i}_fwhm'].stderr])
             new.append(temp)
 
 
@@ -275,12 +279,15 @@ class MultiPeakGaussian:
 
         self.x0 = np.linspace(min(x), max(x), self.resolution)
         self.y0 = out.eval(x = self.x0)
-
+        self.plist = new
 
         if not return_dict is None:
             return_dict['popt'], return_dict['centroids'] = self.popt, self.centroids
             return_dict['x0'], return_dict['y0'], return_dict['xs'] = self.x0, self.y0, self.xs
             return_dict['gauss_data'] = self.gauss_data
+            return_dict['rez'] = self.plist
+            return_dict['output'] = out
+            return_dict['params'] = out.params
 
         return self.x0, self.y0
 
