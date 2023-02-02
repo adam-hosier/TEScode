@@ -8,10 +8,10 @@ import pandas as pd
 
 d = 'C:\\Users\\ahosi\\OneDrive\\Desktop\\tesdata'
 #d = "C:\\data\\tesdata"
-today = "20221219"
-rn = "0000"
-#datdest = 'C:\\Users\\ahosi\\OneDrive\\Desktop\\calibratedTES_Dec2022'
-datdest = 'C:\\data\\processed_NO_RMS'
+today = "20221221"
+rn = "0002"
+datdest = 'C:\\Users\\ahosi\\OneDrive\\Desktop\\calibratedTES_Dec2022'
+#datdest = 'C:\\data\\processed_NO_RMS'
 #datdest = 'C:\\data\\test_folder'
 savedat = True
 
@@ -19,36 +19,45 @@ savedat = True
 #calstates = ["B", "C"]
 
 #12/15 ##run0001        
-#calstates = ["A", "B", "I", "M", "S", "W", "AF"]
-#scistates = ["G", "K", "O", "Q", "U" ,"Y", "Z", "AB", "AD", "AH", "AO"]
-
+# calstates = ["A", "B", "I", "M", "S", "W", "AF"]
+# #scistates = ["G", "K", "O", "Q", "U" ,"Y", "Z", "AB", "AD", "AH", "AO"]
+# scistates = calstates
 
 
 #12/16
 # calstates = ["A", "B", "F", "J", "N", "R"]    ##run0000
-# scistates = ["E", "H", "L", "P"]
+# #scistates = ["E", "H", "L", "P"]
+# scistates = calstates
 
 # calstates = ["B", "F"]   ##run0001
-# scistates = ["D"]
+# #scistates = ["D"]
+# scistates = calstates
+
 
 #12/19          ## run 0000
-calstates = ["A", "B", "C", "D", "AC"]
-#scistates = ["H", "K", "P", "W", "Y", "AA", "R", "T", "U"]
-scistates = ["H", "K", "W", "Y", "AA", "R", "T", "U"]
+# calstates = ["A", "B", "C", "D", "AC"]
+# #scistates = ["H", "K", "P", "W", "Y", "AA", "R", "T", "U"]
+# #cistates = ["H", "K", "W", "Y", "AA", "R", "T", "U"]
+# scistates = calstates
+
 
 #12/20 
 # calstates = ["A", "B", "K"]       ##run0000
-# scistates = ["H", "J", "L", "P"]
+# #scistates = ["H", "J", "L", "P"]
+# scistates = calstates
+
 
 #calstates = ["B","D", "J"]        ##run0001 
 # calstates = ["D", "J"]  
-# scistates = ["F", "N"]
-# scistates = ["F"]
+# #scistates = ["F", "N"]
+# #scistates = ["F"]
+# scistates = calstates 
+
 
 #12/21
-# calstates = ["A", "B", "I", "O", "AH"]
-# scistates = ["E", "G", "K", "M", "Q", "R", "T", "V", "X", "Z", "AB", "AD", "AF"]
-
+calstates = ["A", "B", "I", "O", "AH"]
+#scistates = ["E", "G", "K", "M", "Q", "R", "T", "V", "X", "Z", "AB", "AD", "AF"]
+scistates = calstates 
 
 
 fltoday = getOffFileListFromOneFile(os.path.join(d, f"{today}", f"{rn}", 
@@ -58,7 +67,7 @@ data = ChannelGroup(fltoday)
 
 defbinsize = 0.5
 data.setDefaultBinsize(defbinsize)
-#data.learnResidualStdDevCut()
+data.learnResidualStdDevCut()
 
 
 
@@ -99,12 +108,12 @@ ds.calibrationPlanInit("filtValue")
 
 
 # #12/19        ##run0000
-ds.calibrationPlanAddPoint(8970, "AlKAlpha", states=calstates)
-ds.calibrationPlanAddPoint(10460, "SiKAlpha", states=calstates)
-ds.calibrationPlanAddPoint(15377, "ClKAlpha", states=calstates)
-ds.calibrationPlanAddPoint(19030, "KKAlpha", states=calstates)
-ds.calibrationPlanAddPoint(25190, "TiKAlpha", states=calstates)
-ds.calibrationPlanAddPoint(34610, "FeKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(8970, "AlKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(10460, "SiKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(15377, "ClKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(19030, "KKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(25190, "TiKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(34610, "FeKAlpha", states=calstates)
 
 
 #12/20
@@ -128,12 +137,12 @@ ds.calibrationPlanAddPoint(34610, "FeKAlpha", states=calstates)
 
 #12/21              
 # ##run0002             #chan 1
-# ds.calibrationPlanAddPoint(8190, "AlKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(9550, "SiKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(14090, "ClKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(17550, "KKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(23270, "TiKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(31720, "FeKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(8190, "AlKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(9550, "SiKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(14090, "ClKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(17550, "KKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(23270, "TiKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(31720, "FeKAlpha", states=calstates)
 
 
 
@@ -170,18 +179,18 @@ for ds in data.values():
 
 #np.hstack([ds.seconds_after_external_trigger[ds.getStatesIndicies(states=firstsci)[0]][ds.getAttr("cutResidualStdDev", firstsci)] for ds in data.values()])
 
-for scistate in scistates: 
-    # energies = np.append(energies,np.hstack([ds.getAttr("energy", scistate) for ds in data.values()]))
-    # seconds_after_external_triggers = np.append(seconds_after_external_triggers,np.hstack([ds.seconds_after_external_trigger[ds.getStatesIndicies(states=scistate)[0]] for ds in data.values()]))
+# for scistate in scistates: 
+#     # energies = np.append(energies,np.hstack([ds.getAttr("energy", scistate) for ds in data.values()]))
+#     # seconds_after_external_triggers = np.append(seconds_after_external_triggers,np.hstack([ds.seconds_after_external_trigger[ds.getStatesIndicies(states=scistate)[0]] for ds in data.values()]))
 
-    energies = np.hstack([ds.getAttr("energy", scistate) for ds in data.values()])
-    seconds_after_external_triggers = np.hstack([ds.seconds_after_external_trigger[ds.getStatesIndicies(states=scistate)[0]] for ds in data.values()])
+#     energies = np.hstack([ds.getAttr("energy", scistate) for ds in data.values()])
+#     seconds_after_external_triggers = np.hstack([ds.seconds_after_external_trigger[ds.getStatesIndicies(states=scistate)[0]] for ds in data.values()])
 
 
-    dat2 = np.vstack((energies,seconds_after_external_triggers))
-    dat2 = dat2.T 
-    if savedat: 
-        np.save(datdest+'\\'+str(today)+'_'+str(rn)+'_'+str(scistate), dat2)
+#     dat2 = np.vstack((energies,seconds_after_external_triggers))
+#     dat2 = dat2.T 
+#     if savedat: 
+#         np.save(datdest+'\\'+str(today)+'_'+str(rn)+'_'+str(scistate), dat2)
 
 #data.plotHist(np.arange(0,10000,1),"energy", states=scistates, coAddStates=False)
 
@@ -190,21 +199,24 @@ for scistate in scistates:
 # ds.plotHist(np.arange(0,60000,10),"filtValue", states=scistates, coAddStates=True)
 #data.plotHist( np.arange(0,14000,1), "energy", coAddStates=False, states=scistates)
 
-# for sta in scistates:
-#     histall = np.array(data.hist(np.arange(0, 14000, defbinsize), "energy", states=sta))
-#     stadat = pd.DataFrame(data=histall)
-#     #stadat = stadat.transpose
-#     stadat.to_csv(datdest + '/' + str(today) + '_' + str(rn) + '_' + str(sta)+'.csv', index=False)
+for sta in scistates:
+    histall = np.array(data.hist(np.arange(0, 14000, defbinsize), "energy", states=sta))
+    stadat = pd.DataFrame(data=histall)
+    #stadat = stadat.transpose
+    stadat.to_csv(datdest + '/' + str(today) + '_' + str(rn) + '_' + str(sta)+'.csv', index=False)
 
-#     energy = []
-#     time = []
-#     t_ext = []
-#     for i in data:
-#         ds = data[i] 
-#         energy.extend(list(ds.getAttr('energy', sta)))
-#         time.extend(list(ds.getAttr('unixnano', sta)))
-#         t_ext.extend(list(ds.seconds_after_external_trigger[ds.getStatesIndicies(states=sta)[0]]))
-#     plist = np.array([energy, time, t_ext], dtype=object).T
+    energy = []
+    time = []
+    t_ext = []
+    for i in data:
+        ds = data[i] 
+        energy.extend(list(ds.getAttr('energy', sta)))
+        time.extend(list(ds.getAttr('unixnano', sta)))
+        t_ext.extend(list(ds.seconds_after_external_trigger[ds.getStatesIndicies(states=sta)[0]]))
+    #plist = np.array([energy, time, t_ext], dtype=object).T
+    plist = np.array([energy, time], dtype=object).T
 
-#     photlist = pd.DataFrame(data=plist, columns=['energy', 'time', 'external_trigger_time'])
-#     photlist.to_csv(datdest + '/' + str(today) + '_' + str(rn) + '_' + str(sta)+str('photonlist')+'.csv', index=False)
+    #photlist = pd.DataFrame(data=plist, columns=['energy', 'time', 'external_trigger_time'])
+    photlist = pd.DataFrame(data=plist, columns=['energy', 'time'])
+    
+    photlist.to_csv(datdest + '/' + str(today) + '_' + str(rn) + '_' + str(sta)+str('photonlist')+'.csv', index=False)

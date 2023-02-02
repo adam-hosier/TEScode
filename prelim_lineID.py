@@ -9,9 +9,10 @@ import matplotlib.colors as mcolors
 from scipy.stats import binned_statistic_2d
 from scipy import stats
 from fit_utils import MultiPeakGaussian
-plt.ion()
-#floc = str('C:\\Users\\ahosi\\OneDrive\\Desktop\\calibratedTES_Dec2022')
-floc = str('C:\\data\\calibratedTES_Dec2022')
+
+floc = str('C:\\Users\\ahosi\\OneDrive\\Desktop\\calibratedTES_Dec2022')
+#floc = str('C:\\data\\calibratedTES_Dec2022')
+ddest = str('C:\\data\\Line_ID_Nd')
 date = str('202212')
 day = str('21')
 runnum = str('0002')
@@ -56,7 +57,27 @@ state = 'T'
 arry = dfall[state+str(' counts')]
 arrx = dfall[state+str(' bin_edges')][:-1]
 res_dict = dict()
-a = MultiPeakGaussian(arr = arry, xs = arrx, num_peaks=35, num_poly=3)
+a = MultiPeakGaussian(arr = arry, xs = arrx, num_peaks=60, num_poly=3)
 a.fit(return_dict = res_dict, same_sigma=True, function='voigt')
 t1 = res_dict['rez']
 a.plot_fit(normalize_background=True)
+
+b = t1[1]
+c = np.zeros([1,9])
+for i in range(np.shape(t1)[0]):
+
+    tempa = np.zeros([1,1])
+    for l in range(np.shape(t1)[1]):
+        temp = np.array([t1[i][l]])
+
+        tempa = np.hstack((tempa,temp))
+    
+    c = np.vstack((c, tempa))
+
+c = c[1:,:]
+c = c[:,1:]
+
+lineIDdata = pd.DataFrame(data=c, columns=['center [eV]', 'center unc [eV]','height [counts]','height unc [counts]', 
+    'std dev [eV]','std dev unc [eV]', 'FWHM [eV]', 'FWHM unc [eV]'])
+
+lineIDdata.to_csv(ddest+'/'+str(date)+str(day)+'_'+str(runnum)+'_'+str(state)+'.csv', index=True)
