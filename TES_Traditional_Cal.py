@@ -19,102 +19,132 @@ from os.path import isfile, join
 import glob
 
 ##### Need to update this script entirely for TES/x-ray lines for calibration 
+floc = str('C:\\Users\\ahosi\\OneDrive\\Desktop\\calibratedTES_Dec2022')
+#floc = str('C:\\data\\calibratedTES_Dec2022')
+#ddest = str('C:\\data\\Line_ID_Nd')
+date = str('202212')
+day = str('21')
+runnum = str('0002')
+calstates = ["A", "I", "O", "AH"]
+#statelist = ['T', 'V', 'X', 'Z', 'AB', 'AD', 'AF']
+statelist = calstates
+coAdd = False
+dfall = dict()
+minenergy = 500
+maxenergy = 5000
+binsize = 0.75
+numbins = int(np.round((maxenergy-minenergy)/binsize))
+findex = np.linspace(0, numbins, num=numbins+1)
+
+for s in statelist: 
+    state = str(s)
+    dfall[state] = pd.read_csv(r""+floc+'\\'+date+day+'_'+runnum+'_'+state+'photonlist.csv')
+    df = pd.read_csv(r""+floc+'\\'+date+day+'_'+runnum+'_'+state+'photonlist.csv')
+
+    counts, bin_edges = np.histogram(dfall[state]['energy'], bins=numbins, range=(minenergy, maxenergy))
+    dfall[state+str(' counts')]= counts
+    dfall[state+str(' bin_edges')] = bin_edges
+
+# energy = df['energy']
+# time = df['time']
+
+energy = dfall['A']['energy']
+
+
+counts, bin_edges = np.histogram(energy, bins=numbins, range=(minenergy, maxenergy))
+#dattest = np.array((counts, bin_edges), dtype=object).T 
+dattest = np.vstack((counts, bin_edges[:-1])).T
+df = pd.DataFrame(data=dattest, columns=['counts', 'bin_edges'])
+
+###################################
+# plt.figure()
+# plt.ylabel('Counts per '+str(binsize)+' eV bin')
+# #plt.ylim(bottom=0, top=1.1*np.max(counts))
+# #plt.xlim(left=3075, right=3175)
+# #plt.xlabel('energy (eV)')
+# plt.xlabel('channel number')
+# plt.title(date+day+'_'+runnum)
+# #plt.title(date+day+'_'+runnum+'_'+state)
+# for state in statelist: 
+#     #plt.plot(dfall[state+str(' bin_edges')][:-1], dfall[state+str(' counts')], label=state)
+#     plt.plot(findex[:-1], dfall[state+str(' counts')], label=state)
+# plt.legend()
+# plt.show() 
+# ##################################
+
 
 plot = True
 #pval = 0.025
 pval = 0.16 
 cinterval = 95
-crit = 3.5
+crit = 100
 siglev = 1
 
-fnew = 'C:\\Users\\ahosi\\Desktop\\Calibration6b'
+fnew = 'C:\\data\\TES_ReCal'
 
-df = pd.read_csv(r"C:\\Users\\ahosi\\OneDrive\\Desktop\\FileTrans4\\OsIr_NucChargeRadius_ReducedDataTable.csv")
+#df = pd.read_csv(r"C:\\Users\\ahosi\\OneDrive\\Desktop\\FileTrans4\\OsIr_NucChargeRadius_ReducedDataTable.csv")
+
+df = df['counts']
+
+#df.drop(df.columns[df.columns.str.contains('Os', case=False)], axis=1, inplace=True)
 
 
-df.drop(df.columns[df.columns.str.contains('Os', case=False)], axis=1, inplace=True)
+pixel = findex
 
 
-pixel = np.linspace(1,2048, num=2048)
+# wlen = np.array([
+#     1486.2950,
+#     1739.3940,
+#     2620.8460,
+#     3311.1956,
+#     4504.9201,
+#     6391.0264])
+
+
+# wlenerr = np.array([0.0100,
+#     0.0340,
+#     0.0390,
+#     0.0060,
+#     0.0094,
+#     0.0099])
+
+
+# c = np.array([1314,
+#     1652,
+#     2828, 
+#     3750,
+#     5346, 
+#     5907])
 
 
 wlen = np.array([
-#    6.73832,
-#    6.894,
-    7.5764,
-    8.80929,
-    9.7502,
-#    9.81166,
-#    9.82629,
-#    10.2909,
-#    10.3084,
-##    10.6138,
-#    11.1136,
-#    11.42,
-    11.6691,
-#    12.2516,
-#    12.2702,
-    12.7676,
-    14.3314,
-    14.7138,
-    19.5004])
-#    19.6233,
-#    19.6526])
+    1486.2950,
+    1739.3940,
+    2620.8460,
+    3311.1956,
+    4504.9201])
 
-wlenerr = np.array([
-#    0.00012,
-#    0.002,
-    0.0004,
-    0.00014,
-    0.0004,
-#    0.00021,
-#    0.00021,
-#    0.00019,
-#    0.00019,
-##    0.0005,
-#    0.0018,
-#    0.004,
-    0.0005,
-#    0.00017,
-#    0.00017,
-    0.0007,
-    0.0007,
-    0.0007,
-    0.0008])
-#    0.00042,
-#    0.00042])
 
-c = np.array([
-#    459,
-#    482,
-    586,
-    762,
-    891,
-#    899,
-#    901,
-#    962,
-#    964,
-##    1004,
-#    1068,
-#    1106,
-    1137,
-#    1208,
-#    1210,
-    1270,
-    1451,
-    1494,
-    1999])
-#    2011,
-#    2014])
+wlenerr = np.array([0.0100,
+    0.0340,
+    0.0390,
+    0.0060,
+    0.0094])
+
+
+c = np.array([1314,
+    1652,
+    2828, 
+    3750,
+    5346])
 
 
 
-
-r= 4
+r= 10
 rb=1 
 order=1 
 #subtracting last 6 spectra since the CCD plane was moved, requires separate calibration 
-num_cols = len(df.columns) 
+num_cols = 1 
 m = 0
 
 
@@ -127,34 +157,24 @@ sn = np.zeros([len(c), num_cols-m])
 
 
 
-def datcoll(df, df2, c, r, rb, order, num_cols, k):  #in single spectra loop
+def datcoll(df, c, r):  #in single spectra loop
     res = dict()
 
     y = []   
     ye = []                   
 
     pix = []
-    bg = 0                  #background outside of radius of data 
+
     photc = []                  #photon count
 
-    specn = df2.iloc[0,k]
-    for i in range(rb):
-        #bg += (1/(2*rb))*(df.iloc[c-r-i,k] + df.iloc[c+r+i,k])
-        bg = np.min(df.iloc[:,k])
 
-    #print(np.min(df.iloc[:,k]))
-    #bg = 1
-    #Collecting data around a point of interest defined by 'c' and 'r' above, along with centroid calcs
     for i in range(1,2*r):
-        y.append(df.iloc[c - r + i, k])
-        
+        y.append(df.iloc[c - r + i])
         pix.append(c-r+i)
-        #if y[i-1] > bg:
-        s = y[i-1]-bg    
+
+        s = y[i-1] 
         photc.append(s)
-            
-        #else:                           #if background is higher than selected data point 
-            ##photc.append(s)
+
             
     ye = np.sqrt(photc)
 
@@ -162,16 +182,12 @@ def datcoll(df, df2, c, r, rb, order, num_cols, k):  #in single spectra loop
     photc = np.array(photc) 
     ye = np.array(ye) 
     pix = np.array(pix) 
-    #plt.figure()
-    #plt.plot(pix,photc, color=plt.cm.cool(color_idx[k]))
 
-    #plt.ylabel(' intensity (ADU)')
-    #plt.xlabel('channel number')
     res['y'] = photc 
     res['ye'] = ye 
     res['x'] = pix 
-    res['specnum'] = specn 
-    #plt.show()
+    #res['specnum'] = specn 
+
     return res 
 
 
@@ -179,19 +195,26 @@ def fitproc(x, y, ye,c):#in single spectra loop
 
     fitres = dict()
 
-    def fit(x, A, mu, sig):
-        return A*np.exp(-(x-mu)**2 / (2 * sig**2)) 
+    def fit(x, A, mu, sig, B):
+        return A*np.exp(-(x-mu)**2 / (2 * sig**2))+B
 
     mod = Model(fit)
     params = Parameters() 
-    params.add('A', value = 50, min=0)
+    params.add('A', value = 1000, min=0)
     params.add('mu', value=c)       #, min=c-1, max=c+1
-    params.add('sig', value=1, min=0)
-    
+    params.add('sig', value=10, min=0)
+    params.add('B', value=1, min=0)
 
-    result = mod.fit(y, params=params, x=x, weights = None, method='leastsq', nan_policy='omit')
+    result = mod.fit(y, params=params, x=x, weights = ye, method='leastsq', nan_policy='omit')
     params.update(result.params)
-
+    xtest = np.linspace(np.min(x), np.max(x), num=1000)
+    ytest = mod.eval(x=xtest, params=params)
+    # plt.figure() 
+    # plt.plot(x, y, label='data')
+    # plt.plot(xtest, ytest, label='fit')
+    # plt.legend()
+    # plt.show()
+    # plt.close()
     fitres['A'] = result.params['A'].value
     fitres['Aerr'] = result.params['A'].stderr
     fitres['mu'] = result.params['mu'].value
@@ -200,34 +223,34 @@ def fitproc(x, y, ye,c):#in single spectra loop
     fitres['sigerr'] = result.params['sig'].stderr 
     totN = np.sum(y) 
     fitres['muerr2'] = result.params['sig'].value / np.sqrt(totN)
-
+    fitres['B'] = result.params['mu'].value
+    fitres['Berr'] = result.params['mu'].stderr 
     return fitres 
 
 
 lim = 50
-###Data collection across the Ne and Bg spectra (correct)
-for k in range(m, num_cols):    
 
-    for l in range(len(c)):
+# for k in range(m, num_cols):    
 
-        datacollection = datcoll(df, df2, c[l], r, rb, order, num_cols, k) 
- 
-        x = datacollection['x']
-        y = datacollection['y'] 
-        ye = datacollection['ye']
-        
-        Gaussfit = fitproc(x,y,ye, c[l]) 
-        channel[l,k] = Gaussfit['mu']
-        channelerr[l,k] = Gaussfit['muerr']
-        sn[l,k] = datacollection['specnum']
+for l in range(len(c)):
 
-        resid[l,k] = c[l] - Gaussfit['mu']
+    datacollection = datcoll(df, c[l], r) 
 
-        if Gaussfit['mu'] > c[l] + lim or Gaussfit['mu'] < c[l] - lim:                  #This has to be reconsidered
-            channel[l,k] = 'nan'
-            channelerr[l,k] = 'nan'
-            #channel[l,k] = np.nan
-            #channelerr[l,k] = np.nan
+    x = datacollection['x']
+    y = datacollection['y'] 
+    ye = datacollection['ye']
+    
+    Gaussfit = fitproc(x,y,ye, c[l]) 
+    channel[l] = Gaussfit['mu']
+    channelerr[l] = Gaussfit['muerr']
+    #sn[l,k] = datacollection['specnum']
+
+    resid[l] = c[l] - Gaussfit['mu']
+
+    if Gaussfit['mu'] > c[l] + lim or Gaussfit['mu'] < c[l] - lim:                  #This has to be reconsidered
+        channel[l] = 'nan'
+        channelerr[l] = 'nan'
+
 
 
 
@@ -276,7 +299,7 @@ def parts(x):
 
     return arr 
 
-pixel = np.linspace(0,2047, num=2048)
+#pixel = np.linspace(0,2047, num=2048)
 ap = np.zeros((4,0))
 
 for i in range(len(pixel)):
@@ -293,17 +316,17 @@ def pixelcal2(cen, cenerr, wlen, wlenerr):#in global loop
 
     mod = Model(pfit)
     params = Parameters() 
-    params.add('A', value=4)
-    params.add('B', value=1e-02)
-    params.add('C', value=1e-04)
-    params.add('D', value=1e-07)
+    params.add('A', value=400)
+    params.add('B', value=1)
+    params.add('C', value=1e-01)
+    params.add('D', value=1e-03)
 
     mod2 = Model(pfit)
     params2 = Parameters() 
-    params2.add('A', value=4)
-    params2.add('B', value=1e-02)
-    params2.add('C', value=1e-04)
-    params2.add('D', value=1e-07)
+    params2.add('A', value=400)
+    params2.add('B', value=1)
+    params2.add('C', value=1e-01)
+    params2.add('D', value=1e-03)
 
 
     cen = np.array(cen)
@@ -346,12 +369,13 @@ def pixelcal2(cen, cenerr, wlen, wlenerr):#in global loop
     chanluncnm = testd(cen, fit.params['B'].value, fit.params['C'].value, fit.params['D'].value, cenerr)
     
     cutoff = 1.5        #cutoff reduced chi-squared value for iterative systematic uncertainty estimation
-    inc = 0.000005          #incremental step for " " " " (nm)
+    inc = 0.001          #incremental step for " " " " (nm)
     maxit = 1000           #max iterations for " " " "
     b = 0
-    pixel = np.linspace(0, 2047, num=2048)
+    pixel = findex
     #print('initial: ', fit.redchi)
     while fit.redchi > cutoff: 
+
         chanluncnm = testd(cen, fit.params['B'].value, fit.params['C'].value, fit.params['D'].value, cenerr)
         newerr = np.sqrt((wlenerr)**2 + (chanluncnm)**2) + (b*inc)
         fit = mod.fit(x=cen, data=wlen, params=params, nan_policy='omit', weights=1/newerr, max_nfev=2000)
@@ -432,7 +456,7 @@ polycoerr = np.zeros([4,num_cols], dtype=object)
 badc = np.zeros([1,num_cols])
 
 
-specnumber = sn[0,:]
+#specnumber = sn[0,:]
 
 #polynomial for temporal evolution of lines 
 def fun(x, A, B, C, D, E, F):
@@ -541,6 +565,7 @@ def OutlierDet(cen, cenerr, wlen, wlenerr, crit):       #single point removal
     #print(newfit['confband'][0,np.around(arr[maxin]).astype(int)])
     if (maxres/(newfit['cb'][0,np.around(arr[maxin]).astype(int)])) >= crit:            #rejection criteria based on 
         #badlines = np.append(badlines, warr[maxin]) 
+
         badlines = warr[maxin]                                         #only the distance from the confidenceband
         newarr = np.delete(cen, maxin)
         newarrerr = np.delete(cenerr, maxin)
@@ -549,6 +574,7 @@ def OutlierDet(cen, cenerr, wlen, wlenerr, crit):       #single point removal
     
     if (maxres/(newfit['cb'][0,np.around(arr[maxin]).astype(int)])) < crit:
         #badlines = np.append(badlines, None)
+
         badlines = None
         newarr = cen
         newarrerr = cenerr
@@ -556,8 +582,16 @@ def OutlierDet(cen, cenerr, wlen, wlenerr, crit):       #single point removal
         newwarrerr = wlenerr
         newfit = pixelcal2(cen, cenerr, wlen, wlenerr)
 
+    else: 
+        #somehow going to here
+        badlines = None
+        newarr = cen
+        newarrerr = cenerr
+        newwarr = wlen
+        newwarrerr = wlenerr
+        newfit = pixelcal2(cen, cenerr, wlen, wlenerr)
 
-    pixel = np.linspace(0, 2047, num=2048)
+    pixel = findex
     ODcal = newfit['K0'] + newfit['K1']*pixel + newfit['K2']*pixel**2 + newfit['K3']*pixel**3
 
     ODres = {}
@@ -616,15 +650,15 @@ cali = []
 tval1 = []
 for i in range(num_cols):
 
-    names.append(str(df.columns[i])+str(dfb.columns[i]))
+    names.append(str('test'))
     data1 = channel[:,i]    #Ne data
 
-    data = np.append(data1, data2)
+    data = data1
     err1 = channelerr[:,i]
 
-    err = np.append(err1, err2)
-    wavelerr = np.append(wlenerr, wlenerrbg)
-    wavel = np.append(wlen, wlenbg)
+    err = err1
+    wavelerr = wlenerr
+    wavel = wlen
     arr = np.array((data, err, wavel, wavelerr)).T
 
 
@@ -634,6 +668,12 @@ for i in range(num_cols):
 
     arr = arr[arr[:,0].argsort()]
     pcal = pixelcal2(arr[:,0], arr[:,1], arr[:,2], arr[:,3])
+
+    # plt.figure() 
+    # plt.scatter(arr[:,2], arr[:,0])
+    # plt.show() 
+    # plt.close() 
+
     polyco[0,i] = pcal['K0']
     polyco[1,i] = pcal['K1']
     polyco[2,i] = pcal['K2']
@@ -656,13 +696,13 @@ for i in range(num_cols):
     preparerr = np.array([pcal['K0e'], pcal['K1e'], pcal['K2e'], pcal['K3e']])
     prepar = np.array([Kpars, preparams, preparerr]).T
     prepardf = pd.DataFrame(data=prepar, columns=['Parameters', 'Value', 'Uncertainty'])
-    prepardf.to_csv(fnew  + '/'+ 'Cal'+str(i+1) + names[i]+'_' + 'PolyParameters_Pre_Removal'+ '.csv', index=False)
+    # prepardf.to_csv(fnew  + '/'+ 'Cal'+str(i+1) + names[i]+'_' + 'PolyParameters_Pre_Removal'+ '.csv', index=False)
 
     precal = np.reshape(cal, (np.shape(cal)[0],))
     preconfband = np.reshape(cband, (np.shape(cband)[0],))
     preres = np.array([precal, preconfband]).T
     preresdf = pd.DataFrame(data=preres, columns=['calibration', 'conf band'])
-    preresdf.to_csv(fnew  + '/'+ 'Cal'+str(i+1) + names[i]+'_' + 'Calibration_Pre_Removal'+ '.csv', index=False)
+    # preresdf.to_csv(fnew  + '/'+ 'Cal'+str(i+1) + names[i]+'_' + 'Calibration_Pre_Removal'+ '.csv', index=False)
 
 
 
@@ -675,7 +715,7 @@ for i in range(num_cols):
 
     count = 0
     OutDet = OutlierDet(a, b, c, d,crit)
-
+    print('Beginning outlier detection...')
     while OutDet['badlines'] is not None:
         
         a2 = OutDet['arr']
@@ -696,6 +736,7 @@ for i in range(num_cols):
         else:
             count +=1 
             OutDet = OutlierDet(a, b, c, d,crit)
+    print('Finished outlier detection')
     print(totbad)
     #OutDet = OutlierDet(a, b, c, d,crit)
     newfit = pixelcal2(OutDet['arr'], OutDet['arrerr'], OutDet['wlen'], OutDet['wlenerr'])
@@ -703,7 +744,7 @@ for i in range(num_cols):
     postparerr = np.array([newfit['K0e'], newfit['K1e'], newfit['K2e'], newfit['K3e']])
     postpar = np.array([Kpars, postparams, postparerr]).T
     postpardf = pd.DataFrame(data=postpar, columns=['Parameters', 'Value', 'Uncertainty'])
-    postpardf.to_csv(fnew  + '/' +'Cal'+str(i+1)+ '/' + names[i]+'_' + 'PolyParameters'+ '.csv', index=False)
+    postpardf.to_csv(fnew  +  names[i]+'_' + 'PolyParameters'+ '.csv', index=False)
     
     totbad = np.reshape(totbad, (len(totbad),1))
     dfz2 = totbad 
@@ -738,8 +779,8 @@ for i in range(num_cols):
         # plt.close()
 
         plt.figure(figsize=(15,9)) 
-        plt.title(str(df.columns[i]) + '  ,  ' + str(dfb.columns[i]))
-        plt.xlabel('Wavelength (nm)')
+        plt.title(str('test'))
+        plt.xlabel('Energy (eV)')
         plt.ylabel('Residual (unweighted)')
         #plt.scatter(x=arr[:,2], y=pcal['residual'], c='b', marker="^", label='Residual')
         plt.scatter(x=c, y=newfit['residual'], c='r', marker="^", label='Residual(with systematic unc: '+str(newfit['sysunc'])+')')
@@ -749,8 +790,8 @@ for i in range(num_cols):
         plt.errorbar(x=c, y=newfit['residualno'], yerr=newfit['newerrno'], ecolor='b', ls='none')
         #plt.ylim([-10**(-2), 10**(-2)])
         #plt.xlim([np.min(arr[:,2]), np.max(arr[:,2])])
-        plt.xlim([4.00, 20.00])
-        plt.ylim([-5*10**(-3), 5*10**(-3)])
+        #plt.xlim([4.00, 20.00])
+        #plt.ylim([-5*10**(-3), 5*10**(-3)])
         #plt.plot(pcal['calibration'], confband[i,:], c='b', label='95% conf band')
         #plt.plot(pcal['calibration'], -confband[i,:], c='b')
         #plt.plot(newfit['calibration'], newfit['cb2'][0,:], c='r', label=str(siglev)+'-sigma conf band(with)')
@@ -762,7 +803,7 @@ for i in range(num_cols):
         plt.minorticks_on()
         plt.plot(newfit['calibration'], -newfit['cbno'][0,:], c='b')
         plt.legend()
-        plt.savefig(fnew2 + '/'  + 'Cal'+str(i+1)+'_'+ names[i]+ '.pdf')
+        plt.savefig(fnew + names[i]+ '.pdf')
         #plt.show()
         
         plt.close()
@@ -770,21 +811,18 @@ for i in range(num_cols):
 
         ###spectra of Ne and Bg together 
         plt.figure(figsize=(22,9)) 
-        plt.title(str(df.columns[i]) + '  ,  ' + str(dfb.columns[i]))
-        plt.xlabel('Wavelength (nm)')
+        plt.title(str('test'))
+        plt.xlabel('Energy (eV)')
         plt.ylabel('ADU (arb)')
-        plt.plot(newfit['calibration'], df[df.keys()[i]], c='r', label=df.keys()[i])
-        plt.plot(newfit['calibration'], dfb[dfb.keys()[i]], c='b', label=dfb.keys()[i]) 
+        plt.plot(newfit['calibration'][:-1], df, c='r', label=df.keys()[i])
+        #plt.plot(newfit['calibration'], dfb[dfb.keys()[i]], c='b', label=dfb.keys()[i]) 
         plt.xlim((np.min(newfit['calibration']),np.max(newfit['calibration'])) )
         for l in range(len(wlen)):
             plt.axvline(x=wlen[l], ls='--', c='tab:brown')
 
-        for l in range(len(wlenbg)):
-            plt.axvline(x=wlenbg[l], ls='--', c='tab:gray')
-
         plt.legend() 
         plt.minorticks_on()
-        plt.savefig(fnew2+'/'+'Cal'+str(i+1)+'_Spectra_'+ names[i]+ '.pdf')
+        plt.savefig(fnew+'_Spectra_'+ names[i]+ '.pdf')
 
         plt.close()
         
@@ -795,7 +833,7 @@ for i in range(num_cols):
 
     newdfz = pd.DataFrame(data=dfz, columns=['calibration', 'confband'])
     #newdfz.to_csv(fnew  + '/' +'Cal'+str(i+1)+ names[i]+'_' + 'Calibration'+ '.csv', index=False)
-    newdfz.to_csv(fnew  + '/' +'Cal'+str(i+1)+ '/'+ names[i]+'_' + 'Calibration'+ '.csv', index=False)
+    newdfz.to_csv(fnew  +  names[i]+'_' + 'Calibration'+ '.csv', index=False)
     calnum.append('Cal'+str(i+1))
     cali.append(newfit['calibration'])
 
@@ -825,8 +863,9 @@ for i in range(num_cols):
     #print(dfcovar)
     newdfcovar = pd.DataFrame(data=dfcovar, columns=['K0', 'K1', 'K2', 'K3'])
     #newdfcovar.to_csv(fnew  + '/' + 'Cal'+str(i+1)+ names[i]+'_' + 'CovarianceMatrix'+ '.csv', index=False)
-    newdfcovar.to_csv(fnew  + '/' + 'Cal'+str(i+1)+ '/'+ names[i]+'_' + 'CovarianceMatrix'+ '.csv', index=False)
+    newdfcovar.to_csv(fnew + names[i]+'_' + 'CovarianceMatrix'+ '.csv', index=False)
     print('Calibration #'+ str(i+1)+' completed.')
+
 
 sysunc = np.reshape(sysunc, (np.shape(sysunc)[0],))
 sysunc2 = np.reshape(sysunc2, (np.shape(sysunc2)[0],))
@@ -837,4 +876,4 @@ newdfz3.to_csv(fnew + 'Systematic_Uncertainty.csv', index=False)
 
 cali = np.array(cali).T
 newcali = pd.DataFrame(data=cali, columns=calnum)
-newcali.to_csv(fnew+'OsIrWavelengthCal6b.csv', index=False)
+newcali.to_csv(fnew+'TEStestCal.csv', index=False)

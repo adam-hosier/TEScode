@@ -71,10 +71,11 @@ data.learnResidualStdDevCut()
 
 
 
-ds = data[1]
-# ds.plotHist( np.arange(0, 60000, 10), "filtValue", coAddStates=False, states=calstates)   #states=None by default uses all states
-# plt.show()
-# sfasd
+ds = data[10]
+ds.plotHist( np.arange(0, 60000, 10), "filtValue", coAddStates=False, states='B')   #states=None by default uses all states
+
+plt.show()
+sfasd
 ds.calibrationPlanInit("filtValue")
 
 # #12/15 
