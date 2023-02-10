@@ -3,16 +3,17 @@ import numpy as np
 import pylab as plt 
 from mass.off import ChannelGroup, getOffFileListFromOneFile, Channel, labelPeak, labelPeaks
 import os 
-import ebit_util
+#import ebit_util
 import pandas as pd
 
-d = 'C:\\Users\\ahosi\\OneDrive\\Desktop\\tesdata'
+#d = 'C:\\Users\\ahosi\\OneDrive\\Desktop\\tesdata'
+d = 'C:\\data\\tesdata'
 #d = "C:\\data\\tesdata"
 today = "20221221"
 rn = "0002"
-datdest = 'C:\\Users\\ahosi\\OneDrive\\Desktop\\calibratedTES_Dec2022'
-#datdest = 'C:\\data\\processed_NO_RMS'
-#datdest = 'C:\\data\\test_folder'
+#datdest = 'C:\\Users\\ahosi\\OneDrive\\Desktop\\calibratedTES_Dec2022'
+datdest = 'C:\\data\\TES_Spectra_1eVbin'
+
 savedat = True
 
 #12/14 
@@ -20,44 +21,44 @@ savedat = True
 
 #12/15 ##run0001        
 # calstates = ["A", "B", "I", "M", "S", "W", "AF"]
-# #scistates = ["G", "K", "O", "Q", "U" ,"Y", "Z", "AB", "AD", "AH", "AO"]
+# scistates = ["G", "K", "O", "Q", "U" ,"Y", "Z", "AB", "AD", "AH", "AO"]
 # scistates = calstates
 
 
 #12/16
 # calstates = ["A", "B", "F", "J", "N", "R"]    ##run0000
-# #scistates = ["E", "H", "L", "P"]
+# scistates = ["E", "H", "L", "P"]
 # scistates = calstates
 
 # calstates = ["B", "F"]   ##run0001
-# #scistates = ["D"]
+# scistates = ["D"]
 # scistates = calstates
 
 
 #12/19          ## run 0000
 # calstates = ["A", "B", "C", "D", "AC"]
-# #scistates = ["H", "K", "P", "W", "Y", "AA", "R", "T", "U"]
+# scistates = ["H", "K", "P", "W", "Y", "AA", "R", "T", "U"]
 # #cistates = ["H", "K", "W", "Y", "AA", "R", "T", "U"]
 # scistates = calstates
 
 
 #12/20 
 # calstates = ["A", "B", "K"]       ##run0000
-# #scistates = ["H", "J", "L", "P"]
+# scistates = ["H", "J", "L", "P"]
 # scistates = calstates
 
 
 #calstates = ["B","D", "J"]        ##run0001 
 # calstates = ["D", "J"]  
-# #scistates = ["F", "N"]
+# scistates = ["F", "N"]
 # #scistates = ["F"]
 # scistates = calstates 
 
 
 #12/21
 calstates = ["A", "B", "I", "O", "AH"]
-#scistates = ["E", "G", "K", "M", "Q", "R", "T", "V", "X", "Z", "AB", "AD", "AF"]
-scistates = calstates 
+scistates = ["E", "G", "K", "M", "Q", "R", "T", "V", "X", "Z", "AB", "AD", "AF"]
+# scistates = calstates 
 
 
 fltoday = getOffFileListFromOneFile(os.path.join(d, f"{today}", f"{rn}", 
@@ -68,14 +69,12 @@ data = ChannelGroup(fltoday)
 defbinsize = 0.5
 data.setDefaultBinsize(defbinsize)
 data.learnResidualStdDevCut()
+plotbinSize = 1
 
 
+ds = data[1]
+#ds.plotHist( np.arange(0, 60000, 10), "filtValue", coAddStates=False, states='B')   #states=None by default uses all states
 
-ds = data[10]
-ds.plotHist( np.arange(0, 60000, 10), "filtValue", coAddStates=False, states='B')   #states=None by default uses all states
-
-plt.show()
-sfasd
 ds.calibrationPlanInit("filtValue")
 
 # #12/15 
@@ -167,11 +166,13 @@ data.calibrateFollowingPlan("filtValuePCDCTC", calibratedName="energy", overwrit
 
 
 
-external_trigger_filename =  os.path.join(d, f"{today}", f"{rn}", 
-f"{today}_run{rn}_external_trigger.bin")
-external_trigger_rowcount = ebit_util.get_external_triggers(external_trigger_filename, good_only=True)
-for ds in data.values():
-    ebit_util.calc_external_trigger_timing(ds, external_trigger_rowcount)
+# external_trigger_filename =  os.path.join(d, f"{today}", f"{rn}", 
+# f"{today}_run{rn}_external_trigger.bin")
+# external_trigger_rowcount = ebit_util.get_external_triggers(external_trigger_filename, good_only=True)
+# for ds in data.values():
+#     ebit_util.calc_external_trigger_timing(ds, external_trigger_rowcount)
+
+
 
 #firstsci = scistates[0]
 #firstsci = "F"
@@ -201,23 +202,25 @@ for ds in data.values():
 #data.plotHist( np.arange(0,14000,1), "energy", coAddStates=False, states=scistates)
 
 for sta in scistates:
-    histall = np.array(data.hist(np.arange(0, 14000, defbinsize), "energy", states=sta))
+    histall = np.array(data.hist(np.arange(500, 8000, plotbinSize), "energy", states=sta))
+    histall = histall.T
     stadat = pd.DataFrame(data=histall)
     #stadat = stadat.transpose
+    
     stadat.to_csv(datdest + '/' + str(today) + '_' + str(rn) + '_' + str(sta)+'.csv', index=False)
 
-    energy = []
-    time = []
-    t_ext = []
-    for i in data:
-        ds = data[i] 
-        energy.extend(list(ds.getAttr('energy', sta)))
-        time.extend(list(ds.getAttr('unixnano', sta)))
-        t_ext.extend(list(ds.seconds_after_external_trigger[ds.getStatesIndicies(states=sta)[0]]))
-    #plist = np.array([energy, time, t_ext], dtype=object).T
-    plist = np.array([energy, time], dtype=object).T
+    # energy = []
+    # time = []
+    # t_ext = []
+    # for i in data:
+    #     ds = data[i] 
+    #     energy.extend(list(ds.getAttr('energy', sta)))
+    #     time.extend(list(ds.getAttr('unixnano', sta)))
+    #     t_ext.extend(list(ds.seconds_after_external_trigger[ds.getStatesIndicies(states=sta)[0]]))
+    # #plist = np.array([energy, time, t_ext], dtype=object).T
+    # plist = np.array([energy, time], dtype=object).T
 
-    #photlist = pd.DataFrame(data=plist, columns=['energy', 'time', 'external_trigger_time'])
-    photlist = pd.DataFrame(data=plist, columns=['energy', 'time'])
+    # #photlist = pd.DataFrame(data=plist, columns=['energy', 'time', 'external_trigger_time'])
+    # photlist = pd.DataFrame(data=plist, columns=['energy', 'time'])
     
-    photlist.to_csv(datdest + '/' + str(today) + '_' + str(rn) + '_' + str(sta)+str('photonlist')+'.csv', index=False)
+    #photlist.to_csv(datdest + '/' + str(today) + '_' + str(rn) + '_' + str(sta)+str('photonlist')+'.csv', index=False)

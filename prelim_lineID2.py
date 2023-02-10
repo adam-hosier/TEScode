@@ -10,7 +10,10 @@ from scipy.stats import binned_statistic_2d
 from scipy import stats
 from fit_utils import MultiPeakGaussian
 
-floc = str('C:\\Users\\ahosi\\OneDrive\\Desktop\\calibratedTES_Dec2022')
+#floc = str('C:\\Users\\ahosi\\OneDrive\\Desktop\\calibratedTES_Dec2022')
+floc = str('C:\\data\\TES_Spectra_1eVbin')
+ftheoryloc = str('C:\\data\\theory')
+theoryEl = 'Nd2'
 #floc = str('C:\\data\\calibratedTES_Dec2022')
 ddest = str('C:\\data\\Line_ID_Nd')
 date = str('202212')
@@ -19,24 +22,37 @@ runnum = str('0002')
 statelist = ['T', 'V', 'X', 'Z', 'AB', 'AD', 'AF']
 
 coAdd = False
-dfall = dict()
-minenergy = 500
-maxenergy = 5000
-binsize = 1
-numbins = int(np.round((maxenergy-minenergy)/binsize))
+df = dict()
+# minenergy = 500
+# maxenergy = 5000
+# binsize = 1
+# numbins = int(np.round((maxenergy-minenergy)/binsize))
+Cnames = ['energy', 'Intensity', 'Spec Charge', 'con1i', 'con2i', 'Numberi', 'Ji', '-',
+          'con1f', 'con2f', 'Numberf', 'Jf', ':', 'Intensity2', '|']
+tdat = pd.read_csv(r""+ftheoryloc+'\\'+theoryEl+'.csv', names=Cnames)
+
+tenergy = tdat['energy']
+tintensity = tdat['Intensity']
 
 
 for s in statelist: 
     state = str(s)
-    dfall[state] = pd.read_csv(r""+floc+'\\'+date+day+'_'+runnum+'_'+state+'photonlist.csv')
-    df = pd.read_csv(r""+floc+'\\'+date+day+'_'+runnum+'_'+state+'photonlist.csv')
+    df[state] = pd.read_csv(r""+floc+'\\'+date+day+'_'+runnum+'_'+state+'.csv')
+    #df = pd.read_csv(r""+floc+'\\'+date+day+'_'+runnum+'_'+state+'.csv')
 
-    counts, bin_edges = np.histogram(dfall[state]['energy'], bins=numbins, range=(minenergy, maxenergy))
-    dfall[state+str(' counts')]= counts
-    dfall[state+str(' bin_edges')] = bin_edges
+    # counts, bin_edges = np.histogram(df[state]['energy'], bins=numbins, range=(minenergy, maxenergy))
+    # df[state+str(' counts')]= counts
+    # df[state+str(' bin_edges')] = bin_edges
 
-energy = df['energy']
-time = df['time']
+print(df)
+print(np.shape(df))
+print(df.keys())
+
+
+
+
+# energy = df['energy']
+# time = df['time']
 
 # counts, bin_edges = np.histogram(energy, bins=numbins, range=(minenergy, maxenergy))
 
@@ -49,15 +65,19 @@ time = df['time']
 # plt.title(date+day+'_'+runnum)
 # #plt.title(date+day+'_'+runnum+'_'+state)
 # for state in statelist: 
-#     plt.plot(dfall[state+str(' bin_edges')][:-1], dfall[state+str(' counts')], label=state)
+#     plt.plot(df[state+str(' bin_edges')][:-1], df[state+str(' counts')], label=state)
 # plt.legend()
 # #plt.show() 
 # ##################################
+
+
 state = 'T'
-arry = dfall[state+str(' counts')]
-arrx = dfall[state+str(' bin_edges')][:-1]
+# arry = df[state+str(' counts')]
+# arrx = df[state+str(' bin_edges')][:-1]
+arry = df[state]['1']
+arrx = df[state]['0']
 res_dict = dict()
-a = MultiPeakGaussian(arr = arry, xs = arrx, num_peaks=60, num_poly=3)
+a = MultiPeakGaussian(arr = arry, xs = arrx, num_peaks=50, num_poly=3)
 a.fit(return_dict = res_dict, same_sigma=True, function='voigt')
 t1 = res_dict['rez']
 a.plot_fit(normalize_background=True)
