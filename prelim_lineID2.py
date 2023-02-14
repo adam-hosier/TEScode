@@ -44,12 +44,6 @@ for s in statelist:
     # df[state+str(' counts')]= counts
     # df[state+str(' bin_edges')] = bin_edges
 
-print(df)
-print(np.shape(df))
-print(df.keys())
-
-
-
 
 # energy = df['energy']
 # time = df['time']
