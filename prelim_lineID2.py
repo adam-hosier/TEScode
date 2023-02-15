@@ -63,7 +63,30 @@ for s in statelist:
 # plt.legend()
 # #plt.show() 
 # ##################################
+tsig = 1.0333       #standard deviation of theoretical gaussian assuming 4.5 eV FWHM instrument resolution
+def tgauss(x, A, mu, sig):
+    return A*np.exp(-(x-mu)**2 / (2*sig**2))
 
+tplot = np.linspace(500, 8000, num=10000)
+norm = np.max(tintensity)
+tintensity = tintensity / norm
+#tx = np.zeros((np.shape(tplot,)))
+tx = tplot
+ty = np.zeros((np.shape(tplot,)))
+for i in range(np.shape(tenergy)[0]): 
+    ty += tgauss(tplot, tintensity[i], tenergy[i], tsig)
+
+plt.figure()
+plt.plot(tx, ty, label='theory')
+plt.legend()
+plt.xlabel('energy')
+plt.ylabel('arb')
+plt.title('test')
+plt.show()
+plt.close()
+
+
+asdf 
 
 state = 'T'
 # arry = df[state+str(' counts')]

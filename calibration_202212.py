@@ -5,7 +5,7 @@ from mass.off import ChannelGroup, getOffFileListFromOneFile, Channel, labelPeak
 import os 
 #import ebit_util
 import pandas as pd
-
+plt.ion()
 #d = 'C:\\Users\\ahosi\\OneDrive\\Desktop\\tesdata'
 d = 'C:\\data\\tesdata'
 #d = "C:\\data\\tesdata"
@@ -200,14 +200,14 @@ data.calibrateFollowingPlan("filtValuePCDCTC", calibratedName="energy", overwrit
 # data.plotHist(np.arange(0,60000,10),"energy", states=scistates, coAddStates=True)
 # ds.plotHist(np.arange(0,60000,10),"filtValue", states=scistates, coAddStates=True)
 #data.plotHist( np.arange(0,14000,1), "energy", coAddStates=False, states=scistates)
-
+ds.diagnoseCalibration()
 for sta in scistates:
     histall = np.array(data.hist(np.arange(500, 8000, plotbinSize), "energy", states=sta))
     histall = histall.T
     stadat = pd.DataFrame(data=histall)
     #stadat = stadat.transpose
     
-    stadat.to_csv(datdest + '/' + str(today) + '_' + str(rn) + '_' + str(sta)+'.csv', index=False)
+    #stadat.to_csv(datdest + '/' + str(today) + '_' + str(rn) + '_' + str(sta)+'.csv', index=False)
 
     # energy = []
     # time = []
