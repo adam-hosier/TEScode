@@ -48,8 +48,9 @@ EBIT_model_new.add_Film(name='Electroplated Au Absorber', material='Au',area_den
 EBIT_model_new.add_AlFilmWithOxide(name='50mK Filter', Al_thickness_nm=100)
 EBIT_model_new.add_AlFilmWithOxide(name='5K Filter', Al_thickness_nm=112)
 EBIT_model_new.add_AlFilmWithOxide(name='50K Filter', Al_thickness_nm=116)
-EBIT_model_new.add_Film(name='Ni Mesh', material='Ni', area_density_g_per_cm2=ufloat(0.0134,0.0018), fill_fraction=ufloat(0.170,0.010), absorber=False)
+#EBIT_model_new.add_Film(name='Ni Mesh', material='Ni', area_density_g_per_cm2=ufloat(0.0134,0.0018), fill_fraction=ufloat(0.170,0.010), absorber=False)
 EBIT_model_new.add_LEX_HT(name='Luxel Window #1')
+EBIT_model_new.add_LEX_HT(name='Luxel Window #2')
 
 eff1 = EBIT_model_new.get_efficiency(xray_range)
 eff_unc1 = EBIT_model_new.get_efficiency(xray_range, uncertain=True)
@@ -76,10 +77,11 @@ eltitle = theoryEl
 #floc = str('C:\\data\\calibratedTES_Dec2022')
 ddest = str('C:\\data\\Line_ID_Nd')
 date = str('202212')
-day = str('21')
-runnum = str('0002')
+day = str('19')
+runnum = str('0000')
 
 statelist = ['T', 'V', 'X', 'Z', 'AB', 'AD', 'AF']
+statelist = ['H', 'K', 'P', 'W', 'Y', 'AA']
 beamen = [2.04,
     2.04,
     2.04,
@@ -105,8 +107,10 @@ Cnames = ['energy', 'Intensity', 'Spec Charge', 'con1i', 'con2i', 'Numberi', 'Ji
           'con1f', 'con2f', 'Numberf', 'Jf', ':', 'Intensity2', '|']
 tdat = pd.read_csv(r""+ftheoryloc+'\\'+theoryEl+'.csv', names=Cnames)
 
+newcal = pd.read_csv(r"C:\\data\\TES_ReCaltest_Calibration.csv")
 
-
+sDrdat = pd.read_csv(r"C:\\data\\theory\\SDR.csv")
+print(sDrdat)
 #effdat = pd.read_csv(r""+teseffloc+'\\'+'TES_Efficiency_Dec2022.csv')
 #teseff = effdat['Efficiency %']
 teseff = dfeff['Efficiency %']
@@ -144,7 +148,7 @@ for s in statelist:
 # ##################################
 #tsig = 1.0333       #standard deviation of theoretical gaussian assuming 4.5 eV FWHM instrument resolution
 
-state = 'T'
+state = 'H'
 # arry = df[state+str(' counts')]
 # arrx = df[state+str(' bin_edges')][:-1]
 arry = df[state]['1']
@@ -216,7 +220,7 @@ lineSlist = ["-","--","-.",":"]
 
 if iffit is True:
     res_dict = dict()
-    a = MultiPeakGaussian(arr = arry, xs = arrx, num_peaks=40, num_poly=3)
+    a = MultiPeakGaussian(arr = arry, xs = arrx, num_peaks=55, num_poly=3)
     a.fit(return_dict = res_dict, same_sigma=True, function='voigt')
     t1 = res_dict['rez']
     #a.plot_fit(normalize_background=True)
@@ -248,8 +252,12 @@ if iffit is True:
     xfit = res_dict['x0']
     yfit = res_dict['y0']
 lcycler = cycle(lineSlist)
-statelist = ['T', 'V', 'X', 'Z', 'AB', 'AD', 'AF']
+#statelist = ['T', 'V', 'X', 'Z', 'AB', 'AD', 'AF']
+
 #statelist = ['T', 'V', 'X']
+#statelist = ['T', 'V', 'X', 'Z', 'AB', 'AD', 'AF']
+statelist = ['H', 'K', 'P', 'W', 'Y', 'AA']
+#statelist = ['AA']
 plt.figure() 
 #plt.title(str(date)+'_'+str(day)+'_'+str(runnum)+'_'+str(state)+' /// '+str(eltitle)+' '+ str(ebeamen)+' keV , '+str(ebeamcurr)+' mA')
 plt.ylabel('Photon counts')
@@ -260,7 +268,11 @@ norm1 = np.max(df[state]['1'])
 for state1 in statelist:
     ebeamen = beamen[statelist.index(str(state1))]
     ebeamcurr = beamcurr[statelist.index(str(state1))]
-    plt.plot(df[state1]['0'], norm1*df[state1]['1']/np.max(df[state1]['1']), label=str(eltitle)+' '+ str(ebeamen)+' keV , '+str(ebeamcurr)+' mA')
+    # plt.plot(df[state1]['0'], norm1*df[state1]['1']/np.max(df[state1]['1']), label=str(eltitle)+' '+ str(ebeamen)+' keV , '+str(ebeamcurr)+' mA')
+    plt.plot(df[state1]['0'], norm1*df[state1]['1']/np.max(df[state1]['1']), label=state1+' MASS only calibration')
+    # plt.plot(newcal['calibration'], norm1*df[state1]['1']/np.max(df[state1]['1']), label=state1+' + traditional calibration')
+    # plt.plot(sDrdat['energy'], 505.8*sDrdat['intensity']/np.max(sDrdat['intensity']), label='S DR Theory')
+
 
 if iffit is True:
     

@@ -57,6 +57,8 @@ day = str('21')
 runnum = str('0002')
 
 statelist = ['T', 'V', 'X', 'Z', 'AB', 'AD', 'AF']
+statelist = ['A', 'B', 'I', 'O', 'AH']
+
 beamen = [2.04,
     2.04,
     2.04,
@@ -88,6 +90,9 @@ tenergy = tdat['energy']
 tintensity = tdat['Intensity']
 
 
+
+
+
 for s in statelist: 
     state = str(s)
     df[state] = pd.read_csv(r""+floc+'\\'+date+day+'_'+runnum+'_'+state+'.csv')
@@ -98,6 +103,15 @@ for s in statelist:
     # df[state+str(' bin_edges')] = bin_edges
 
 
+
+
+plt.figure()
+plt.plot(df['B']['0'], df['B']['1'])
+plt.xlabel('energy eV')
+plt.ylabel('photon counts per 1 eV bin')
+plt.show()
+plt.close() 
+asdf
 # energy = df['energy']
 # time = df['time']
 

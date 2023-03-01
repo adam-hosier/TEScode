@@ -20,12 +20,15 @@ import glob
 
 ##### Need to update this script entirely for TES/x-ray lines for calibration 
 floc = str('C:\\Users\\ahosi\\OneDrive\\Desktop\\calibratedTES_Dec2022')
+floc2 = str('C:\\data\\TES_Spectra_1eVbin')
 #floc = str('C:\\data\\calibratedTES_Dec2022')
 #ddest = str('C:\\data\\Line_ID_Nd')
 date = str('202212')
-day = str('21')
-runnum = str('0002')
-calstates = ["A", "I", "O", "AH"]
+day = str('19')
+runnum = str('0000')
+#calstates = ["A", "I", "O", "AH"]
+calstates = ["A", "B", "C", "D", "AC"]
+
 #statelist = ['T', 'V', 'X', 'Z', 'AB', 'AD', 'AF']
 statelist = calstates
 coAdd = False
@@ -36,25 +39,49 @@ binsize = 0.75
 numbins = int(np.round((maxenergy-minenergy)/binsize))
 findex = np.linspace(0, numbins, num=numbins+1)
 
-for s in statelist: 
-    state = str(s)
-    dfall[state] = pd.read_csv(r""+floc+'\\'+date+day+'_'+runnum+'_'+state+'photonlist.csv')
-    df = pd.read_csv(r""+floc+'\\'+date+day+'_'+runnum+'_'+state+'photonlist.csv')
 
-    counts, bin_edges = np.histogram(dfall[state]['energy'], bins=numbins, range=(minenergy, maxenergy))
-    dfall[state+str(' counts')]= counts
-    dfall[state+str(' bin_edges')] = bin_edges
+
+# for s in statelist: 
+#     state = str(s)
+#     dfall[state] = pd.read_csv(r""+floc+'\\'+date+day+'_'+runnum+'_'+state+'photonlist.csv')
+#     df = pd.read_csv(r""+floc+'\\'+date+day+'_'+runnum+'_'+state+'photonlist.csv')
+
+#     counts, bin_edges = np.histogram(dfall[state]['energy'], bins=numbins, range=(minenergy, maxenergy))
+#     dfall[state+str(' counts')]= counts
+#     dfall[state+str(' bin_edges')] = bin_edges
 
 # energy = df['energy']
 # time = df['time']
 
-energy = dfall['A']['energy']
+# energy = dfall['A']['energy']
 
 
-counts, bin_edges = np.histogram(energy, bins=numbins, range=(minenergy, maxenergy))
-#dattest = np.array((counts, bin_edges), dtype=object).T 
-dattest = np.vstack((counts, bin_edges[:-1])).T
-df = pd.DataFrame(data=dattest, columns=['counts', 'bin_edges'])
+# counts, bin_edges = np.histogram(energy, bins=numbins, range=(minenergy, maxenergy))
+# #dattest = np.array((counts, bin_edges), dtype=object).T 
+# dattest = np.vstack((counts, bin_edges[:-1])).T
+# df = pd.DataFrame(data=dattest, columns=['counts', 'bin_edges'])
+
+dftesting = pd.read_csv(r""+floc2+'\\'+date+day+'_'+runnum+'_'+calstates[0]+'.csv')
+
+minE = np.min(dftesting['0'])
+maxE = np.max(dftesting['0'])
+dfy = np.zeros((len(dftesting),))
+dfbinned = dict()
+for state in statelist: 
+    state = str(state)
+    df2= pd.read_csv(r""+floc2+'\\'+date+day+'_'+runnum+'_'+state+'.csv')
+    dfy = np.add(dfy, df2['1'])
+
+
+findex = np.linspace(1, len(df2), num=len(df2))
+
+
+
+# plt.figure()
+# plt.plot(findex, dfy) 
+# plt.show()
+# plt.close() 
+
 
 ###################################
 # plt.figure()
@@ -73,7 +100,7 @@ df = pd.DataFrame(data=dattest, columns=['counts', 'bin_edges'])
 # ##################################
 
 
-plot = True
+plot = False
 #pval = 0.025
 pval = 0.16 
 cinterval = 95
@@ -84,7 +111,7 @@ fnew = 'C:\\data\\TES_ReCal'
 
 #df = pd.read_csv(r"C:\\Users\\ahosi\\OneDrive\\Desktop\\FileTrans4\\OsIr_NucChargeRadius_ReducedDataTable.csv")
 
-df = df['counts']
+df = df2
 
 #df.drop(df.columns[df.columns.str.contains('Os', case=False)], axis=1, inplace=True)
 
@@ -119,28 +146,48 @@ pixel = findex
 
 wlen = np.array([
     1486.2950,
-    1739.3940,
-    2620.8460,
+    1739.394,
+    2620.846,
     3311.1956,
-    4504.9201])
+    4504.9201,
+    6391.0264])
 
 
-wlenerr = np.array([0.0100,
-    0.0340,
+wlenerr = np.array([
+    0.0100,
+    0.034,
     0.0390,
     0.0060,
-    0.0094])
+    0.0094, 
+    0.0099])
 
 
-c = np.array([1314,
-    1652,
-    2828, 
-    3750,
-    5346])
+# c = np.array([1314,
+#     1652,
+#     2828, 
+#     3750,
+#     5346])
 
 
+#12/21
+# c = np.array([987,
+#     1240,
+#     2122, 
+#     2814,
+#     4011, 
+#     5904])
 
-r= 10
+
+#12/19
+c = np.array([987,
+    1239,
+    2122, 
+    2813,
+    4010, 
+    5904])
+
+
+r= 5
 rb=1 
 order=1 
 #subtracting last 6 spectra since the CCD plane was moved, requires separate calibration 
@@ -202,8 +249,8 @@ def fitproc(x, y, ye,c):#in single spectra loop
     params = Parameters() 
     params.add('A', value = 1000, min=0)
     params.add('mu', value=c)       #, min=c-1, max=c+1
-    params.add('sig', value=10, min=0)
-    params.add('B', value=1, min=0)
+    params.add('sig', value = 10, min=0)
+    params.add('B', value = 1)
 
     result = mod.fit(y, params=params, x=x, weights = ye, method='leastsq', nan_policy='omit')
     params.update(result.params)
@@ -234,12 +281,14 @@ lim = 50
 
 for l in range(len(c)):
 
-    datacollection = datcoll(df, c[l], r) 
+    datacollection = datcoll(dfy, c[l], r) 
 
     x = datacollection['x']
-    y = datacollection['y'] 
+    # y = datacollection['y'][:,1]
+    # ye = datacollection['ye'][:,1]
+    y = datacollection['y']
     ye = datacollection['ye']
-    
+
     Gaussfit = fitproc(x,y,ye, c[l]) 
     channel[l] = Gaussfit['mu']
     channelerr[l] = Gaussfit['muerr']
@@ -661,12 +710,13 @@ for i in range(num_cols):
     wavel = wlen
     arr = np.array((data, err, wavel, wavelerr)).T
 
-
+    print(arr)
     while np.any(arr=='nan'):
         print('flag')
         arr = nankill2(arr)
 
     arr = arr[arr[:,0].argsort()]
+
     pcal = pixelcal2(arr[:,0], arr[:,1], arr[:,2], arr[:,3])
 
     # plt.figure() 
@@ -810,21 +860,21 @@ for i in range(num_cols):
 
 
         ###spectra of Ne and Bg together 
-        plt.figure(figsize=(22,9)) 
-        plt.title(str('test'))
-        plt.xlabel('Energy (eV)')
-        plt.ylabel('ADU (arb)')
-        plt.plot(newfit['calibration'][:-1], df, c='r', label=df.keys()[i])
-        #plt.plot(newfit['calibration'], dfb[dfb.keys()[i]], c='b', label=dfb.keys()[i]) 
-        plt.xlim((np.min(newfit['calibration']),np.max(newfit['calibration'])) )
-        for l in range(len(wlen)):
-            plt.axvline(x=wlen[l], ls='--', c='tab:brown')
+        # plt.figure(figsize=(22,9)) 
+        # plt.title(str('test'))
+        # plt.xlabel('Energy (eV)')
+        # plt.ylabel('ADU (arb)')
+        # plt.plot(newfit['calibration'][:-1], df, c='r', label=df.keys()[i])
+        # #plt.plot(newfit['calibration'], dfb[dfb.keys()[i]], c='b', label=dfb.keys()[i]) 
+        # plt.xlim((np.min(newfit['calibration']),np.max(newfit['calibration'])) )
+        # for l in range(len(wlen)):
+        #     plt.axvline(x=wlen[l], ls='--', c='tab:brown')
 
-        plt.legend() 
-        plt.minorticks_on()
-        plt.savefig(fnew+'_Spectra_'+ names[i]+ '.pdf')
+        # plt.legend() 
+        # plt.minorticks_on()
+        # plt.savefig(fnew+'_Spectra_'+ names[i]+ '.pdf')
 
-        plt.close()
+        # plt.close()
         
 
     

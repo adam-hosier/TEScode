@@ -5,14 +5,16 @@ from mass.off import ChannelGroup, getOffFileListFromOneFile, Channel, labelPeak
 import os 
 #import ebit_util
 import pandas as pd
-plt.ion()
-#d = 'C:\\Users\\ahosi\\OneDrive\\Desktop\\tesdata'
-d = 'C:\\data\\tesdata'
+#plt.ion()
+d = 'C:\\Users\\ahosi\\OneDrive\\Desktop\\tesdata'
+#d = 'C:\\data\\tesdata'
 #d = "C:\\data\\tesdata"
-today = "20221221"
-rn = "0002"
+today = "20221220"
+rn = "0001"
 #datdest = 'C:\\Users\\ahosi\\OneDrive\\Desktop\\calibratedTES_Dec2022'
 datdest = 'C:\\data\\TES_Spectra_1eVbin'
+
+
 
 savedat = True
 
@@ -21,43 +23,43 @@ savedat = True
 
 #12/15 ##run0001        
 # calstates = ["A", "B", "I", "M", "S", "W", "AF"]
-# scistates = ["G", "K", "O", "Q", "U" ,"Y", "Z", "AB", "AD", "AH", "AO"]
+# #scistates = ["G", "K", "O", "Q", "U" ,"Y", "Z", "AB", "AD", "AH", "AO"]
 # scistates = calstates
 
 
 #12/16
 # calstates = ["A", "B", "F", "J", "N", "R"]    ##run0000
-# scistates = ["E", "H", "L", "P"]
+# #scistates = ["E", "H", "L", "P"]
 # scistates = calstates
 
 # calstates = ["B", "F"]   ##run0001
-# scistates = ["D"]
+# #scistates = ["D"]
 # scistates = calstates
 
 
 #12/19          ## run 0000
 # calstates = ["A", "B", "C", "D", "AC"]
-# scistates = ["H", "K", "P", "W", "Y", "AA", "R", "T", "U"]
+# #scistates = ["H", "K", "P", "W", "Y", "AA", "R", "T", "U"]
 # #cistates = ["H", "K", "W", "Y", "AA", "R", "T", "U"]
 # scistates = calstates
 
 
 #12/20 
 # calstates = ["A", "B", "K"]       ##run0000
-# scistates = ["H", "J", "L", "P"]
+# #scistates = ["H", "J", "L", "P"]
 # scistates = calstates
 
 
-#calstates = ["B","D", "J"]        ##run0001 
-# calstates = ["D", "J"]  
-# scistates = ["F", "N"]
-# #scistates = ["F"]
-# scistates = calstates 
+calstates = ["B","D", "J"]        ##run0001 
+#calstates = ["D", "J"]  
+#scistates = ["F", "N"]
+#scistates = ["F"]
+scistates = calstates 
 
 
 #12/21
-calstates = ["A", "B", "I", "O", "AH"]
-scistates = ["E", "G", "K", "M", "Q", "R", "T", "V", "X", "Z", "AB", "AD", "AF"]
+# calstates = ["A", "B", "I", "O", "AH"]
+# #scistates = ["E", "G", "K", "M", "Q", "R", "T", "V", "X", "Z", "AB", "AD", "AF"]
 # scistates = calstates 
 
 
@@ -74,7 +76,7 @@ plotbinSize = 1
 
 ds = data[1]
 #ds.plotHist( np.arange(0, 60000, 10), "filtValue", coAddStates=False, states='B')   #states=None by default uses all states
-
+#ds.plotHist( np.arange(0, 60000, 10), "filtValue", coAddStates=False, states=calstates)
 ds.calibrationPlanInit("filtValue")
 
 # #12/15 
@@ -126,23 +128,23 @@ ds.calibrationPlanInit("filtValue")
 # ds.calibrationPlanAddPoint(37302, "FeKAlpha", states=calstates)
 
 #run0001
-# ds.calibrationPlanAddPoint(9740, "AlKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(11308, "SiKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(16595, "ClKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(20580, "KKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(27240, "TiKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(37180, "FeKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(9740, "AlKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(11308, "SiKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(16595, "ClKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(20580, "KKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(27240, "TiKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(37180, "FeKAlpha", states=calstates)
 
 
 
 #12/21              
 # ##run0002             #chan 1
-ds.calibrationPlanAddPoint(8190, "AlKAlpha", states=calstates)
-ds.calibrationPlanAddPoint(9550, "SiKAlpha", states=calstates)
-ds.calibrationPlanAddPoint(14090, "ClKAlpha", states=calstates)
-ds.calibrationPlanAddPoint(17550, "KKAlpha", states=calstates)
-ds.calibrationPlanAddPoint(23270, "TiKAlpha", states=calstates)
-ds.calibrationPlanAddPoint(31720, "FeKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(8190, "AlKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(9550, "SiKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(14090, "ClKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(17550, "KKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(23270, "TiKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(31720, "FeKAlpha", states=calstates)
 
 
 
@@ -199,15 +201,18 @@ data.calibrateFollowingPlan("filtValuePCDCTC", calibratedName="energy", overwrit
 
 # data.plotHist(np.arange(0,60000,10),"energy", states=scistates, coAddStates=True)
 # ds.plotHist(np.arange(0,60000,10),"filtValue", states=scistates, coAddStates=True)
-#data.plotHist( np.arange(0,14000,1), "energy", coAddStates=False, states=scistates)
-ds.diagnoseCalibration()
+# data.plotHist( np.arange(0,10000,1), "energy", coAddStates=False, states=calstates)
+# plt.show()
+# ds.diagnoseCalibration()
+
+
 for sta in scistates:
-    histall = np.array(data.hist(np.arange(500, 8000, plotbinSize), "energy", states=sta))
+    histall = np.array(data.hist(np.arange(200, 9000, plotbinSize), "energy", states=sta))
     histall = histall.T
     stadat = pd.DataFrame(data=histall)
     #stadat = stadat.transpose
     
-    #stadat.to_csv(datdest + '/' + str(today) + '_' + str(rn) + '_' + str(sta)+'.csv', index=False)
+    stadat.to_csv(datdest + '/' + str(today) + '_' + str(rn) + '_' + str(sta)+'.csv', index=False)
 
     # energy = []
     # time = []
@@ -223,4 +228,4 @@ for sta in scistates:
     # #photlist = pd.DataFrame(data=plist, columns=['energy', 'time', 'external_trigger_time'])
     # photlist = pd.DataFrame(data=plist, columns=['energy', 'time'])
     
-    #photlist.to_csv(datdest + '/' + str(today) + '_' + str(rn) + '_' + str(sta)+str('photonlist')+'.csv', index=False)
+    # photlist.to_csv(datdest + '/' + str(today) + '_' + str(rn) + '_' + str(sta)+str('photonlist')+'.csv', index=False)
