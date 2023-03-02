@@ -5,18 +5,18 @@ from mass.off import ChannelGroup, getOffFileListFromOneFile, Channel, labelPeak
 import os 
 #import ebit_util
 import pandas as pd
-#plt.ion()
+plt.ion()
 d = 'C:\\Users\\ahosi\\OneDrive\\Desktop\\tesdata'
 #d = 'C:\\data\\tesdata'
 #d = "C:\\data\\tesdata"
-today = "20221220"
-rn = "0001"
+today = "20221221"
+rn = "0002"
 #datdest = 'C:\\Users\\ahosi\\OneDrive\\Desktop\\calibratedTES_Dec2022'
 datdest = 'C:\\data\\TES_Spectra_1eVbin'
 
 
 
-savedat = True
+savedat = False
 
 #12/14 
 #calstates = ["B", "C"]
@@ -50,17 +50,17 @@ savedat = True
 # scistates = calstates
 
 
-calstates = ["B","D", "J"]        ##run0001 
-#calstates = ["D", "J"]  
-#scistates = ["F", "N"]
-#scistates = ["F"]
-scistates = calstates 
+# calstates = ["B","D", "J"]        ##run0001 
+# #calstates = ["D", "J"]  
+# #scistates = ["F", "N"]
+# #scistates = ["F"]
+# scistates = calstates 
 
 
 #12/21
-# calstates = ["A", "B", "I", "O", "AH"]
-# #scistates = ["E", "G", "K", "M", "Q", "R", "T", "V", "X", "Z", "AB", "AD", "AF"]
-# scistates = calstates 
+calstates = ["A", "B", "I", "O", "AH"]
+scistates = ["E", "G", "K", "M", "Q", "R", "T", "V", "X", "Z", "AB", "AD", "AF"]
+#scistates = calstates 
 
 
 fltoday = getOffFileListFromOneFile(os.path.join(d, f"{today}", f"{rn}", 
@@ -98,6 +98,7 @@ ds.calibrationPlanInit("filtValue")
 # ds.calibrationPlanAddPoint(37443, "FeKAlpha", states=calstates)
 
 
+
 # #12/16  
 # #run0001          ##chan1 // state F & B 
 # ds.calibrationPlanAddPoint(9790, "AlKAlpha", states=calstates)
@@ -128,23 +129,23 @@ ds.calibrationPlanInit("filtValue")
 # ds.calibrationPlanAddPoint(37302, "FeKAlpha", states=calstates)
 
 #run0001
-ds.calibrationPlanAddPoint(9740, "AlKAlpha", states=calstates)
-ds.calibrationPlanAddPoint(11308, "SiKAlpha", states=calstates)
-ds.calibrationPlanAddPoint(16595, "ClKAlpha", states=calstates)
-ds.calibrationPlanAddPoint(20580, "KKAlpha", states=calstates)
-ds.calibrationPlanAddPoint(27240, "TiKAlpha", states=calstates)
-ds.calibrationPlanAddPoint(37180, "FeKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(9740, "AlKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(11308, "SiKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(16595, "ClKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(20580, "KKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(27240, "TiKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(37180, "FeKAlpha", states=calstates)
 
 
 
 #12/21              
 # ##run0002             #chan 1
-# ds.calibrationPlanAddPoint(8190, "AlKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(9550, "SiKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(14090, "ClKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(17550, "KKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(23270, "TiKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(31720, "FeKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(8190, "AlKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(9550, "SiKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(14090, "ClKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(17550, "KKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(23270, "TiKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(31720, "FeKAlpha", states=calstates)
 
 
 
@@ -165,6 +166,21 @@ data.learnTimeDriftCorrection(indicatorName="relTimeSec", uncorrectedName="filtV
 #data.learnTimeDriftCorrection(indicatorName="relTimeSec", uncorrectedName="filtValuePCDC", correctedName = "filtValuePCDCTC", states=calstates, _rethrow=True, cutRecipeName="cutForLearnDC",) 
 
 data.calibrateFollowingPlan("filtValuePCDCTC", calibratedName="energy", overwriteRecipe=True)      
+
+# ds.diagnoseCalibration() 
+
+# llist = ['AlKAlpha', 'SiKAlpha', 'ClKAlpha', 'KKAlpha', 'TiKAlpha', 'FeKAlpha']
+
+# for l in llist: 
+#     temp = data.linefit(str(l))
+
+#     print(str(l))
+
+#     for k in temp.params.keys():
+#         print(str(k),' :',temp.params[str(k)].value ,' +/- ' ,temp.params[str(k)].stderr)
+
+
+    
 
 
 

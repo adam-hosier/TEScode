@@ -77,11 +77,12 @@ eltitle = theoryEl
 #floc = str('C:\\data\\calibratedTES_Dec2022')
 ddest = str('C:\\data\\Line_ID_Nd')
 date = str('202212')
-day = str('19')
-runnum = str('0000')
+day = str('21')
+runnum = str('0002')
 
 statelist = ['T', 'V', 'X', 'Z', 'AB', 'AD', 'AF']
-statelist = ['H', 'K', 'P', 'W', 'Y', 'AA']
+statelist = ["E", "G", "K", "M", "Q", "R", "T", "V", "X", "Z", "AB", "AD", "AF"]
+#statelist = ['H', 'K', 'P', 'W', 'Y', 'AA']
 beamen = [2.04,
     2.04,
     2.04,
@@ -110,7 +111,7 @@ tdat = pd.read_csv(r""+ftheoryloc+'\\'+theoryEl+'.csv', names=Cnames)
 newcal = pd.read_csv(r"C:\\data\\TES_ReCaltest_Calibration.csv")
 
 sDrdat = pd.read_csv(r"C:\\data\\theory\\SDR.csv")
-print(sDrdat)
+
 #effdat = pd.read_csv(r""+teseffloc+'\\'+'TES_Efficiency_Dec2022.csv')
 #teseff = effdat['Efficiency %']
 teseff = dfeff['Efficiency %']
@@ -148,7 +149,7 @@ for s in statelist:
 # ##################################
 #tsig = 1.0333       #standard deviation of theoretical gaussian assuming 4.5 eV FWHM instrument resolution
 
-state = 'H'
+state = 'T'
 # arry = df[state+str(' counts')]
 # arrx = df[state+str(' bin_edges')][:-1]
 arry = df[state]['1']
@@ -255,8 +256,9 @@ lcycler = cycle(lineSlist)
 #statelist = ['T', 'V', 'X', 'Z', 'AB', 'AD', 'AF']
 
 #statelist = ['T', 'V', 'X']
-#statelist = ['T', 'V', 'X', 'Z', 'AB', 'AD', 'AF']
-statelist = ['H', 'K', 'P', 'W', 'Y', 'AA']
+statelist = ['T', 'V', 'X', 'Z', 'AB', 'AD', 'AF']
+statelist = ["E", "G", "K", "M", "Q", "R", "T", "V", "X", "Z", "AB", "AD", "AF"]
+#statelist = ['H', 'K', 'P', 'W', 'Y', 'AA']
 #statelist = ['AA']
 plt.figure() 
 #plt.title(str(date)+'_'+str(day)+'_'+str(runnum)+'_'+str(state)+' /// '+str(eltitle)+' '+ str(ebeamen)+' keV , '+str(ebeamcurr)+' mA')
@@ -266,10 +268,12 @@ plt.minorticks_on()
 #plt.plot(arrx, arry, c='b', label='Experimental data')
 norm1 = np.max(df[state]['1'])
 for state1 in statelist:
-    ebeamen = beamen[statelist.index(str(state1))]
-    ebeamcurr = beamcurr[statelist.index(str(state1))]
-    # plt.plot(df[state1]['0'], norm1*df[state1]['1']/np.max(df[state1]['1']), label=str(eltitle)+' '+ str(ebeamen)+' keV , '+str(ebeamcurr)+' mA')
-    plt.plot(df[state1]['0'], norm1*df[state1]['1']/np.max(df[state1]['1']), label=state1+' MASS only calibration')
+    # ebeamen = beamen[statelist.index(str(state1))]
+    # ebeamcurr = beamcurr[statelist.index(str(state1))]
+    #plt.plot(df[state1]['0'], norm1*df[state1]['1']/np.max(df[state1]['1']), label=str(eltitle)+' '+ str(ebeamen)+' keV , '+str(ebeamcurr)+' mA')
+    plt.plot(df[state1]['0'], norm1*df[state1]['1']/np.max(df[state1]['1']), label=state1)
+    
+    #plt.plot(df[state1]['0'], norm1*df[state1]['1']/np.max(df[state1]['1']), label=state1+' MASS only calibration')
     # plt.plot(newcal['calibration'], norm1*df[state1]['1']/np.max(df[state1]['1']), label=state1+' + traditional calibration')
     # plt.plot(sDrdat['energy'], 505.8*sDrdat['intensity']/np.max(sDrdat['intensity']), label='S DR Theory')
 
@@ -285,7 +289,8 @@ if iffit is True:
 # plt.plot(tx, ty*np.max(arry), c='r', label='Theory (all charge states)')
 # for k in cstates:
 #     plt.plot(dfspec['Tx'], dfspec[str(k)+' calcint'],c=np.random.rand(3,),ls=next(lcycler), label='Spectroscopic charge: '+str(k))
-plt.xlim((np.min(tdat3[:,0]), 2500))
+plt.xlim((350, 1000))
+plt.ylim((0,500))
 plt.legend() 
 plt.show() 
 plt.close() 
