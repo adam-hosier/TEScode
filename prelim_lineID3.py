@@ -70,6 +70,7 @@ def find_nearest(array, value):
 
 #floc = str('C:\\Users\\ahosi\\OneDrive\\Desktop\\calibratedTES_Dec2022')
 floc = str('C:\\data\\TES_Spectra_1eVbin')
+floc = str('C:\\Users\\ahosi\\OneDrive\\Desktop\\TES_Calibration_Lines\\20221221')
 ftheoryloc = str('C:\\data\\theory')
 teseffloc = str('C:\\data')
 theoryEl = 'Nd'
@@ -77,12 +78,12 @@ eltitle = theoryEl
 #floc = str('C:\\data\\calibratedTES_Dec2022')
 ddest = str('C:\\data\\Line_ID_Nd')
 date = str('202212')
-day = str('21')
-runnum = str('0002')
+day = str('19')
+runnum = str('0000')
 
-statelist = ['T', 'V', 'X', 'Z', 'AB', 'AD', 'AF']
-statelist = ["E", "G", "K", "M", "Q", "R", "T", "V", "X", "Z", "AB", "AD", "AF"]
-#statelist = ['H', 'K', 'P', 'W', 'Y', 'AA']
+#statelist = ['T', 'V', 'X', 'Z', 'AB', 'AD', 'AF']
+#statelist = ["E", "G", "K", "M", "Q", "R", "T", "V", "X", "Z", "AB", "AD", "AF"]
+statelist = ['H', 'K', 'P', 'W', 'Y', 'AA']
 beamen = [2.04,
     2.04,
     2.04,
@@ -110,8 +111,8 @@ tdat = pd.read_csv(r""+ftheoryloc+'\\'+theoryEl+'.csv', names=Cnames)
 
 newcal = pd.read_csv(r"C:\\data\\TES_ReCaltest_Calibration.csv")
 
-sDrdat = pd.read_csv(r"C:\\data\\theory\\SDR.csv")
-
+#sDrdat = pd.read_csv(r"C:\\data\\theory\\SDR.csv")
+sDrdat = pd.read_csv(r"C:\\Users\\ahosi\Downloads\\conv_1.00000000E-15.csv")
 #effdat = pd.read_csv(r""+teseffloc+'\\'+'TES_Efficiency_Dec2022.csv')
 #teseff = effdat['Efficiency %']
 teseff = dfeff['Efficiency %']
@@ -121,7 +122,7 @@ tintensity = tdat['Intensity']
 
 for s in statelist: 
     state = str(s)
-    df[state] = pd.read_csv(r""+floc+'\\'+date+day+'_'+runnum+'_'+state+'.csv')
+    df[state] = pd.read_csv(r""+floc+'\\'+date+day+'_'+runnum+'_'+state+'_sum'+'.csv')
     #df = pd.read_csv(r""+floc+'\\'+date+day+'_'+runnum+'_'+state+'.csv')
 
     # counts, bin_edges = np.histogram(df[state]['energy'], bins=numbins, range=(minenergy, maxenergy))
@@ -149,12 +150,15 @@ for s in statelist:
 # ##################################
 #tsig = 1.0333       #standard deviation of theoretical gaussian assuming 4.5 eV FWHM instrument resolution
 
-state = 'T'
+state = 'H'
 # arry = df[state+str(' counts')]
 # arrx = df[state+str(' bin_edges')][:-1]
-arry = df[state]['1']
-arrx = df[state]['0']
-    
+
+# arry = df[state]['1']
+# arrx = df[state]['0']
+
+arry = df[state]['Counts']
+arrx = df[state]['Energy [eV]']   
     
     
 tsig = 1.877302      #stand dev of theo gauss assuming ~6.7 eV FWHM instrument resolution 
@@ -256,9 +260,9 @@ lcycler = cycle(lineSlist)
 #statelist = ['T', 'V', 'X', 'Z', 'AB', 'AD', 'AF']
 
 #statelist = ['T', 'V', 'X']
-statelist = ['T', 'V', 'X', 'Z', 'AB', 'AD', 'AF']
-statelist = ["E", "G", "K", "M", "Q", "R", "T", "V", "X", "Z", "AB", "AD", "AF"]
-#statelist = ['H', 'K', 'P', 'W', 'Y', 'AA']
+#statelist = ['T', 'V', 'X', 'Z', 'AB', 'AD', 'AF']
+#statelist = ["E", "G", "K", "M", "Q", "R", "T", "V", "X", "Z", "AB", "AD", "AF"]
+statelist = ['AA']
 #statelist = ['AA']
 plt.figure() 
 #plt.title(str(date)+'_'+str(day)+'_'+str(runnum)+'_'+str(state)+' /// '+str(eltitle)+' '+ str(ebeamen)+' keV , '+str(ebeamcurr)+' mA')
@@ -266,16 +270,16 @@ plt.ylabel('Photon counts')
 plt.xlabel('Energy (eV)')
 plt.minorticks_on() 
 #plt.plot(arrx, arry, c='b', label='Experimental data')
-norm1 = np.max(df[state]['1'])
+norm1 = np.max(df[state]['Counts'])
 for state1 in statelist:
     # ebeamen = beamen[statelist.index(str(state1))]
     # ebeamcurr = beamcurr[statelist.index(str(state1))]
     #plt.plot(df[state1]['0'], norm1*df[state1]['1']/np.max(df[state1]['1']), label=str(eltitle)+' '+ str(ebeamen)+' keV , '+str(ebeamcurr)+' mA')
-    plt.plot(df[state1]['0'], norm1*df[state1]['1']/np.max(df[state1]['1']), label=state1)
+    plt.plot(df[state1]['Energy [eV]'], norm1*df[state1]['Counts']/np.max(df[state1]['Counts']), label=state1)
     
     #plt.plot(df[state1]['0'], norm1*df[state1]['1']/np.max(df[state1]['1']), label=state1+' MASS only calibration')
     # plt.plot(newcal['calibration'], norm1*df[state1]['1']/np.max(df[state1]['1']), label=state1+' + traditional calibration')
-    # plt.plot(sDrdat['energy'], 505.8*sDrdat['intensity']/np.max(sDrdat['intensity']), label='S DR Theory')
+    plt.plot(sDrdat['energy'], 505.8*sDrdat['intensity']/np.max(sDrdat['intensity']), label='S DR Theory')
 
 
 if iffit is True:
@@ -289,8 +293,8 @@ if iffit is True:
 # plt.plot(tx, ty*np.max(arry), c='r', label='Theory (all charge states)')
 # for k in cstates:
 #     plt.plot(dfspec['Tx'], dfspec[str(k)+' calcint'],c=np.random.rand(3,),ls=next(lcycler), label='Spectroscopic charge: '+str(k))
-plt.xlim((350, 1000))
-plt.ylim((0,500))
+# plt.xlim((350, 1000))
+# plt.ylim((0,500))
 plt.legend() 
-plt.show() 
-plt.close() 
+#plt.show() 
+#plt.close() 
