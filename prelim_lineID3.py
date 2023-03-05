@@ -71,6 +71,7 @@ def find_nearest(array, value):
 #floc = str('C:\\Users\\ahosi\\OneDrive\\Desktop\\calibratedTES_Dec2022')
 floc = str('C:\\data\\TES_Spectra_1eVbin')
 floc = str('C:\\Users\\ahosi\\OneDrive\\Desktop\\TES_Calibration_Lines\\20221221')
+floc2 = str('C:\\Users\\ahosi\\OneDrive\\Desktop\\TES_Calibration_Lines\\SDr_Test\\')
 ftheoryloc = str('C:\\data\\theory')
 teseffloc = str('C:\\data')
 theoryEl = 'Nd'
@@ -113,6 +114,8 @@ newcal = pd.read_csv(r"C:\\data\\TES_ReCaltest_Calibration.csv")
 
 #sDrdat = pd.read_csv(r"C:\\data\\theory\\SDR.csv")
 sDrdat = pd.read_csv(r"C:\\Users\\ahosi\Downloads\\conv_1.00000000E-15.csv")
+newdat2 = pd.read_csv(r""+floc2+'AlSiClK_only.csv')
+newdat3 = pd.read_csv(r""+floc2+'AlSiTiFe_only.csv')
 #effdat = pd.read_csv(r""+teseffloc+'\\'+'TES_Efficiency_Dec2022.csv')
 #teseff = effdat['Efficiency %']
 teseff = dfeff['Efficiency %']
@@ -263,6 +266,9 @@ lcycler = cycle(lineSlist)
 #statelist = ['T', 'V', 'X', 'Z', 'AB', 'AD', 'AF']
 #statelist = ["E", "G", "K", "M", "Q", "R", "T", "V", "X", "Z", "AB", "AD", "AF"]
 statelist = ['AA']
+
+
+asdf
 #statelist = ['AA']
 plt.figure() 
 #plt.title(str(date)+'_'+str(day)+'_'+str(runnum)+'_'+str(state)+' /// '+str(eltitle)+' '+ str(ebeamen)+' keV , '+str(ebeamcurr)+' mA')
@@ -271,6 +277,7 @@ plt.xlabel('Energy (eV)')
 plt.minorticks_on() 
 #plt.plot(arrx, arry, c='b', label='Experimental data')
 norm1 = np.max(df[state]['Counts'])
+
 for state1 in statelist:
     # ebeamen = beamen[statelist.index(str(state1))]
     # ebeamcurr = beamcurr[statelist.index(str(state1))]

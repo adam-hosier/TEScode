@@ -38,7 +38,9 @@ savedat = False
 
 
 #12/19          ## run 0000
-calstates = ["A", "B", "C", "D", "AC"]
+#calstates = ["A", "B", "C", "D", "AC"]
+calstates = ["AC"]
+#calstates = ["A"]
 scistates = ["H", "K", "P", "W", "Y", "AA", "R", "T", "U"]
 #cistates = ["H", "K", "W", "Y", "AA", "R", "T", "U"]
 # scistates = calstates
@@ -131,12 +133,12 @@ ds.calibrationPlanInit("filtValue")
 ds.calibrationPlanAddPoint(8970, "AlKAlpha", states=calstates)
 ds.calibrationPlanAddPoint(10460, "SiKAlpha", states=calstates)
 ds.calibrationPlanAddPoint(15377, "ClKAlpha", states=calstates)
-ds.calibrationPlanAddPoint(16436, "ClKBeta", states=calstates)
+#ds.calibrationPlanAddPoint(16436, "ClKBeta", states=calstates)
 ds.calibrationPlanAddPoint(19030, "KKAlpha", states=calstates)
-ds.calibrationPlanAddPoint(25190, "TiKAlpha", states=calstates)
-ds.calibrationPlanAddPoint(27375, "TiKBeta", states=calstates)
-ds.calibrationPlanAddPoint(34610, "FeKAlpha", states=calstates)
-ds.calibrationPlanAddPoint(37719, "FeKBeta", states=calstates)
+# ds.calibrationPlanAddPoint(25190, "TiKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(27375, "TiKBeta", states=calstates)
+# ds.calibrationPlanAddPoint(34610, "FeKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(37719, "FeKBeta", states=calstates)
 
 #12/20
 ##run0000       chan 1
@@ -175,14 +177,14 @@ ds.calibrationPlanAddPoint(37719, "FeKBeta", states=calstates)
 data.alignToReferenceChannel(referenceChannel=ds, binEdges=np.arange(0,60000,10), attr="filtValue", states=calstates)
 #data.alignToReferenceChannel(referenceChannel=ds, binEdges=np.arange(0,60000,10), attr="filtValue", states=calstates)
 # Phase, drift, and time drift correct on pulses in the rough 400-2500 eV range
-#data.cutAdd("Cut1", lambda energyRough: np.logical_and(energyRough > 400, energyRough < 3000), _rethrow=True)
+#data.cutAdd("Cut1", lambda energyRough: np.logical_and(energyRough > 400, energyRough < 3000))
 data.learnPhaseCorrection(uncorrectedName="filtValue", correctedName = "filtValuePC", states=calstates)
 
 data.learnDriftCorrection(indicatorName="pretriggerMean", uncorrectedName="filtValuePC", correctedName = "filtValuePCDC", states=calstates)
 #data.learnDriftCorrection(indicatorName="pretriggerMean", uncorrectedName="filtValue", correctedName = "filtValueDC", states=calstates, cutRecipeName="cutForLearnDC",)
 #data.learnDriftCorrection(uncorrectedName="filtValue", correctedName = "filtValueDC", states=calstates, cutRecipeName="cutForLearnDC",)
 
-data.learnTimeDriftCorrection(indicatorName="relTimeSec", uncorrectedName="filtValuePCDC", correctedName = "filtValuePCDCTC", states=calstates, _rethrow=True) 
+data.learnTimeDriftCorrection(indicatorName="relTimeSec", uncorrectedName="filtValuePCDC", correctedName = "filtValuePCDCTC", states=calstates) 
 #data.learnTimeDriftCorrection(indicatorName="relTimeSec", uncorrectedName="filtValuePCDC", correctedName = "filtValuePCDCTC", states=calstates, _rethrow=True, cutRecipeName="cutForLearnDC",) 
 
 data.calibrateFollowingPlan("filtValuePCDCTC", calibratedName="energy", overwriteRecipe=True)      
@@ -190,18 +192,18 @@ data.calibrateFollowingPlan("filtValuePCDCTC", calibratedName="energy", overwrit
 #ds.diagnoseCalibration() 
 
 
-ddest = "C:\\Users\\ahosi\OneDrive\Desktop\\TES_Calibration_Lines\\CalibrationXY"
+# ddest = "C:\\Users\\ahosi\OneDrive\Desktop\\TES_Calibration_Lines\\CalibrationXY"
 
-llist = ['AlKAlpha', 'SiKAlpha', 'ClKAlpha', 'KKAlpha', 'TiKAlpha', 'FeKAlpha']
-for li in llist:
-    temp = data.linefit(str(li), states=calstates)
+# llist = ['AlKAlpha', 'SiKAlpha', 'ClKAlpha', 'KKAlpha', 'TiKAlpha', 'FeKAlpha']
+# for li in llist:
+#     temp = data.linefit(str(li), states=calstates)
 
-    xdat = temp.userkws['bin_centers']
-    ydat = temp.data 
-    aldat = np.array((xdat, ydat))
-    aldat = aldat.T 
-    ndat = pd.DataFrame(data=aldat, columns=['Energy [eV]', 'Counts'])
-    ndat.to_csv(ddest + '/' + str(today) + '_' + str(rn) + '_' + str(li)+'_'+str('sum')+'.csv', index=False)
+#     xdat = temp.userkws['bin_centers']
+#     ydat = temp.data 
+#     aldat = np.array((xdat, ydat))
+#     aldat = aldat.T 
+#     ndat = pd.DataFrame(data=aldat, columns=['Energy [eV]', 'Counts'])
+#     ndat.to_csv(ddest + '/' + str(today) + '_' + str(rn) + '_' + str(li)+'_'+str('sum')+'.csv', index=False)
 
 plt.close() 
 ddest = 'C:\\Users\\ahosi\\OneDrive\\Desktop\\TES_Calibration_Lines\\20221221'
@@ -211,15 +213,24 @@ allstates = calstates + scistates
 newhist = data.plotHist( np.arange(200,10000,1), "energy", coAddStates=False, states=allstates)
 
 linep = plt.gca() 
+conames = []
 
 for k in range(0, len(linep.lines)):
     #temp = data.linefit(str(li), states=calstates)
     temp = linep.lines[k]
-    aldat = np.array(temp.get_xydata())
-    #aldat = aldat.T 
-    ndat = pd.DataFrame(data=aldat, columns=['Energy [eV]', 'Counts'])
-    ndat.to_csv(ddest + '/' + str(today) + '_' + str(rn) + '_' + str(temp.get_label())+'_'+str('testDR')+'.csv', index=False)
+    if k==0: 
+        aldat = np.array(temp.get_xydata())
+    else: 
+        aldat = np.hstack((aldat, temp.get_xydata()))
 
+    conames.append(str(today)+'_'+str(rn)+'_'+str(temp.get_label())+'_Energy')
+    conames.append(str(today)+'_'+str(rn)+'_'+str(temp.get_label())+'_Counts')
+    #aldat = aldat.T 
+    # ndat = pd.DataFrame(data=aldat, columns=['Energy [eV]', 'Counts'])
+    # ndat.to_csv(ddest + '/' + str(today) + '_' + str(rn) + '_' + str(temp.get_label())+'_'+str('testDR')+'.csv', index=False)
+
+ndat = pd.DataFrame(data=aldat, columns=conames)
+ndat.to_csv(ddest + '/' + str('AlSiClKTiFe_only')+'.csv', index=False)
 
 # for l in llist: 
 #     temp = data.linefit(str(l), states=calstates)
