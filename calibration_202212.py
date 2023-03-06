@@ -9,11 +9,11 @@ import pandas as pd
 d = 'C:\\Users\\ahosi\\OneDrive\\Desktop\\tesdata'
 #d = 'C:\\data\\tesdata'
 #d = "C:\\data\\tesdata"
-today = "20221219"
-rn = "0000"
+today = "20221221"
+rn = "0002"
 #datdest = 'C:\\Users\\ahosi\\OneDrive\\Desktop\\calibratedTES_Dec2022'
 datdest = 'C:\\data\\TES_Spectra_1eVbin'
-
+datdest = 'C:\\data\\TES_newcal'
 
 
 savedat = False
@@ -38,12 +38,12 @@ savedat = False
 
 
 #12/19          ## run 0000
-#calstates = ["A", "B", "C", "D", "AC"]
-calstates = ["AC"]
-#calstates = ["A"]
-scistates = ["H", "K", "P", "W", "Y", "AA", "R", "T", "U"]
-#cistates = ["H", "K", "W", "Y", "AA", "R", "T", "U"]
-# scistates = calstates
+# calstates = ["A", "B", "C", "D", "AC"]
+# #calstates = ["AC"]
+# #calstates = ["A"]
+# scistates = ["H", "K", "P", "W", "Y", "AA", "R", "T", "U"]
+# #cistates = ["H", "K", "W", "Y", "AA", "R", "T", "U"]
+# # scistates = calstates
 
 
 #12/20 
@@ -60,9 +60,9 @@ scistates = ["H", "K", "P", "W", "Y", "AA", "R", "T", "U"]
 
 
 #12/21
-# calstates = ["A", "I", "O", "AH"]
-# #calstates = ["O"]
-# scistates = ["E", "G", "K", "M", "Q", "R", "T", "V", "X", "Z", "AB", "AD", "AF"]
+calstates = ["A", "I", "O", "AH"]
+#calstates = ["AH"]
+scistates = ["E", "G", "K", "M", "Q", "R", "T", "V", "X", "Z", "AB", "AD", "AF"]
 # #scistates = calstates 
 
 
@@ -130,15 +130,15 @@ ds.calibrationPlanInit("filtValue")
 
 
 # #12/19        ##run0000
-ds.calibrationPlanAddPoint(8970, "AlKAlpha", states=calstates)
-ds.calibrationPlanAddPoint(10460, "SiKAlpha", states=calstates)
-ds.calibrationPlanAddPoint(15377, "ClKAlpha", states=calstates)
-#ds.calibrationPlanAddPoint(16436, "ClKBeta", states=calstates)
-ds.calibrationPlanAddPoint(19030, "KKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(25190, "TiKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(27375, "TiKBeta", states=calstates)
-# ds.calibrationPlanAddPoint(34610, "FeKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(37719, "FeKBeta", states=calstates)
+# ds.calibrationPlanAddPoint(8970, "AlKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(10460, "SiKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(15377, "ClKAlpha", states=calstates)
+# #ds.calibrationPlanAddPoint(16436, "ClKBeta", states=calstates)
+# ds.calibrationPlanAddPoint(19030, "KKAlpha", states=calstates)
+# # ds.calibrationPlanAddPoint(25190, "TiKAlpha", states=calstates)
+# # ds.calibrationPlanAddPoint(27375, "TiKBeta", states=calstates)
+# # ds.calibrationPlanAddPoint(34610, "FeKAlpha", states=calstates)
+# # ds.calibrationPlanAddPoint(37719, "FeKBeta", states=calstates)
 
 #12/20
 ##run0000       chan 1
@@ -161,11 +161,11 @@ ds.calibrationPlanAddPoint(19030, "KKAlpha", states=calstates)
 
 #12/21              
 # ##run0002             #chan 1
-# ds.calibrationPlanAddPoint(8190, "AlKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(9550, "SiKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(14070, "ClKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(15080, "ClKBeta", states=calstates)
-# ds.calibrationPlanAddPoint(17570, "KKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(8190, "AlKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(9550, "SiKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(14070, "ClKAlpha", states=calstates)
+#ds.calibrationPlanAddPoint(15080, "ClKBeta", states=calstates)
+ds.calibrationPlanAddPoint(17570, "KKAlpha", states=calstates)
 # ds.calibrationPlanAddPoint(23279, "TiKAlpha", states=calstates)
 # ds.calibrationPlanAddPoint(31720, "FeKAlpha", states=calstates)
 
@@ -206,9 +206,10 @@ data.calibrateFollowingPlan("filtValuePCDCTC", calibratedName="energy", overwrit
 #     ndat.to_csv(ddest + '/' + str(today) + '_' + str(rn) + '_' + str(li)+'_'+str('sum')+'.csv', index=False)
 
 plt.close() 
-ddest = 'C:\\Users\\ahosi\\OneDrive\\Desktop\\TES_Calibration_Lines\\20221221'
+#ddest = 'C:\\Users\\ahosi\\OneDrive\\Desktop\\TES_Calibration_Lines\\20221221'
 
-ddest = 'C:\\Users\\ahosi\\OneDrive\\Desktop\\TES_Calibration_Lines\\SDr_Test'
+#ddest = 'C:\\Users\\ahosi\\OneDrive\\Desktop\\TES_Calibration_Lines\\SDr_Test'
+ddest = datdest
 allstates = calstates + scistates
 newhist = data.plotHist( np.arange(200,10000,1), "energy", coAddStates=False, states=allstates)
 
@@ -230,7 +231,11 @@ for k in range(0, len(linep.lines)):
     # ndat.to_csv(ddest + '/' + str(today) + '_' + str(rn) + '_' + str(temp.get_label())+'_'+str('testDR')+'.csv', index=False)
 
 ndat = pd.DataFrame(data=aldat, columns=conames)
-ndat.to_csv(ddest + '/' + str('AlSiClKTiFe_only')+'.csv', index=False)
+#ndat.to_csv(ddest + '/' + str('AlSiClKTiFe_only')+'.csv', index=False)
+
+newname = ''.join(calstates)
+ndat.to_csv(ddest + '/' +str(today)+'_'+str(rn)+'_'+newname+ str('_cal')+'.csv', index=False)
+
 
 # for l in llist: 
 #     temp = data.linefit(str(l), states=calstates)
@@ -239,10 +244,6 @@ ndat.to_csv(ddest + '/' + str('AlSiClKTiFe_only')+'.csv', index=False)
 
 #     for k in temp.params.keys():
 #         print(str(k),' :',temp.params[str(k)].value ,' +/- ' ,temp.params[str(k)].stderr)
-
-
-    
-
 
 
 # external_trigger_filename =  os.path.join(d, f"{today}", f"{rn}", 
