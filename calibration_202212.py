@@ -14,7 +14,7 @@ rn = "0002"
 #datdest = 'C:\\Users\\ahosi\\OneDrive\\Desktop\\calibratedTES_Dec2022'
 datdest = 'C:\\data\\TES_Spectra_1eVbin'
 datdest = 'C:\\data\\TES_newcal'
-
+#datdest = 'C:\\data\\Cal_Dat_No_RMSCut'
 
 savedat = False
 
@@ -38,9 +38,9 @@ savedat = False
 
 
 #12/19          ## run 0000
-# calstates = ["A", "B", "C", "D", "AC"]
-# #calstates = ["AC"]
-# #calstates = ["A"]
+# #calstates = ["A", "B", "C", "D", "AC"]
+# #calstates = ["B", "C", "D", "AC"]
+# calstates = ["AC"]
 # scistates = ["H", "K", "P", "W", "Y", "AA", "R", "T", "U"]
 # #cistates = ["H", "K", "W", "Y", "AA", "R", "T", "U"]
 # # scistates = calstates
@@ -59,9 +59,9 @@ savedat = False
 # scistates = calstates 
 
 
-#12/21
-calstates = ["A", "I", "O", "AH"]
-#calstates = ["AH"]
+#12/21      ##run0002
+#calstates = ["A", "I", "O", "AH"]
+calstates = ["O"]
 scistates = ["E", "G", "K", "M", "Q", "R", "T", "V", "X", "Z", "AB", "AD", "AF"]
 # #scistates = calstates 
 
@@ -135,10 +135,10 @@ ds.calibrationPlanInit("filtValue")
 # ds.calibrationPlanAddPoint(15377, "ClKAlpha", states=calstates)
 # #ds.calibrationPlanAddPoint(16436, "ClKBeta", states=calstates)
 # ds.calibrationPlanAddPoint(19030, "KKAlpha", states=calstates)
-# # ds.calibrationPlanAddPoint(25190, "TiKAlpha", states=calstates)
-# # ds.calibrationPlanAddPoint(27375, "TiKBeta", states=calstates)
-# # ds.calibrationPlanAddPoint(34610, "FeKAlpha", states=calstates)
-# # ds.calibrationPlanAddPoint(37719, "FeKBeta", states=calstates)
+# #ds.calibrationPlanAddPoint(25190, "TiKAlpha", states=calstates)
+# #ds.calibrationPlanAddPoint(27375, "TiKBeta", states=calstates)
+# #ds.calibrationPlanAddPoint(34610, "FeKAlpha", states=calstates)
+# #ds.calibrationPlanAddPoint(37719, "FeKBeta", states=calstates)
 
 #12/20
 ##run0000       chan 1
@@ -171,8 +171,10 @@ ds.calibrationPlanAddPoint(17570, "KKAlpha", states=calstates)
 
 
 
-#ds.plotAvsB("relTimeSec", "filtValue", states=calstates)
-
+# ds.plotAvsB("relTimeSec", "filtValue", states=calstates)
+# plt.grid()
+# plt.show() 
+# asdf
 
 data.alignToReferenceChannel(referenceChannel=ds, binEdges=np.arange(0,60000,10), attr="filtValue", states=calstates)
 #data.alignToReferenceChannel(referenceChannel=ds, binEdges=np.arange(0,60000,10), attr="filtValue", states=calstates)
@@ -188,6 +190,7 @@ data.learnTimeDriftCorrection(indicatorName="relTimeSec", uncorrectedName="filtV
 #data.learnTimeDriftCorrection(indicatorName="relTimeSec", uncorrectedName="filtValuePCDC", correctedName = "filtValuePCDCTC", states=calstates, _rethrow=True, cutRecipeName="cutForLearnDC",) 
 
 data.calibrateFollowingPlan("filtValuePCDCTC", calibratedName="energy", overwriteRecipe=True)      
+#data.calibrateFollowingPlan("filtValuePCDC", calibratedName="energy", overwriteRecipe=True)      
 
 #ds.diagnoseCalibration() 
 
@@ -221,11 +224,14 @@ for k in range(0, len(linep.lines)):
     temp = linep.lines[k]
     if k==0: 
         aldat = np.array(temp.get_xydata())
+        conames.append(str(today)+'_'+str(rn)+'_'+str(temp.get_label())+'_Energy')
     else: 
-        aldat = np.hstack((aldat, temp.get_xydata()))
+        len1 = len(temp.get_xydata())
+        aldat = np.hstack((aldat, temp.get_xydata()[:,1].reshape((len1),1)))
 
-    conames.append(str(today)+'_'+str(rn)+'_'+str(temp.get_label())+'_Energy')
-    conames.append(str(today)+'_'+str(rn)+'_'+str(temp.get_label())+'_Counts')
+    calna = ''.join(calstates)
+    #conames.append(str(today)+'_'+str(rn)+'_'+str(temp.get_label())+'_Energy')
+    conames.append(str(today)+'_'+str(rn)+'_'+str(calna)+'cal'+'_'+str(temp.get_label())+'_Counts')
     #aldat = aldat.T 
     # ndat = pd.DataFrame(data=aldat, columns=['Energy [eV]', 'Counts'])
     # ndat.to_csv(ddest + '/' + str(today) + '_' + str(rn) + '_' + str(temp.get_label())+'_'+str('testDR')+'.csv', index=False)
