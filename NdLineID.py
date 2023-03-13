@@ -153,11 +153,11 @@ def vfit(x, y, E, r, num_peaks=1):
 
         pars1 = rez['Voigt_mod_'+str(i+1)].make_params()
         pars1['V'+str(i+1)+'_center'].set(min=np.min(xdat), max=np.max(xdat), value = E, vary=True)
-        #pars1['V'+str(i+1)+'_fwhm'].set(min=4.715, max=5.50, value=4.9475, vary=False)
+        pars1['V'+str(i+1)+'_fwhm'].set(min=4.715, max=5.50, value=4.9475, vary=False)
         #pars1['V'+str(i+1)+'_height'].set(min=0,vary=True)
         #pars1['V'+str(i+1)+'_fwhm'].set(min=4.715, max=5.50, vary=True)
-        pars1['V'+str(i+1)+'_sigma'].set(min=1.35, max=1.40, value=1.38, vary=False)
-        pars1['V'+str(i+1)+'_gamma'].set(value = 2,min=0, vary=True)
+        #pars1['V'+str(i+1)+'_sigma'].set(min=1.3, max=1.50, value=1.38, vary=False)
+        pars1['V'+str(i+1)+'_gamma'].set(value = 0,min=0, vary=False)
         if i>0 and num_peaks>1: 
             #pars1['V'+str(i+1)+'_sigma'].set(expr='V1_sigma')
             pars1['V'+str(i+1)+'_gamma'].set(value = 2, min=0, expr='V1_gamma')
