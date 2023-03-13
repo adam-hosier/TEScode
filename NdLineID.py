@@ -152,14 +152,17 @@ def vfit(x, y, E, r, num_peaks=1):
         rez['Voigt_mod_'+str(i+1)] = VoigtModel(prefix='V'+str(i+1)+'_') 
 
         pars1 = rez['Voigt_mod_'+str(i+1)].make_params()
-        pars1['V'+str(i+1)+'_center'].set(min=np.min(xdat), max=np.max(xdat), value = E, vary=True)
-        pars1['V'+str(i+1)+'_fwhm'].set(min=4.715, max=5.50, value=4.9475, vary=False)
-        #pars1['V'+str(i+1)+'_height'].set(min=0,vary=True)
+        #pars1['V'+str(i+1)+'_center'].set(min=np.min(xdat), max=np.max(xdat), value = E, vary=True)
+        pars1['V'+str(i+1)+'_center'].set(min=1540, max=1548, value = E, vary=True)
+        
+        #pars1['V'+str(i+1)+'_fwhm'].set(min=4.715, max=5.50, value=4.9475, vary=False)
+        #pars1['V'+str(i+1)+'_height'].set(vary=True, expr='')
         #pars1['V'+str(i+1)+'_fwhm'].set(min=4.715, max=5.50, vary=True)
-        #pars1['V'+str(i+1)+'_sigma'].set(min=1.3, max=1.50, value=1.38, vary=False)
+        pars1['V'+str(i+1)+'_sigma'].set(value=2.08, min=0, vary=False)
+        #pars1['V'+str(i+1)+'_sigma'].set(min=1.3, max=1.50, value=1.9, vary=False)
         pars1['V'+str(i+1)+'_gamma'].set(value = 0,min=0, vary=False)
         if i>0 and num_peaks>1: 
-            #pars1['V'+str(i+1)+'_sigma'].set(expr='V1_sigma')
+            pars1['V'+str(i+1)+'_sigma'].set(expr='V1_sigma')
             pars1['V'+str(i+1)+'_gamma'].set(value = 2, min=0, expr='V1_gamma')
 
         pars.update(pars1)
@@ -186,13 +189,17 @@ def vfit(x, y, E, r, num_peaks=1):
 
     return rez 
 
+
+#### T V X Z AB AD AF
 plottitle = '20221221_0002_AIOAHcal_AF_Counts'
 xd = df3['20221221_0002_AIOAH_cal']['20221221_0002_A_Energy']
 yd = df3['20221221_0002_AIOAH_cal'][plottitle]
 
-npeak = 3
+npeak = 1
+
+test2 = vfit(xd, yd, 1546, 7, num_peaks=npeak)
 # test1 = vfit(xd, yd, 1204, 20, num_peaks=1)
-test2 = vfit(xd, yd, 1203, 15, num_peaks=npeak)
+#test2 = vfit(xd, yd, 1203, 14, num_peaks=npeak)     #4 peaks, 14 points, 1203 center
 # test3 = vfit(xd, yd, 1172, 10, num_peaks=1)
 #test4 = vfit(xd, yd, 1361, 7, num_peaks=1)
 # test5 = vfit(xd, yd, 843, 12, num_peaks=2)
@@ -229,7 +236,7 @@ plt.plot(test2['newevalx'], test2['neweval'], c='b')
 # plt.plot(test7['newevalx'], test7['neweval'], c='b')
 
 ###plotting theory 
-# plt.plot(tdat3[:,0], np.max(yd)*tdat3[:,1]/np.max(tdat3[:,1]), label=ftname)
+#plt.plot(tdat3[:,0], np.max(yd)*tdat3[:,1]/np.max(tdat3[:,1]), label=ftname)
 # plt.plot(tdat4[:,0], np.max(yd)*tdat4[:,1]/np.max(tdat4[:,1]), label=ftname4)
 # plt.plot(tdat5[:,0], np.max(yd)*tdat5[:,1]/np.max(tdat5[:,1]), label=ftname5)
 # plt.plot(tdat6[:,0], np.max(yd)*tdat6[:,1]/np.max(tdat6[:,1]), label=ftname6)
@@ -239,7 +246,9 @@ for l in range(npeak):
 plt.xlabel('Energy (eV)')
 plt.ylabel('Counts per 1 eV bin')
 plt.title(str(plottitle))
+plt.axhline(y=0, c='k', ls='--')
 plt.legend()
 plt.xlim((np.min(test2['newevalx']), np.max(test2['newevalx'])))
+#plt.xlim((1165, 1185))
 plt.show()
 plt.close() 

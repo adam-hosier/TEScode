@@ -407,6 +407,95 @@ def vfit(x, y, E, r, num_peaks=1):
 
     return rez 
 
+
+
+def voigt(x, A, x0, sigma, gamma):
+    """
+    Returns a Voigt function with amplitude A, center x0,
+    Gaussian standard deviation sigma, and Lorentzian half-width gamma.
+    """
+    return A * np.real(wofz(((x - x0) + 1j*gamma) / sigma / np.sqrt(2))) / sigma / np.sqrt(2*np.pi)
+
+
+# def voigt_sum(x, *args):
+#     """
+#     Returns the sum of multiple Voigt functions specified by the arguments.
+#     Each group of 4 arguments (A, x0, sigma, gamma) corresponds to a single Voigt function.
+#     """
+#     y = np.zeros_like(x)
+#     for i in range(0, len(args), 4):
+#         y += voigt(x, *args[i:i+4])
+#     return y
+
+
+def voigt_sum(x, amps, x0s, sigmas, gammas):
+    num_voigt = len(amps)
+    assert num_voigt == len(x0s) == len(sigmas) == len(gammas)
+
+    result = np.zeros_like(x)
+    for i in range(num_voigt):
+        result += voigt(x, amps[i], x0s[i], sigmas[i], gammas[i])
+
+    return result
+
+def voigt_fit(x, y, num_voigt, constraints=None, max_relative_height=None, same_fwhm=False, fwhm=None, plot=False):
+    """
+    Fits a sum of Voigt functions to the data (x, y).
+    num_voigt should be an integer specifying the number of Voigt functions to fit.
+    constraints should be a list of tuples of the form
+    (i, j, min_distance)
+    which enforce a constraint that the center of the ith Voigt function
+    should be at least min_distance away from the center of the jth Voigt function.
+    max_relative_height should be a float between 0 and 1, specifying the maximum
+    allowed relative height between adjacent Voigt functions.
+    If same_fwhm is False, the FWHM of each Voigt function is allowed to vary independently.
+    If same_fwhm is True and fwhm is not None, forces all Voigt functions to have the same FWHM specified by fwhm.
+    If same_fwhm is True and fwhm is None, forces all Voigt functions to have the same FWHM as the first Voigt function.
+    If plot is True, shows a plot of the input data, the fitted function, and each individual Voigt function.
+    """
+    model = Model(voigt_sum)
+   
+    params = Parameters()
+    for i in range(num_voigt):
+        params.add(f"A{i}", value=np.max(y) / num_voigt, min=0)
+        params.add(f"x0{i}", value=x[np.argmax(y)])
+        params.add(f"sigma{i}", value=np.std(x), min=0)
+        params.add(f"gamma{i}", value=np.std(x), min=0)
+   
+    # Add the constraints, if any
+    if constraints is not None:
+        for i, j, min_distance in constraints:
+            model.set_param_hint(f"x0{i}", min=params[f"x0{j}"] + min_distance)
+           
+    # Add the max_relative_height constraint, if specified
+    if max_relative_height is not None:
+        for i in range(num_voigt-1):
+            max_height = max_relative_height * max(params[f"A{i}"].value, params[f"A{i+1}"].value)
+            model.set_param_hint(f"A{i+1}", min=0, max=max_height)
+     
+    # Add the same_fwhm constraint, if specified
+    if same_fwhm:
+        if fwhm is None:
+            fwhm = params["sigma0"].value * 2.355
+        for i in range(num_voigt):
+            params[f"sigma{i}"].set(value=fwhm / 2.355)
+            params[f"gamma{i}"].set(value=fwhm / 2.355)
+   
+    # Perform the fit
+    result = model.fit(y, params, x=x)
+  
+    if plot:
+        plt.plot(x, y, 'bo', label='data')
+        plt.plot(x, result.best_fit, 'r-', label='fit')
+        for i in range(num_voigt):
+            label = f"Voigt {i+1}: A={result.params[f'A{i}'].value:.2g}, x0={result.params[f'x0{i}'].value:.2g}"
+            label += f", sigma={result.params[f'sigma{i}'].value:.2g}, gamma={result.params[f'gamma{i}'].value:.2g}"
+            plt.plot(x, voigt(x, *result.params[f'A{i}':'gamma{i}+1']), '--', label=label)
+        plt.legend()
+        plt.show()
+   
+    return result
+
 plottitle = '20221221_0002_AIOAHcal_T_Counts'
 xd = df3['20221221_0002_AIOAH_cal']['20221221_0002_A_Energy']
 yd = df3['20221221_0002_AIOAH_cal']['20221221_0002_AIOAHcal_T_Counts']
@@ -419,8 +508,12 @@ test4 = vfit(xd, yd, 1360, 10, num_peaks=1)
 test5 = vfit(xd, yd, 843, 12, num_peaks=2)
 test6 = vfit(xd, yd, 1522, 10, num_peaks=1)
 test7 = vfit(xd, yd, 1546, 10, num_peaks=1)
-print(test1['Params'].pretty_print())
-print(test1['out'].fit_report())
+# print(test1['Params'].pretty_print())
+# print(test1['out'].fit_report())
+
+
+newvoigt = voigt_fit(xd, yd, 3, constraints=None, max_relative_height=None, same_fwhm=True, fwhm=4.95, plot=False)
+print(newvoigt)
 
 print('######################')
 # print(test2['Params'].pretty_print())
@@ -436,21 +529,21 @@ print('######################')
 # print(test7['Params'].pretty_print())
 # print('######################')
 
-plt.figure() 
-plt.plot(xd, yd, c='r', label='data')
-plt.plot(test1['newevalx'], test1['neweval'], c='b', label='fit')
-plt.plot(test2['newevalx'], test2['neweval'], c='b')
-plt.plot(test3['newevalx'], test3['neweval'], c='b')
-plt.plot(test4['newevalx'], test4['neweval'], c='b')
-plt.plot(test5['newevalx'], test5['neweval'], c='b')
-plt.plot(test6['newevalx'], test6['neweval'], c='b')
-plt.plot(test7['newevalx'], test7['neweval'], c='b')
-plt.xlabel('Energy (eV)')
-plt.ylabel('Counts per 1 eV bin')
-plt.title(str(plottitle))
-plt.legend()
-plt.show()
-plt.close() 
+# plt.figure() 
+# plt.plot(xd, yd, c='r', label='data')
+# plt.plot(test1['newevalx'], test1['neweval'], c='b', label='fit')
+# # plt.plot(test2['newevalx'], test2['neweval'], c='b')
+# # plt.plot(test3['newevalx'], test3['neweval'], c='b')
+# # plt.plot(test4['newevalx'], test4['neweval'], c='b')
+# # plt.plot(test5['newevalx'], test5['neweval'], c='b')
+# # plt.plot(test6['newevalx'], test6['neweval'], c='b')
+# # plt.plot(test7['newevalx'], test7['neweval'], c='b')
+# plt.xlabel('Energy (eV)')
+# plt.ylabel('Counts per 1 eV bin')
+# plt.title(str(plottitle))
+# plt.legend()
+# plt.show()
+# plt.close() 
 
 
     
