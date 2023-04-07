@@ -156,16 +156,18 @@ def vfit(x, y, E, r, num_peaks=1):
         #pars1['V'+str(i+1)+'_center'].set(min=1540, max=1548, value = E, vary=True)
         
         #pars1['V'+str(i+1)+'_fwhm'].set(min=4.715, max=5.50, value=4.9475, vary=False)
+        #pars1['V'+str(i+1)+'_amplitude'].set(vary=True, min=0)
         #pars1['V'+str(i+1)+'_height'].set(vary=True, min=0)
-        #pars1['V'+str(i+1)+'_fwhm'].set(min=4.715, max=5.50, vary=True)
-        pars1['V'+str(i+1)+'_sigma'].set(value=2.08, min=0, max=3, vary=True)
-        #pars1['V'+str(i+1)+'_sigma'].set(min=1.3, max=1.50, value=1.9, vary=False)
-        pars1['V'+str(i+1)+'_gamma'].set(value = 1, min =0, vary=True)
 
-        if i>0 and num_peaks>1: 
-            pars1['V'+str(i+1)+'_sigma'].set(expr='V1_sigma')
-            pars1['V'+str(i+1)+'_gamma'].set(expr='V1_gamma')
-            #pars1['V'+str(i+1)+'_center'].set(expr ='V1_center+1.22', vary=False)
+        pars1['V'+str(i+1)+'_fwhm'].set(min=4)
+        pars1['V'+str(i+1)+'_sigma'].set(value=1.08, min=0,  vary=True)
+        #pars1['V'+str(i+1)+'_sigma'].set(min=1.3, max=1.50, value=1.9, vary=False)
+        pars1['V'+str(i+1)+'_gamma'].set(value = 0, min =0, vary=False)
+
+        # if i>0 and num_peaks>1: 
+        #     pars1['V'+str(i+1)+'_sigma'].set(expr='V1_sigma')
+        #     pars1['V'+str(i+1)+'_gamma'].set(expr='V1_gamma')
+            #pars1['V'+str(i+1)+'_center'].set(expr ='V1_center+1.1', vary=False)
         
 
         pars.update(pars1)
@@ -194,13 +196,14 @@ def vfit(x, y, E, r, num_peaks=1):
 
 
 #### T V X Z AB AD AF
-plottitle = '20221221_0002_AIOAHcal_AF_Counts'
+plottitle = '20221221_0002_AIOAHcal_T_Counts'
 xd = df3['20221221_0002_AIOAH_cal']['20221221_0002_A_Energy']
 yd = df3['20221221_0002_AIOAH_cal'][plottitle]
 
+
 npeak = 1
 
-test2 = vfit(xd, yd, 843, 11, num_peaks=npeak)
+test2 = vfit(xd, yd, 1734, 12, num_peaks=npeak)
 # test1 = vfit(xd, yd, 1204, 20, num_peaks=1)
 #test2 = vfit(xd, yd, 1203, 14, num_peaks=npeak)     #4 peaks, 14 points, 1203 center
 # test3 = vfit(xd, yd, 1172, 10, num_peaks=1)
@@ -252,7 +255,8 @@ plt.title(str(plottitle))
 plt.axhline(y=0, c='k', ls='--')
 plt.legend()
 plt.xlim((np.min(test2['newevalx']), np.max(test2['newevalx'])))
-plt.ylim((0, 1.05*np.max(test2['neweval'])))
+plt.ylim((0, 1.05*np.max(test2['ydat'])))
 #plt.xlim((1165, 1185))
 plt.show()
 plt.close() 
+print(plottitle)
