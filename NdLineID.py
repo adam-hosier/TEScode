@@ -178,7 +178,7 @@ def vfit(x, y, E, r, num_peaks=1):
         modtemp = rez['Voigt_mod_1']
     
     #out = modtemp.fit(ydat, pars, x=xdat, weights=np.sqrt(ydat), nan_policy='omit')
-    out = modtemp.fit(ydat, pars, x=xdat, weights=np.sqrt(ydat))
+    out = modtemp.fit(ydat, pars, x=xdat, weights=(ydat)/np.sqrt(ydat))
     pars.update(out.params)
 
     neweval = modtemp.eval(pars, x=np.linspace(np.min(xdat), np.max(xdat), num=1000))
