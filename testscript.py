@@ -13,42 +13,51 @@ from lmfit import minimize, Parameters, report_fit, Model, Parameter
 from lmfit.models import GaussianModel
 from lmfit.models import SplitLorentzianModel 
 
-t = [0,
-    0.8334,
-    4,
-    17.5,
-    22.75,
-    23.5]
 
-p = [94,
-    79,
-    62,
-    38,
-    37,
-    36]
+n = [4, 5, 8, 9]
+E = [1203.89,
+    1545.7,
+    1899,
+    1948]
 
-def mod1(x, A, tau, B):
-    return A*np.exp(-x/tau)+B
+#2134 IE  Ni-like Nd    
+#2224 IE Co-like Nd
 
 
-model1 = Model(mod1)
+# E = [930.11,
+#     588.3,
+#     235,
+#     186]
+
+n = [4, 5, 6]
+E = [930.11,
+    588.3,
+    422]
+
+E2 = [984, 618, 491]
+
+def mod2(x, A, B, C):
+    return C + A/(x+B)**2
+
+
+
+model2 = Model(mod2)
 params = Parameters() 
-params.add('A', value=40)
-params.add('tau', value=2)
-params.add('B',value=60)
+params.add('A', value = 14816)
+params.add('B', value = 0.001)
+params.add('C', value = 0, vary=False)
+fit2 = model2.fit(E2, params, x=n, weights=None)
+params.update(fit2.params)
+xplot = np.linspace(np.min(n), np.max(n), num=1000)
+yplot = model2.eval(params=params, x=xplot)
 
-fit = model1.fit(p, params, x=t, weights=None)
-params.update(fit.params)
 
-xplot = np.linspace(np.min(t), np.max(t), num=1000)
-yplot = model1.eval(params=params, x=xplot)
-
+params.pretty_print()
 plt.figure() 
 plt.plot(xplot, yplot, label='fit', c='r')
-plt.scatter(t, p, label='pressure data mTorr')
+plt.scatter(n, E2, label='Energy')
 plt.legend()
-plt.ylabel('pressure (mTorr)')
-plt.xlabel('time [hrs]')
+plt.ylabel('ionization energy - photon energy [eV]')
+plt.xlabel('n (principal quantum number)')
 plt.show()
 plt.close() 
-

@@ -155,19 +155,17 @@ def vfit(x, y, E, r, num_peaks=1, linbackground = False):
         pars1 = rez['Voigt_mod_'+str(i+1)].make_params()
         pars1['V'+str(i+1)+'_center'].set(min=np.min(xdat), max=np.max(xdat), value = E, vary=True)
         #pars1['V'+str(i+1)+'_center'].set(min=1540, max=1548, value = E, vary=True)
-        
         #pars1['V'+str(i+1)+'_fwhm'].set(min=4.715, max=5.50, value=4.9475, vary=False)
         #pars1['V'+str(i+1)+'_amplitude'].set(vary=True, min=0)
         #pars1['V'+str(i+1)+'_height'].set(vary=True, min=0)
-
         pars1['V'+str(i+1)+'_fwhm'].set(min=4)
-        pars1['V'+str(i+1)+'_sigma'].set(value=1.08, min=0,  vary=True)
+        pars1['V'+str(i+1)+'_sigma'].set(value=2.08, min=0,  vary=True)
         #pars1['V'+str(i+1)+'_sigma'].set(min=1.3, max=1.50, value=1.9, vary=False)
-        pars1['V'+str(i+1)+'_gamma'].set(value = 0, min =0, vary=False)
+        pars1['V'+str(i+1)+'_gamma'].set(value = 1, min =0, vary=True)
 
         if i>0 and num_peaks>1: 
             pars1['V'+str(i+1)+'_sigma'].set(expr='V1_sigma')
-        #     pars1['V'+str(i+1)+'_gamma'].set(expr='V1_gamma')
+            #pars1['V'+str(i+1)+'_gamma'].set(expr='V1_gamma')
             #pars1['V'+str(i+1)+'_center'].set(expr ='V1_center+1.1', vary=False)
         
 
@@ -178,7 +176,7 @@ def vfit(x, y, E, r, num_peaks=1, linbackground = False):
         if linbackground is True: 
             rez['Composite model'] += LinearModel(prefix='Background_')
             pars2 = LinearModel(prefix='Background_').make_params()
-            pars2['Background_slope'].set(value=0, vary=False)
+            pars2['Background_slope'].set(value=0, vary=True)
             pars2['Background_intercept'].set(value=np.min(ydat), vary=True)
             pars.update(pars2)
         modtemp = rez['Composite model']
@@ -186,8 +184,8 @@ def vfit(x, y, E, r, num_peaks=1, linbackground = False):
         if linbackground is True: 
             rez['Voigt_mod_1'] += LinearModel(prefix='Background_')
             pars2 = LinearModel(prefix='Background_').make_params()
-            pars2['Background_slope'].set(value=1, vary=True)
-            pars2['Background_intercept'].set(value=100, vary=True)
+            pars2['Background_slope'].set(value=0, vary=False)
+            pars2['Background_intercept'].set(value=0, vary=True)
             pars.update(pars2)
         modtemp = rez['Voigt_mod_1']
     
@@ -216,19 +214,18 @@ xd = df3['20221221_0002_AIOAH_cal']['20221221_0002_A_Energy']
 yd = df3['20221221_0002_AIOAH_cal'][plottitle]
 
 
-npeak = 1
-
-test2 = vfit(xd, yd, 1242, 6, num_peaks=npeak, linbackground=False)
-
-
+npeak = 3
+lenergy = 974
+npoints = 20
+lback = False
+test2 = vfit(xd, yd, lenergy, npoints, num_peaks=npeak, linbackground=lback)
 rescolnames = ['line number', 'center', 'center unc', 'height', 'height unc', 'FWHM', 'FWHM unc', 'sigma', 'sigma unc', 'gamma', 'gamma unc']
-
-
+touttest = np.zeros((1,11))
 for state in expstatelist:
     ptitle = str('20221221_0002_AIOAHcal_')+str(state)+str('_Counts')
     xd = df3['20221221_0002_AIOAH_cal']['20221221_0002_A_Energy']
     yd = df3['20221221_0002_AIOAH_cal'][ptitle]
-    test3 = vfit(xd, yd, 1700, 6, num_peaks=npeak, linbackground=False)
+    test3 = vfit(xd, yd, lenergy, npoints, num_peaks=npeak, linbackground=lback)
     paramlist = test3['Params'] 
     outtest = np.zeros((1,11))
     for ln in range(1,npeak+1): 
@@ -239,39 +236,18 @@ for state in expstatelist:
                           paramlist['V'+str(ln)+'_sigma'].value, paramlist['V'+str(ln)+'_sigma'].stderr, 
                           paramlist['V'+str(ln)+'_gamma'].value, paramlist['V'+str(ln)+'_gamma'].stderr]])
         
-        outtest = np.vstack((outtest, outdat))
+        touttest = np.vstack((touttest, outdat))
     
-    prepdata = pd.DataFrame(data = outtest, columns=rescolnames)
-    #prepdata.to_csv('C:\\Users\\ahosi\\anaconda3\\envs\\TESenv\\TEScode\\testout.csv', index=False)
-    prepdata.to_excel('C:\\Users\\ahosi\\anaconda3\\envs\\TESenv\\TEScode\\testout.xlsx', index=False)
 
+prepdata = pd.DataFrame(data = touttest, columns=rescolnames)
+prepdata.to_excel('C:\\Users\\ahosi\\anaconda3\\envs\\TESenv\\TEScode\\testout.xlsx', index=False)
 
-# test1 = vfit(xd, yd, 1204, 20, num_peaks=1)
-#test2 = vfit(xd, yd, 1203, 14, num_peaks=npeak)     #4 peaks, 14 points, 1203 center
-# test3 = vfit(xd, yd, 1172, 10, num_peaks=1)
-#test4 = vfit(xd, yd, 1361, 7, num_peaks=1)
-# test5 = vfit(xd, yd, 843, 12, num_peaks=2)
-# test6 = vfit(xd, yd, 1522, 10, num_peaks=1)
-# test7 = vfit(xd, yd, 1546, 10, num_peaks=1)
-#print(test1['Params'].pretty_print())
-#print(test1['out'].fit_report())
+plottitle = '20221221_0002_AIOAHcal_T_Counts'
+xd = df3['20221221_0002_AIOAH_cal']['20221221_0002_A_Energy']
+yd = df3['20221221_0002_AIOAH_cal'][plottitle]
 
-# print('######################')
-# print(test2['Params'].pretty_print())
-# print('######################')
-# print(test3['Params'].pretty_print())
-# print('######################')
-# print(test4['Params'].pretty_print())
-# print('######################')
-# print(test5['Params'].pretty_print())
-# print('######################')
-# print(test6['Params'].pretty_print())
-# print('######################')
-# print(test7['Params'].pretty_print())
-# print('######################')
-
-
-print(test2['out'].fit_report())
+######
+# print(test2['out'].fit_report())
 
 plt.figure() 
 plt.plot(xd, yd, c='r', label='data')
@@ -288,16 +264,35 @@ plt.plot(test2['newevalx'], test2['neweval'], c='b')
 # plt.plot(tdat4[:,0], np.max(yd)*tdat4[:,1]/np.max(tdat4[:,1]), label=ftname4)
 # plt.plot(tdat5[:,0], np.max(yd)*tdat5[:,1]/np.max(tdat5[:,1]), label=ftname5)
 # plt.plot(tdat6[:,0], np.max(yd)*tdat6[:,1]/np.max(tdat6[:,1]), label=ftname6)
+# qlines = [1204, 1545.7, 1712, 1828, 1899, 1948, 1983]
+# qlines2 = [1240, 1606, 1733, 1876, 1953, 2007, 2047]
+# for t in qlines: 
+#     plt.axvline(x=t, c='k', ls='--')
 
-for l in range(npeak):
-    plt.plot(test2['newevalx'], test2['comps']['V'+str(l+1)+'_'], label='Voigt #'+str(l+1))
+# for t in qlines2: 
+#     plt.axvline(x=t, c='g', ls='--')
+
+
+fitted_lines = [964.3, 976.95, 984.81, 1898.29, 1847.55,
+                1825.04, 1807.04, 1781.42, 1774.39, 
+                1733.93, 1711.52, 1606.38, 1948.12, 
+                1475.77, 1461.76, 932.62, 942.74, 
+                1546.00, 1522.31, 1241.34, 1172.27, 
+                842.64, 1203.89, 1360.26]
+
+for l in fitted_lines: 
+    plt.axvline(x=l, c='k', ls='--')
+
+# for l in range(npeak):
+#     plt.plot(test2['newevalx'], test2['comps']['V'+str(l+1)+'_'], label='Voigt #'+str(l+1))
+
 plt.xlabel('Energy (eV)')
 plt.ylabel('Counts per 1 eV bin')
 plt.title(str(plottitle))
 plt.axhline(y=0, c='k', ls='--')
 plt.legend()
-plt.xlim((np.min(test2['newevalx']), np.max(test2['newevalx'])))
-plt.ylim((0, 1.05*np.max(test2['ydat'])))
+#plt.xlim((np.min(test2['newevalx']), np.max(test2['newevalx'])))
+#plt.ylim((0, 1.05*np.max(test2['ydat'])))
 #plt.xlim((1165, 1185))
 plt.show()
 plt.close() 
