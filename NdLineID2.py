@@ -154,19 +154,19 @@ def vfit(x, y, E, r, num_peaks=1, linbackground = False):
 
         pars1 = rez['Voigt_mod_'+str(i+1)].make_params()
         pars1['V'+str(i+1)+'_center'].set(min=np.min(xdat), max=np.max(xdat), value = E, vary=True)
-        #pars1['V'+str(i+1)+'_center'].set(min=1540, max=1548, value = E, vary=True)
         #pars1['V'+str(i+1)+'_fwhm'].set(min=4.715, max=5.50, value=4.9475, vary=False)
-        #pars1['V'+str(i+1)+'_amplitude'].set(vary=True, min=0)
+        pars1['V'+str(i+1)+'_amplitude'].set(vary=True, min=0)
         #pars1['V'+str(i+1)+'_height'].set(vary=True, min=0)
         pars1['V'+str(i+1)+'_fwhm'].set(min=4)
-        pars1['V'+str(i+1)+'_sigma'].set(value=2.08, min=0,  vary=True)
+        pars1['V'+str(i+1)+'_sigma'].set(value=2, min=0,  vary=True)
         #pars1['V'+str(i+1)+'_sigma'].set(min=1.3, max=1.50, value=1.9, vary=False)
-        pars1['V'+str(i+1)+'_gamma'].set(value = 1, min =0, vary=True)
+        pars1['V'+str(i+1)+'_gamma'].set(value = 0, min =0, vary=False)
 
         if i>0 and num_peaks>1: 
             pars1['V'+str(i+1)+'_sigma'].set(expr='V1_sigma')
             #pars1['V'+str(i+1)+'_gamma'].set(expr='V1_gamma')
-            #pars1['V'+str(i+1)+'_center'].set(expr ='V1_center+1.1', vary=False)
+
+            pars1['V'+str(i+1)+'_center'].set(expr ='V1_center+6.1', vary=True)
         
 
         pars.update(pars1)
@@ -184,7 +184,7 @@ def vfit(x, y, E, r, num_peaks=1, linbackground = False):
         if linbackground is True: 
             rez['Voigt_mod_1'] += LinearModel(prefix='Background_')
             pars2 = LinearModel(prefix='Background_').make_params()
-            pars2['Background_slope'].set(value=0, vary=False)
+            pars2['Background_slope'].set(value=0, vary=True)
             pars2['Background_intercept'].set(value=0, vary=True)
             pars.update(pars2)
         modtemp = rez['Voigt_mod_1']
@@ -206,17 +206,27 @@ def vfit(x, y, E, r, num_peaks=1, linbackground = False):
 
     return rez 
 
+##energy dependent 
+# expstatelist = ['H', 'K', 'P', 'W', 'Y', 'AA']
+# plottitle = '20221219_0000_Y_Counts'
+# xd = df3['20221219_0000_BCDAC_cal']['20221219_0000_B_Energy']
+# yd = df3['20221219_0000_BCDAC_cal'][plottitle]
+
+
 
 #### T V X Z AB AD AF
+##Density dependence data
 expstatelist = ['T', 'V', 'X', 'Z', 'AB', 'AD', 'AF']
 plottitle = '20221221_0002_AIOAHcal_T_Counts'
 xd = df3['20221221_0002_AIOAH_cal']['20221221_0002_A_Energy']
 yd = df3['20221221_0002_AIOAH_cal'][plottitle]
 
 
-npeak = 3
-lenergy = 974
-npoints = 20
+
+
+npeak = 2
+lenergy = 1201
+npoints = 5
 lback = False
 test2 = vfit(xd, yd, lenergy, npoints, num_peaks=npeak, linbackground=lback)
 rescolnames = ['line number', 'center', 'center unc', 'height', 'height unc', 'FWHM', 'FWHM unc', 'sigma', 'sigma unc', 'gamma', 'gamma unc']
@@ -280,19 +290,19 @@ fitted_lines = [964.3, 976.95, 984.81, 1898.29, 1847.55,
                 1546.00, 1522.31, 1241.34, 1172.27, 
                 842.64, 1203.89, 1360.26]
 
-for l in fitted_lines: 
-    plt.axvline(x=l, c='k', ls='--')
+# for l in fitted_lines: 
+#     plt.axvline(x=l, c='k', ls='--')
 
-# for l in range(npeak):
-#     plt.plot(test2['newevalx'], test2['comps']['V'+str(l+1)+'_'], label='Voigt #'+str(l+1))
+for l in range(npeak):
+    plt.plot(test2['newevalx'], test2['comps']['V'+str(l+1)+'_'], label='Voigt #'+str(l+1))
 
 plt.xlabel('Energy (eV)')
 plt.ylabel('Counts per 1 eV bin')
 plt.title(str(plottitle))
 plt.axhline(y=0, c='k', ls='--')
 plt.legend()
-#plt.xlim((np.min(test2['newevalx']), np.max(test2['newevalx'])))
-#plt.ylim((0, 1.05*np.max(test2['ydat'])))
+plt.xlim((np.min(test2['newevalx']), np.max(test2['newevalx'])))
+plt.ylim((0, 1.05*np.max(test2['ydat'])))
 #plt.xlim((1165, 1185))
 plt.show()
 plt.close() 

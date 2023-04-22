@@ -49,13 +49,13 @@ savedat = False
 
 #12/20 
 calstates = ["A", "B", "K"]       ##run0000
-scistates = ["H", "J", "L", "P"]
-#scistates = calstates
+#scistates = ["H", "J", "L", "P"]
+scistates = calstates
 
 
 # calstates = ["B","D", "J"]        ##run0001 
-# #calstates = ["D", "J"]  
-# #scistates = ["F", "N"]
+# # #calstates = ["D", "J"]  
+# scistates = ["F", "N"]
 # #scistates = ["F"]
 # scistates = calstates 
 
@@ -100,12 +100,12 @@ ds.calibrationPlanInit("filtValue")
 # ds.calibrationPlanAddPoint(8950, "AlKAlpha", states=calstates)
 # ds.calibrationPlanAddPoint(10443, "SiKAlpha", states=calstates)
 # ds.calibrationPlanAddPoint(15546, "ClKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(16660, "ClKBeta", states=calstates)
+# #ds.calibrationPlanAddPoint(16660, "ClKBeta", states=calstates)
 # ds.calibrationPlanAddPoint(19440, "KKAlpha", states=calstates)
 # ds.calibrationPlanAddPoint(25950, "TiKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(28175, "TiKBeta", states=calstates)
+# # ds.calibrationPlanAddPoint(28175, "TiKBeta", states=calstates)
 # ds.calibrationPlanAddPoint(35590, "FeKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(38770, "FeKBeta", states=calstates)
+# # ds.calibrationPlanAddPoint(38770, "FeKBeta", states=calstates)
 
 
 # #12/16   
