@@ -9,8 +9,8 @@ import pandas as pd
 #d = 'C:\\Users\\ahosi\\OneDrive\\Desktop\\tesdata'
 d = 'C:\\data\\tesdata'
 #d = "C:\\data\\tesdata"
-today = "20221220"
-rn = "0000"
+today = "20221221"
+rn = "0002"
 #datdest = 'C:\\Users\\ahosi\\OneDrive\\Desktop\\calibratedTES_Dec2022'
 datdest = 'C:\\data\\TES_Spectra_1eVbin'
 datdest = 'C:\\data\\TES_newcal'
@@ -48,9 +48,9 @@ savedat = False
 
 
 #12/20 
-calstates = ["A", "B", "K"]       ##run0000
-#scistates = ["H", "J", "L", "P"]
-scistates = calstates
+# calstates = ["A", "B", "K"]       ##run0000
+# #scistates = ["H", "J", "L", "P"]
+# scistates = calstates
 
 
 # calstates = ["B","D", "J"]        ##run0001 
@@ -61,10 +61,10 @@ scistates = calstates
 
 
 #12/21      ##run0002
-#calstates = ["A", "I", "O", "AH"]
-# calstates = ["O"]
-# scistates = ["E", "G", "K", "M", "Q", "R", "T", "V", "X", "Z", "AB", "AD", "AF"]
-# #scistates = calstates 
+calstates = ["A", "I", "O", "AH"]
+#calstates = ["O"]
+scistates = ["E", "G", "K", "M", "Q", "R", "T", "V", "X", "Z", "AB", "AD", "AF"]
+#scistates = calstates 
 
 
 fltoday = getOffFileListFromOneFile(os.path.join(d, f"{today}", f"{rn}", 
@@ -142,13 +142,13 @@ ds.calibrationPlanInit("filtValue")
 # #ds.calibrationPlanAddPoint(37719, "FeKBeta", states=calstates)
 
 #12/20
-##run0000       chan 1
-ds.calibrationPlanAddPoint(9793, "AlKAlpha", states=calstates)
-ds.calibrationPlanAddPoint(11363, "SiKAlpha", states=calstates)
-ds.calibrationPlanAddPoint(16661, "ClKAlpha", states=calstates)
-ds.calibrationPlanAddPoint(20668, "KKAlpha", states=calstates)
-#ds.calibrationPlanAddPoint(27350, "TiKAlpha", states=calstates)
-#ds.calibrationPlanAddPoint(37302, "FeKAlpha", states=calstates)
+# ##run0000       chan 1
+# ds.calibrationPlanAddPoint(9793, "AlKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(11363, "SiKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(16661, "ClKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(20668, "KKAlpha", states=calstates)
+# #ds.calibrationPlanAddPoint(27350, "TiKAlpha", states=calstates)
+# #ds.calibrationPlanAddPoint(37302, "FeKAlpha", states=calstates)
 
 #run0001
 # ds.calibrationPlanAddPoint(9740, "AlKAlpha", states=calstates)
@@ -162,13 +162,13 @@ ds.calibrationPlanAddPoint(20668, "KKAlpha", states=calstates)
 
 #12/21              
 # ##run0002             #chan 1
-# ds.calibrationPlanAddPoint(8190, "AlKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(9550, "SiKAlpha", states=calstates)
-# ds.calibrationPlanAddPoint(14070, "ClKAlpha", states=calstates)
-# #ds.calibrationPlanAddPoint(15080, "ClKBeta", states=calstates)
-# ds.calibrationPlanAddPoint(17570, "KKAlpha", states=calstates)
-# # ds.calibrationPlanAddPoint(23279, "TiKAlpha", states=calstates)
-# # ds.calibrationPlanAddPoint(31720, "FeKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(8190, "AlKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(9550, "SiKAlpha", states=calstates)
+ds.calibrationPlanAddPoint(14070, "ClKAlpha", states=calstates)
+#ds.calibrationPlanAddPoint(15080, "ClKBeta", states=calstates)
+ds.calibrationPlanAddPoint(17570, "KKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(23279, "TiKAlpha", states=calstates)
+# ds.calibrationPlanAddPoint(31720, "FeKAlpha", states=calstates)
 
 
 
@@ -262,10 +262,10 @@ for ds in data.values():
 
 
 
-# firstsci = scistates[0]
+firstsci = scistates[0]
 # #firstsci = "F"
-# energies = np.hstack([ds.getAttr("energy", firstsci) for ds in data.values()])
-# seconds_after_external_triggers = np.hstack([ds.seconds_after_external_trigger[ds.getStatesIndicies(states=firstsci)[0]] for ds in data.values()])
+energies = np.hstack([ds.getAttr("energy", firstsci) for ds in data.values()])
+seconds_after_external_triggers = np.hstack([ds.seconds_after_external_trigger[ds.getStatesIndicies(states=firstsci)[0]] for ds in data.values()])
 
 #np.hstack([ds.seconds_after_external_trigger[ds.getStatesIndicies(states=firstsci)[0]][ds.getAttr("cutResidualStdDev", firstsci)] for ds in data.values()])
 
