@@ -217,12 +217,25 @@ def vfit(x, y, E, r, num_peaks=1, linbackground = False):
 #### T V X Z AB AD AF
 ##Density dependence data
 expstatelist = ['T', 'V', 'X', 'Z', 'AB', 'AD', 'AF']
+expstatelist2 = ['H', 'K', 'P', 'W', 'Y', 'AA']
 plottitle = '20221221_0002_AIOAHcal_T_Counts'
 xd = df3['20221221_0002_AIOAH_cal']['20221221_0002_A_Energy']
 yd = df3['20221221_0002_AIOAH_cal'][plottitle]
+beamcurr = [36.80,
+    18.40,
+    9.20,
+    13.80,
+    23.00,
+    27.60,
+    32.20]
 
-
-
+t_norm = [3163, 
+    1769, 
+    1394, 
+    650, 
+    328, 
+    365, 
+    3109]
 
 npeak = 2
 lenergy = 1201
@@ -256,15 +269,31 @@ plottitle = '20221221_0002_AIOAHcal_T_Counts'
 xd = df3['20221221_0002_AIOAH_cal']['20221221_0002_A_Energy']
 yd = df3['20221221_0002_AIOAH_cal'][plottitle]
 
-######
-# print(test2['out'].fit_report())
+plt.figure() 
+
+for state in expstatelist2: 
+    ptitle = str('20221219_0000_')+str(state)+str('_Counts')
+
+
+
 
 plt.figure() 
-plt.plot(xd, yd, c='r', label='data')
+tc = 0
+for state in expstatelist: 
+    ptitle = str('20221221_0002_AIOAHcal_')+str(state)+str('_Counts')
+    xd = df3['20221221_0002_AIOAH_cal']['20221221_0002_A_Energy']
+    #yd = df3['20221221_0002_AIOAH_cal'][ptitle] / t_norm[tc]
+    yd = df3['20221221_0002_AIOAH_cal'][ptitle] / np.max(df3['20221221_0002_AIOAH_cal'][ptitle])
+    #yd = df3['20221221_0002_AIOAH_cal'][ptitle] 
+    plt.plot(xd, yd, label='2.04 keV, '+str(beamcurr[tc]))
+    tc +=1 
+#plt.plot(xd, yd, c='r', label='data')
 # plt.plot(test1['newevalx'], test1['neweval'], c='b', label='fit')
 # plt.plot(test2['newevalx'], test2['neweval'], c='b')
 # plt.plot(test3['newevalx'], test3['neweval'], c='b')
-plt.plot(test2['newevalx'], test2['neweval'], c='b')
+
+#plt.plot(test2['newevalx'], test2['neweval'], c='b')
+
 # plt.plot(test5['newevalx'], test5['neweval'], c='b')
 # plt.plot(test6['newevalx'], test6['neweval'], c='b')
 # plt.plot(test7['newevalx'], test7['neweval'], c='b')
@@ -283,27 +312,82 @@ plt.plot(test2['newevalx'], test2['neweval'], c='b')
 #     plt.axvline(x=t, c='g', ls='--')
 
 
-fitted_lines = [964.3, 976.95, 984.81, 1898.29, 1847.55,
-                1825.04, 1807.04, 1781.42, 1774.39, 
-                1733.93, 1711.52, 1606.38, 1948.12, 
-                1475.77, 1461.76, 932.62, 942.74, 
-                1546.00, 1522.31, 1241.34, 1172.27, 
-                842.64, 1203.89, 1360.26]
+fitted_lines = [842.64,
+    865.94,
+    876.00,
+    884.12,
+    932.62,
+    942.75,
+    964.29,
+    976.96,
+    984.83,
+    999.39,
+    1151.03,
+    1157.89,
+    1172.29,
+    1203.89,
+    1241.34,
+    1360.30,
+    1379.62,
+    1386.26,
+    1395.85,
+    1461.77,
+    1475.76,
+    1494.18,
+    1502.47,
+    1522.32,
+    1546.00,
+    1606.39,
+    1711.60,
+    1733.94,
+    1825.05,
+    1898.39,
+    1984.78,
+    1948.14]
 
-# for l in fitted_lines: 
-#     plt.axvline(x=l, c='k', ls='--')
+tbd_lines = [1415.83,
+    1424.17,
+    1557.25,
+    1572.99,
+    1580.66,
+    1593.13,
+    1652.47,
+    1774.46,
+    1781.54,
+    1807.04,
+    1847.57,
+    1920.77,
+    1929.08,
+    1972.84]
 
-for l in range(npeak):
-    plt.plot(test2['newevalx'], test2['comps']['V'+str(l+1)+'_'], label='Voigt #'+str(l+1))
+
+lcount = 1
+
+yd = np.array(yd)
+for l in fitted_lines: 
+    #plt.axvline(x=l, c='k', ls='--')
+    # plt.text(l, yd[find_nearest(xd, l)]+300, str(lcount))
+    plt.text(l, yd[find_nearest(xd, l)]+0.02, str(lcount))
+    lcount += 1 
+
+for l in tbd_lines:
+    # plt.text(l, yd[find_nearest(xd, l)]+300, str(lcount), c='g')
+    plt.text(l, yd[find_nearest(xd, l)], str(lcount), c='g')
+    lcount += 1
+
+# for l in range(npeak):
+#     plt.plot(test2['newevalx'], test2['comps']['V'+str(l+1)+'_'], label='Voigt #'+str(l+1))
 
 plt.xlabel('Energy (eV)')
-plt.ylabel('Counts per 1 eV bin')
-plt.title(str(plottitle))
+plt.ylabel('Counts per 1 eV bin (normalized)')
+#plt.title(str(plottitle))
 plt.axhline(y=0, c='k', ls='--')
+plt.ylim(bottom=0)
 plt.legend()
-plt.xlim((np.min(test2['newevalx']), np.max(test2['newevalx'])))
-plt.ylim((0, 1.05*np.max(test2['ydat'])))
-#plt.xlim((1165, 1185))
+plt.minorticks_on()
+# plt.xlim((np.min(test2['newevalx']), np.max(test2['newevalx'])))
+# plt.ylim((0, 1.05*np.max(test2['ydat'])))
+plt.xlim((700, 2050))
 plt.show()
 plt.close() 
-print(plottitle)
+#print(plottitle)
