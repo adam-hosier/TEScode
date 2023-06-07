@@ -23,18 +23,21 @@ E = [1203.89,
 #2134 IE  Ni-like Nd    
 #2224 IE Co-like Nd
 
-
-# E = [930.11,
-#     588.3,
-#     235,
-#     186]
-
-n = [4, 5, 6]
+### Ni-like series
 E = [930.11,
     588.3,
-    422]
+    235,
+    186]
 
-E2 = [983, 618, 491]
+# n = [4, 5, 6]
+# E = [930.11,
+#     588.3,
+#     422]
+
+ntest = [4, 5, 6, 7, 8, 9, 10]
+
+# n = [4, 5, 6]
+# E2 = [983, 618, 491]
 
 def mod2(x, A, B, C):
     return C + A/(x+B)**2
@@ -46,7 +49,7 @@ params = Parameters()
 params.add('A', value = 14816)
 params.add('B', value = 0.001)
 params.add('C', value = 0, vary=False)
-fit2 = model2.fit(E2, params, x=n, weights=None)
+fit2 = model2.fit(E, params, x=n, weights=None)
 params.update(fit2.params)
 xplot = np.linspace(np.min(n), np.max(n), num=1000)
 yplot = model2.eval(params=params, x=xplot)
@@ -55,7 +58,7 @@ yplot = model2.eval(params=params, x=xplot)
 params.pretty_print()
 plt.figure() 
 plt.plot(xplot, yplot, label='fit', c='r')
-plt.scatter(n, E2, label='Energy')
+plt.scatter(n, E, label='Energy')
 plt.legend()
 plt.ylabel('ionization energy - photon energy [eV]')
 plt.xlabel('n (principal quantum number)')
