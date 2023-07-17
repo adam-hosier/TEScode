@@ -6,16 +6,13 @@ import os
 import ebit_util
 import pandas as pd
 #plt.ion()
-#d = 'C:\\Users\\ahosi\\OneDrive\\Desktop\\tesdata'
-d = 'C:\\data\\tesdata'
-#d = "C:\\data\\tesdata"
+d = 'C:\\Users\\ahosi\\OneDrive\\Desktop\\tesdata'
+#d = 'C:\\data\\tesdata'
 today = "20221221"
 rn = "0002"
-#datdest = 'C:\\Users\\ahosi\\OneDrive\\Desktop\\calibratedTES_Dec2022'
-datdest = 'C:\\data\\TES_Spectra_1eVbin'
-datdest = 'C:\\data\\TES_newcal'
-datdest = 'C:\\data\\TimData'
-#datdest = 'C:\\data\\Cal_Dat_No_RMSCut'
+# datdest = 'C:\\data\\TES_Spectra_1eVbin'
+# datdest = 'C:\\data\\TES_newcal'
+datdest = 'C:\\data\\TimingData'
 
 savedat = False
 

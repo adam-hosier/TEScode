@@ -78,9 +78,9 @@ date = str('202212')
 day = str('19')
 runnum = str('0000')
 
-#statelist = ['T', 'V', 'X', 'Z', 'AB', 'AD', 'AF']
+statelist = ['T', 'V', 'X', 'Z', 'AB', 'AD', 'AF']
 #statelist = ["E", "G", "K", "M", "Q", "R", "T", "V", "X", "Z", "AB", "AD", "AF"]
-statelist = ['H', 'K', 'P', 'W', 'Y', 'AA']
+#statelist = ['H', 'K', 'P', 'W', 'Y', 'AA']
 
 coAdd = False
 df = dict()
@@ -236,7 +236,7 @@ plt.plot(xd, yd, c='r', label='data')
 # plt.plot(test1['newevalx'], test1['neweval'], c='b', label='fit')
 # plt.plot(test2['newevalx'], test2['neweval'], c='b')
 # plt.plot(test3['newevalx'], test3['neweval'], c='b')
-plt.plot(test2['newevalx'], test2['neweval'], c='b')
+####plt.plot(test2['newevalx'], test2['neweval'], c='b')
 # plt.plot(test5['newevalx'], test5['neweval'], c='b')
 # plt.plot(test6['newevalx'], test6['neweval'], c='b')
 # plt.plot(test7['newevalx'], test7['neweval'], c='b')
@@ -247,16 +247,17 @@ plt.plot(test2['newevalx'], test2['neweval'], c='b')
 # plt.plot(tdat5[:,0], np.max(yd)*tdat5[:,1]/np.max(tdat5[:,1]), label=ftname5)
 # plt.plot(tdat6[:,0], np.max(yd)*tdat6[:,1]/np.max(tdat6[:,1]), label=ftname6)
 
-for l in range(npeak):
-    plt.plot(test2['newevalx'], test2['comps']['V'+str(l+1)+'_'], label='Voigt #'+str(l+1))
+# for l in range(npeak):
+#     plt.plot(test2['newevalx'], test2['comps']['V'+str(l+1)+'_'], label='Voigt #'+str(l+1))
 plt.xlabel('Energy (eV)')
 plt.ylabel('Counts per 1 eV bin')
-plt.title(str(plottitle))
-plt.axhline(y=0, c='k', ls='--')
-plt.legend()
-plt.xlim((np.min(test2['newevalx']), np.max(test2['newevalx'])))
-plt.ylim((0, 1.05*np.max(test2['ydat'])))
+#plt.title(str(plottitle))
+#plt.axhline(y=0, c='k', ls='--')
+#plt.legend()
+#plt.xlim((np.min(test2['newevalx']), np.max(test2['newevalx'])))
+#plt.ylim((0, 1.05*np.max(test2['ydat'])))
 #plt.xlim((1165, 1185))
+plt.xlim((700, 2100))
 plt.show()
 plt.close() 
-print(plottitle)
+#print(plottitle)

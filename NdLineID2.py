@@ -216,18 +216,26 @@ def vfit(x, y, E, r, num_peaks=1, linbackground = False):
 
 #### T V X Z AB AD AF
 ##Density dependence data
-expstatelist = ['T', 'V', 'X', 'Z', 'AB', 'AD', 'AF']
+#expstatelist = ['T', 'V', 'X', 'Z', 'AB', 'AD', 'AF']
+expstatelist = ['T', 'AF', 'AD', 'AB', 'V', 'Z', 'X']
 expstatelist2 = ['H', 'K', 'P', 'W', 'Y', 'AA']
 plottitle = '20221221_0002_AIOAHcal_T_Counts'
 xd = df3['20221221_0002_AIOAH_cal']['20221221_0002_A_Energy']
 yd = df3['20221221_0002_AIOAH_cal'][plottitle]
+# beamcurr = [36.80,
+#     18.40,
+#     9.20,
+#     13.80,
+#     23.00,
+#     27.60,
+#     32.20]
 beamcurr = [36.80,
-    18.40,
-    9.20,
-    13.80,
-    23.00,
+    32.20,
     27.60,
-    32.20]
+    23.00,
+    18.40,
+    13.80,
+    9.20]
 
 t_norm = [3163, 
     1769, 
@@ -269,7 +277,6 @@ plottitle = '20221221_0002_AIOAHcal_T_Counts'
 xd = df3['20221221_0002_AIOAH_cal']['20221221_0002_A_Energy']
 yd = df3['20221221_0002_AIOAH_cal'][plottitle]
 
-plt.figure() 
 
 for state in expstatelist2: 
     ptitle = str('20221219_0000_')+str(state)+str('_Counts')
@@ -285,7 +292,7 @@ for state in expstatelist:
     #yd = df3['20221221_0002_AIOAH_cal'][ptitle] / t_norm[tc]
     yd = df3['20221221_0002_AIOAH_cal'][ptitle] / np.max(df3['20221221_0002_AIOAH_cal'][ptitle])
     #yd = df3['20221221_0002_AIOAH_cal'][ptitle] 
-    plt.plot(xd, yd, label='2.04 keV, '+str(beamcurr[tc]))
+    plt.plot(xd, yd, label='2.04 keV, '+str(beamcurr[tc])+' mA')
     tc +=1 
 #plt.plot(xd, yd, c='r', label='data')
 # plt.plot(test1['newevalx'], test1['neweval'], c='b', label='fit')
@@ -364,30 +371,32 @@ tbd_lines = [1415.83,
 lcount = 1
 
 yd = np.array(yd)
-for l in fitted_lines: 
-    #plt.axvline(x=l, c='k', ls='--')
-    # plt.text(l, yd[find_nearest(xd, l)]+300, str(lcount))
-    plt.text(l, yd[find_nearest(xd, l)]+0.02, str(lcount))
-    lcount += 1 
+# for l in fitted_lines: 
+#     #plt.axvline(x=l, c='k', ls='--')
+#     # plt.text(l, yd[find_nearest(xd, l)]+300, str(lcount))
+#     #plt.text(l, yd[find_nearest(xd, l)]+0.02, str(lcount))
+#     plt.text(l, 1.025+0.025*(-1)**(lcount), str(lcount))
+#     lcount += 1 
 
-for l in tbd_lines:
-    # plt.text(l, yd[find_nearest(xd, l)]+300, str(lcount), c='g')
-    plt.text(l, yd[find_nearest(xd, l)], str(lcount), c='g')
-    lcount += 1
+# for l in tbd_lines:
+#     # plt.text(l, yd[find_nearest(xd, l)]+300, str(lcount), c='g')
+#     plt.text(l, yd[find_nearest(xd, l)], str(lcount), c='g')
+#     lcount += 1
 
 # for l in range(npeak):
 #     plt.plot(test2['newevalx'], test2['comps']['V'+str(l+1)+'_'], label='Voigt #'+str(l+1))
 
 plt.xlabel('Energy (eV)')
-plt.ylabel('Counts per 1 eV bin (normalized)')
+plt.ylabel('Normalized Intensity')
 #plt.title(str(plottitle))
-plt.axhline(y=0, c='k', ls='--')
+#plt.axhline(y=0, c='k', ls='--')
 plt.ylim(bottom=0)
-plt.legend()
+plt.legend(loc='upper left', fontsize='small')
 plt.minorticks_on()
 # plt.xlim((np.min(test2['newevalx']), np.max(test2['newevalx'])))
 # plt.ylim((0, 1.05*np.max(test2['ydat'])))
-plt.xlim((700, 2050))
+#plt.xlim((1125, 1300))
+plt.xlim((700, 2100))
 plt.show()
 plt.close() 
 #print(plottitle)
