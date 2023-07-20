@@ -1,9 +1,7 @@
-import mass 
+
 import numpy as np 
 import pylab as plt 
-from mass.off import ChannelGroup, getOffFileListFromOneFile, Channel, labelPeak, labelPeaks
 import os 
-#import ebit_util
 import pandas as pd
 import matplotlib.colors as mcolors
 from scipy.stats import binned_statistic_2d
@@ -400,33 +398,61 @@ nonNuc2 = [2.699996068,
     475.1439677,
     330.287235]
 
-figs, axs = plt.subplots(nrows=4, ncols=1, sharex=True)
-axs[1].plot(xdat, yunc)
-axs[0].set_title('Na-like Isoelectronic Sequence D1 Energies')
-#axs[0].set_title('Na-like Isoelectronic Sequence D1 Energies')
-axs[1].set_ylabel('Theoretical Uncertainty [cm-1]')
+nucCont = nucFrac*yunc
 
-axs[2].plot(xdat, nonNuc)
-axs[2].set_ylabel('QED error [cm-1]')
+def poly3(x, a, b, c, d, e, f, g):
+    return a*x**3+ + b*x**2 + c*x + d + e*x**4 + f*x**5 + g*x**6
 
 
 
-axs[3].plot(xdat, nucFrac)
+mod = Model(poly3) 
+params = Parameters() 
+params.add('a', value=0.000000, vary=True)
+params.add('b', value=0.00001, vary=True)
+params.add('c', value=0.0001, vary=True)
+params.add('d', value=0, vary=True)
+params.add('e', value=0, vary=True)
+params.add('f', value=0, vary=True)
+params.add('g', value=0, vary=True)
 
-axs[3].set_ylabel('Fractional Nuclear Contribution')
+fit = mod.fit(nonNuc, params, x=xdat, weights=None, nfev=1e7)
+params.update(fit.params)
+xplot = np.linspace(np.min(xdat), np.max(xdat), num=1000)
+yplot = mod.eval(params=params, x=xplot)
 
-axs[0].scatter(xdat, ydat)
-axs[0].errorbar(xdat, ydat, yerr=yunc, ls='none')
-axs[0].set_ylabel('Energy [cm-1]')
-axs[3].set_xlabel('Z')
-plt.minorticks_on()
-plt.show()
-# plt.figure() 
-# plt.scatter(xdat, ydat)
-# plt.errorbar(xdat, ydat, yerr=yunc, ls='none')
-# plt.legend()
-# plt.ylabel('Energy [cm-1]')
-# plt.xlabel('Z')
+params.pretty_print()
+# figs, axs = plt.subplots(nrows=4, ncols=1, sharex=True)
+# axs[1].plot(xdat, yunc)
+# axs[0].set_title('Na-like Isoelectronic Sequence D1 Energies')
+# #axs[0].set_title('Na-like Isoelectronic Sequence D1 Energies')
+# axs[1].set_ylabel('Theoretical Uncertainty [cm-1]')
+
+# axs[2].plot(xdat, nonNuc)
+# axs[2].set_ylabel('QED error [cm-1]')
+
+
+
+# axs[3].plot(xdat, nucFrac)
+
+# axs[3].set_ylabel('Fractional Nuclear Contribution')
+
+# axs[0].scatter(xdat, ydat)
+# axs[0].errorbar(xdat, ydat, yerr=yunc, ls='none')
+# axs[0].set_ylabel('Energy [cm-1]')
+# axs[3].set_xlabel('Z')
 # plt.minorticks_on()
 # plt.show()
-# plt.close() 
+
+
+plt.figure() 
+plt.scatter(xdat, nucCont)
+#plt.plot(xplot, yplot, c='r')
+#plt.errorbar(xdat, ydat, yerr=yunc, ls='none')
+#plt.legend()
+#plt.ylabel('D1 Transition Energy [cm-1]')
+#plt.ylabel('Non-nuclear Theoretical Uncertainty[cm-1]')
+plt.ylabel('Nuclear Theoretical Uncertainty[cm-1]')
+plt.xlabel('Z')
+plt.minorticks_on()
+plt.show()
+plt.close() 
