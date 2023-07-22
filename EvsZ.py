@@ -12,7 +12,8 @@ from lmfit.models import GaussianModel
 from lmfit.models import SplitLorentzianModel 
 
 xdat = np.arange(18, 93)
-
+xdat2 = np.arange(19, 93)
+xdat3 = np.arange(20, 93)
 #energies in cm-1  NON ISOTOPE ABUND CORRECTED
 ydat = [140095,
     157157.8,
@@ -89,6 +90,161 @@ ydat = [140095,
     1774385.8,
     1809911.5,
     1841739.8]
+
+
+LiLikeE = [24578337.34,
+    27519585.35,
+    30629236,
+    33907765,
+    37355678.54,
+    40973513.37,
+    44761836.7,
+    48721246.31,
+    52852370.46,
+    57155867.95,
+    61632428.06,
+    66282770.64,
+    71107646,
+    76107835.01,
+    81284149.02,
+    86637429.94,
+    92168550.14,
+    97878412.56,
+    103767950.6,
+    109838128.3,
+    116089940,
+    122524410.7,
+    129142596,
+    135945581.8,
+    142934484.7,
+    150110451.7,
+    157474660.4,
+    165028318.8,
+    172772665.6,
+    180708969.8,
+    188838531.1,
+    197162679.6,
+    205682776,
+    214400211.4,
+    223316407.6,
+    232432816.7,
+    241750921.4,
+    251272235.1,
+    260998301.3,
+    270930694.5,
+    281071019.4,
+    291420911.3,
+    301982036,
+    312756089.8,
+    323744799.7,
+    334949922.8,
+    346373247.3,
+    358016591.3,
+    369881803.9,
+    381970764.5,
+    394285382.9,
+    406827599.8,
+    419599386,
+    432602743,
+    445839702.9,
+    459312328.2,
+    473022711.9,
+    486972977.6,
+    501165279.3,
+    515601801.6,
+    530284759.7,
+    545216399.1,
+    560398996,
+    575834857.1,
+    591526319.4,
+    607475750.8,
+    623685549.3,
+    640158143.8,
+    656895993.4,
+    673901587.9,
+    691177447.6,
+    708726123.2,
+    726550196,
+    744652277.9,
+    763035011.1]
+
+
+D2Energy = [142804.6,
+    160916.1,
+    179288.1,
+    197978.1,
+    217039.2,
+    236528.8,
+    256504.4,
+    277023.9,
+    298152.0,
+    319951.9,
+    342491.0,
+    365841.4,
+    390076.4,
+    415273.4,
+    441514.3,
+    468886.3,
+    497474.3,
+    527375.4,
+    558680.7,
+    591495.2,
+    625925.8,
+    662075.5,
+    700063.9,
+    740002.5,
+    782018.0,
+    826248.2,
+    872816.6,
+    921868.4,
+    973546.4,
+    1028001.8,
+    1085380.1,
+    1145868.2,
+    1209609.5,
+    1276790.2,
+    1347577.2,
+    1422216.5,
+    1500839.2,
+    1583686.1,
+    1670951.8,
+    1762872.6,
+    1859670.2,
+    1961594.5,
+    2068878.0,
+    2181773.8,
+    2300535.2,
+    2425518.1,
+    2556938.6,
+    2695156.3,
+    2840491.0,
+    2993054.6,
+    3153660.9,
+    3322141.3,
+    3498979.8,
+    3685038.6,
+    3880149.8,
+    4085007.5,
+    4299834.6,
+    4525446.9,
+    4761991.2,
+    5010069.0,
+    5270247.0,
+    5543006.2,
+    5828855.5,
+    6128532.9,
+    6442541.5,
+    6771518.7,
+    7116309.4,
+    7477220.7,
+    7855047.5,
+    8251231.4,
+    8665958.4,
+    9100383.8,
+    9553407.5,
+    10031340.80,
+    10527110.2]
+
 
 #energy uncertainties in cm-1
 yunc = [2.7,
@@ -735,6 +891,233 @@ nonnucuncIC = [2.699995242,
     195.4497222,
     318.2552583,
     329.9264247]
+
+
+Sens = [-0.58,
+    -0.76,
+    -1,
+    -1.37,
+    -1.78,
+    -2.26,
+    -2.87,
+    -3.65,
+    -4.46,
+    -5.56,
+    -6.72,
+    -8.34,
+    -10.1,
+    -12.2,
+    -14.6,
+    -17.1,
+    -20.6,
+    -23.9,
+    -28.3,
+    -32.9,
+    -37.9,
+    -43.3,
+    -50.3,
+    -57.9,
+    -67.6,
+    -77.2,
+    -89,
+    -101,
+    -115,
+    -130,
+    -149,
+    -168,
+    -191,
+    -217,
+    -248,
+    -274,
+    -310,
+    -347,
+    -389,
+    -436,
+    -487,
+    -545,
+    -609,
+    -685,
+    -770,
+    -856,
+    -957,
+    -1064,
+    -1180,
+    -1330,
+    -1456,
+    -1625,
+    -1829,
+    -2005,
+    -2230,
+    -2468,
+    -2750,
+    -3034,
+    -3361,
+    -3723,
+    -4118,
+    -4546,
+    -5053,
+    -5562,
+    -6150,
+    -6804,
+    -7528,
+    -8333,
+    -9234,
+    -10189,
+    -11255,
+    -12415,
+    -13805,
+    -15122,
+    -16840]
+
+S_SZ1 = [0.762913907,
+    0.755,
+    0.729927007,
+    0.769662921,
+    0.787610619,
+    0.787456446,
+    0.78630137,
+    0.81838565,
+    0.802158273,
+    0.827380952,
+    0.805755396,
+    0.825742574,
+    0.827868852,
+    0.835616438,
+    0.85380117,
+    0.830097087,
+    0.861924686,
+    0.844522968,
+    0.860182371,
+    0.868073879,
+    0.875288684,
+    0.86083499,
+    0.868739206,
+    0.856508876,
+    0.875647668,
+    0.86741573,
+    0.881188119,
+    0.87826087,
+    0.884615385,
+    0.872483221,
+    0.886904762,
+    0.879581152,
+    0.880184332,
+    0.875,
+    0.905109489,
+    0.883870968,
+    0.893371758,
+    0.892030848,
+    0.892201835,
+    0.895277207,
+    0.893577982,
+    0.894909688,
+    0.889051095,
+    0.88961039,
+    0.89953271,
+    0.89446186,
+    0.89943609,
+    0.901694915,
+    0.887218045,
+    0.913461538,
+    0.896,
+    0.888463641,
+    0.912219451,
+    0.899103139,
+    0.90356564,
+    0.897454545,
+    0.906394199,
+    0.902707528,
+    0.902766586,
+    0.90407965,
+    0.905851298,
+    0.899663566,
+    0.908486156,
+    0.904390244,
+    0.903880071,
+    0.903825717,
+    0.903396136,
+    0.902425818,
+    0.906271469,
+    0.905286539,
+    0.90656464,
+    0.899311844,
+    0.912908345,
+    0.897980998]
+
+S_SZ2 = [0.576,
+    0.551094891,
+    0.561797753,
+    0.60619469,
+    0.620209059,
+    0.619178082,
+    0.643497758,
+    0.65647482,
+    0.663690476,
+    0.666666667,
+    0.665346535,
+    0.683606557,
+    0.691780822,
+    0.713450292,
+    0.708737864,
+    0.715481172,
+    0.727915194,
+    0.726443769,
+    0.746701847,
+    0.759815242,
+    0.753479125,
+    0.747841105,
+    0.74408284,
+    0.75,
+    0.759550562,
+    0.764356436,
+    0.773913043,
+    0.776923077,
+    0.771812081,
+    0.773809524,
+    0.780104712,
+    0.774193548,
+    0.77016129,
+    0.791970803,
+    0.8,
+    0.78962536,
+    0.796915167,
+    0.79587156,
+    0.798767967,
+    0.8,
+    0.799671593,
+    0.795620438,
+    0.790909091,
+    0.800233645,
+    0.804597701,
+    0.804511278,
+    0.811016949,
+    0.8,
+    0.81043956,
+    0.818461538,
+    0.796063423,
+    0.810473815,
+    0.820179372,
+    0.812398703,
+    0.810909091,
+    0.813447594,
+    0.818208866,
+    0.814934193,
+    0.816172899,
+    0.818961725,
+    0.814961409,
+    0.817331895,
+    0.821626016,
+    0.817460317,
+    0.816950053,
+    0.816512661,
+    0.815247997,
+    0.817842772,
+    0.820435362,
+    0.820700765,
+    0.815284317,
+    0.820989287,
+    0.819774347]
+
 ###################
 def poly3(x, a, b, c, d, e, f, g):
     return a*x**3+ + b*x**2 + c*x + d + e*x**4 + f*x**5 + g*x**6
@@ -756,7 +1139,7 @@ params.update(fit.params)
 xplot = np.linspace(np.min(xdat), np.max(xdat), num=1000)
 yplot = mod.eval(params=params, x=xplot)
 
-params.pretty_print()
+#params.pretty_print()
 # figs, axs = plt.subplots(nrows=4, ncols=1, sharex=True)
 # axs[1].plot(xdat, yunc)
 # axs[0].set_title('Na-like Isoelectronic Sequence D1 Energies')
@@ -779,18 +1162,102 @@ params.pretty_print()
 # plt.minorticks_on()
 # plt.show()
 
+plt.figure() 
+plt.scatter(xdat, ydat, s=4, label='Na-like D1')
+plt.scatter(xdat, D2Energy, s=4, label='Na-like D2')
+#plt.scatter(xdat, LiLikeE, s=4, label='Li-like transition')
+plt.legend()
+plt.xlabel('Z')
+plt.ylabel('Transition Energy [cm-1]')
+plt.minorticks_on()
+plt.fill_between(xdat,y1 = 3333333.33, y2=333333.33, alpha=0.15)
+plt.xlim(left=np.min(xdat), right=np.max(xdat))
+plt.ylim(bottom=0, top=6*10**6)
+plt.show()
+
+### 3nm ==  3333333.33 cm-1 
+### 30 nm == 333333.33 cm-1
+
+mod2 = Model(poly3) 
+params2 = Parameters() 
+params2.add('a', value=0.000000, vary=True)
+params2.add('b', value=0.00001, vary=True)
+params2.add('c', value=0.0001, vary=True)
+params2.add('d', value=0, vary=True)
+params2.add('e', value=0, vary=True)
+params2.add('f', value=0, vary=True)
+params2.add('g', value=0, vary=True)
+
+fit2 = mod2.fit(Sens, params2, x=xdat, weights=None, nfev=1e7)
+params2.update(fit2.params)
+xplot2= np.linspace(np.min(xdat), np.max(xdat), num=1000)
+yplot2 = mod2.eval(params=params2, x=xplot2)
 
 plt.figure() 
-plt.scatter(xIC, yuncIC, s=3, label='Total theoretical uncertainty')
-plt.scatter(xIC, nonnucuncIC, s=3, label='Non-nuclear contribution')
-plt.plot(xplot, yplot, c='r')
-plt.scatter(xIC, nucuncIC, s=3, label='Nuclear contribution')
-#plt.errorbar(xdat, ydat, yerr=yunc, ls='none')
-plt.legend()
-#plt.ylabel('D1 Transition Energy [cm-1]')
-#plt.ylabel('Non-nuclear Theoretical Uncertainty[cm-1]')
-plt.ylabel('Nuclear Theoretical Uncertainty[cm-1]')
+plt.scatter(xdat, Sens, s=3, c='b')
+plt.plot(xplot2, yplot2, c='r')
+plt.ylabel('Nuclear sensitivity coefficient [cm-1/fm]')
 plt.xlabel('Z')
 plt.minorticks_on()
 plt.show()
-plt.close() 
+plt.close()
+
+
+mod3 = Model(poly3) 
+params3 = Parameters() 
+params3.add('a', value=0.000000, vary=True)
+params3.add('b', value=0.00001, vary=True)
+params3.add('c', value=0.0001, vary=True)
+params3.add('d', value=0, vary=True)
+params3.add('e', value=0, vary=True)
+params3.add('f', value=0, vary=False)
+params3.add('g', value=0, vary=False)
+
+fit3 = mod3.fit(S_SZ1, params3, x=xdat2, weights=None, nfev=1e7)
+params3.update(fit3.params)
+xplot3= np.linspace(np.min(xdat2), np.max(xdat2), num=1000)
+yplot3 = mod3.eval(params=params3, x=xplot3)
+
+params3.pretty_print()
+
+mod4 = Model(poly3) 
+params4 = Parameters() 
+params4.add('a', value=0.000000, vary=True)
+params4.add('b', value=0.00001, vary=True)
+params4.add('c', value=0.0001, vary=True)
+params4.add('d', value=0, vary=True)
+params4.add('e', value=0, vary=True)
+params4.add('f', value=0, vary=False)
+params4.add('g', value=0, vary=False)
+
+fit4 = mod4.fit(S_SZ2, params4, x=xdat3, weights=None, nfev=1e7)
+params4.update(fit4.params)
+xplot4= np.linspace(np.min(xdat3), np.max(xdat3), num=1000)
+yplot4 = mod4.eval(params=params4, x=xplot4)
+
+plt.figure() 
+plt.scatter(xdat2, S_SZ1, s=3, c='b', label='S_Z / S_Z+1')
+plt.plot(xplot3, yplot3, c='c')
+plt.scatter(xdat3, S_SZ2, s=3, c='r', label='S_Z / S_Z+2')
+plt.plot(xplot4, yplot4, c='tab:orange')
+plt.ylabel('Nuclear sensitivity coefficient ratio [cm-1/fm]')
+plt.legend()
+plt.xlabel('Z')
+plt.minorticks_on()
+plt.show()
+plt.close()
+
+# plt.figure() 
+# plt.scatter(xIC, yuncIC, s=3, c='tab:orange', label='Total theoretical uncertainty')
+# plt.scatter(xIC, nonnucuncIC, s=3, c='b', label='Non-nuclear contribution')
+# plt.plot(xplot, yplot, c='r')
+# plt.scatter(xIC, nucuncIC, s=3, c='g', label='Nuclear contribution')
+# #plt.errorbar(xdat, ydat, yerr=yunc, ls='none')
+# plt.legend()
+# #plt.ylabel('D1 Transition Energy [cm-1]')
+# #plt.ylabel('Non-nuclear Theoretical Uncertainty[cm-1]')
+# plt.ylabel('D1 transition energy uncertainty [cm-1]')
+# plt.xlabel('Z')
+# plt.minorticks_on()
+# plt.show()
+# plt.close() 
