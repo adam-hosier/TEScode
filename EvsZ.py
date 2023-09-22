@@ -14,6 +14,10 @@ from lmfit.models import SplitLorentzianModel
 xdat = np.arange(18, 93)
 xdat2 = np.arange(19, 93)
 xdat3 = np.arange(20, 93)
+xdat4 = np.arange(21,93)
+xdat5 = np.arange(22,93)
+xdat6 = np.arange(23,93)
+xdat7 = np.arange(24,93)
 #energies in cm-1  NON ISOTOPE ABUND CORRECTED
 ydat = [140095,
     157157.8,
@@ -557,6 +561,73 @@ nonNuc2 = [2.699996068,
 
 ####### Isotope abundance corrected values 
 
+# xIC = [18,
+#     19,
+#     20,
+#     21,
+#     22,
+#     23,
+#     24,
+#     25,
+#     26,
+#     27,
+#     28,
+#     29,
+#     30,
+#     31,
+#     32,
+#     33,
+#     34,
+#     35,
+#     36,
+#     37,
+#     38,
+#     39,
+#     40,
+#     41,
+#     42,
+#     43,
+#     44,
+#     45,
+#     46,
+#     47,
+#     48,
+#     49,
+#     50,
+#     51,
+#     52,
+#     53,
+#     54,
+#     55,
+#     56,
+#     57,
+#     58,
+#     59,
+#     60,
+#     62,
+#     63,
+#     64,
+#     65,
+#     66,
+#     67,
+#     68,
+#     69,
+#     70,
+#     71,
+#     72,
+#     73,
+#     74,
+#     75,
+#     76,
+#     77,
+#     78,
+#     79,
+#     80,
+#     82,
+#     83,
+#     90,
+#     92]
+
 xIC = [18,
     19,
     20,
@@ -600,6 +671,7 @@ xIC = [18,
     58,
     59,
     60,
+    61,
     62,
     63,
     64,
@@ -619,10 +691,89 @@ xIC = [18,
     78,
     79,
     80,
+    81,
     82,
     83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
     90,
+    91,
     92]
+
+
+
+
+# yuncIC = [2.699995744,
+#     3.199933137,
+#     4.099993305,
+#     4.699397469,
+#     5.199971206,
+#     5.499651547,
+#     5.896874871,
+#     16.11699697,
+#     6.599988369,
+#     24.22713087,
+#     7.498543741,
+#     7.899750484,
+#     8.584149228,
+#     9.275791297,
+#     10.16836218,
+#     77.81392365,
+#     11.74556172,
+#     12.63190951,
+#     13.71211905,
+#     14.78995395,
+#     15.92963591,
+#     17.40002673,
+#     18.50002692,
+#     19.99938037,
+#     21.49572337,
+#     23.4,
+#     24.51738854,
+#     26.19000585,
+#     27.99672419,
+#     29.80133873,
+#     31.80253799,
+#     33.78994972,
+#     37.01769605,
+#     38.07805629,
+#     40.25918427,
+#     42.74117761,
+#     45.19805042,
+#     47.83071408,
+#     50.63680268,
+#     63.07495559,
+#     56.40590331,
+#     59.57243999,
+#     62.72530137,
+#     69.59988603,
+#     73.22071957,
+#     77.04426571,
+#     193.2273614,
+#     91.54506885,
+#     100.31411,
+#     93.71994757,
+#     98.6927051,
+#     103.1420961,
+#     126.6915601,
+#     113.6016805,
+#     118.5742434,
+#     125.3919502,
+#     145.8409025,
+#     136.9442762,
+#     457.5711865,
+#     156.4291653,
+#     167.213518,
+#     167.647212,
+#     186.1003643,
+#     705.692628,
+#     369.7882837,
+#     335.561501]
+
 
 yuncIC = [2.699995744,
     3.199933137,
@@ -667,6 +818,7 @@ yuncIC = [2.699995744,
     56.40590331,
     59.57243999,
     62.72530137,
+    76,
     69.59988603,
     73.22071957,
     77.04426571,
@@ -686,9 +838,17 @@ yuncIC = [2.699995744,
     156.4291653,
     167.213518,
     167.647212,
+    175,
     186.1003643,
     705.692628,
+    255.1619726,
+    508,
+    290.3030517,
+    319.1622986,
+    366.1326698,
+    739,
     369.7882837,
+    893,
     335.561501]
 
 ydatIC = [140095.000425,
@@ -758,6 +918,76 @@ ydatIC = [140095.000425,
     1774623.246,
     1841791.5]
 
+
+
+# nucuncIC = [0.001646447,
+#     0.001779257,
+#     0.002096223,
+#     0.0037675,
+#     0.0033286,
+#     0.005455527,
+#     0.01480364,
+#     14.8783855,
+#     0.007943256,
+#     23.16435,
+#     0.003859917,
+#     0.013477982,
+#     0.016717661,
+#     0.023349351,
+#     0.019961777,
+#     77.060808,
+#     0.043693012,
+#     0.055209,
+#     0.070008475,
+#     0.083834497,
+#     0.076296035,
+#     0.100023,
+#     0.063698663,
+#     0.108273,
+#     0.12321452,
+#     4.246,
+#     0.251725375,
+#     0.25553,
+#     0.363579975,
+#     0.401977862,
+#     0.518532069,
+#     0.48444396,
+#     9.418809011,
+#     0.610406027,
+#     0.775575856,
+#     2.44134,
+#     1.65850615,
+#     1.75582,
+#     1.977089699,
+#     33.57260847,
+#     0.97616754,
+#     2.9975,
+#     1.903207337,
+#     4.21668786,
+#     5.117633664,
+#     4.47460662,
+#     175.56,
+#     34.77784748,
+#     45.6456,
+#     5.388850667,
+#     6.25625,
+#     11.89402888,
+#     67.0472,
+#     7.70482394,
+#     9.23032,
+#     6.604301,
+#     57.61220124,
+#     5.010568717,
+#     434.51133,
+#     11.95005632,
+#     19.00228,
+#     17.82685768,
+#     9.116514,
+#     678.08664,
+#     188.3002,
+#     61.23785808]
+
+
 nucuncIC = [0.001646447,
     0.001779257,
     0.002096223,
@@ -801,6 +1031,7 @@ nucuncIC = [0.001646447,
     0.97616754,
     2.9975,
     1.903207337,
+    37.675,
     4.21668786,
     5.117633664,
     4.47460662,
@@ -820,10 +1051,20 @@ nucuncIC = [0.001646447,
     11.95005632,
     19.00228,
     17.82685768,
+    6.1182,
     9.116514,
     678.08664,
+    145.74208,
+    458.315,
+    178.77024,
+    197.25904,
+    219.13485,
+    682.825,
     188.3002,
+    831.71,
     61.23785808]
+
+
 
 nonnucuncIC = [2.699995242,
     3.199932643,
@@ -868,6 +1109,7 @@ nonnucuncIC = [2.699995242,
     56.39745584,
     59.49697975,
     62.69642122,
+    66.0045,
     69.47203523,
     73.04165661,
     76.91421699,
@@ -887,10 +1129,20 @@ nonnucuncIC = [2.699995242,
     155.9720485,
     166.1302921,
     166.6967031,
+    174.893,
     185.8769345,
     195.4497222,
+    209.4442131,
+    219.1149488,
+    228.7292353,
+    250.905249,
+    293.3139093,
+    282.6146128,
     318.2552583,
+    325.1268612,
     329.9264247]
+
+
 
 
 Sens = [-0.58,
@@ -1118,146 +1370,1451 @@ S_SZ2 = [0.576,
     0.820989287,
     0.819774347]
 
+S_SZ3 = [0.420437956,
+    0.424157303,
+    0.442477876,
+    0.477351916,
+    0.487671233,
+    0.506726457,
+    0.51618705,
+    0.543154762,
+    0.534772182,
+    0.55049505,
+    0.550819672,
+    0.571232877,
+    0.590643275,
+    0.59223301,
+    0.610878661,
+    0.604240283,
+    0.626139818,
+    0.63060686,
+    0.653579677,
+    0.654075547,
+    0.654576857,
+    0.640532544,
+    0.651554404,
+    0.650561798,
+    0.669306931,
+    0.671304348,
+    0.684615385,
+    0.677852349,
+    0.68452381,
+    0.680628272,
+    0.686635945,
+    0.677419355,
+    0.697080292,
+    0.7,
+    0.714697406,
+    0.70437018,
+    0.711009174,
+    0.712525667,
+    0.713761468,
+    0.71592775,
+    0.710948905,
+    0.707792208,
+    0.711448598,
+    0.715778474,
+    0.723684211,
+    0.725423729,
+    0.719548872,
+    0.730769231,
+    0.726153846,
+    0.727173319,
+    0.726184539,
+    0.728699552,
+    0.7410859,
+    0.729090909,
+    0.735003296,
+    0.734305266,
+    0.738651625,
+    0.73676542,
+    0.73933128,
+    0.736790026,
+    0.740381158,
+    0.739186992,
+    0.742651382,
+    0.738841658,
+    0.738029521,
+    0.736842105,
+    0.738836,
+    0.740382052,
+    0.743777688,
+    0.738065918,
+    0.744279857,
+    0.737232779]
+
+S_SZ4 = [0.323595506,
+    0.334070796,
+    0.348432056,
+    0.375342466,
+    0.399103139,
+    0.40647482,
+    0.427083333,
+    0.43764988,
+    0.441584158,
+    0.455737705,
+    0.460273973,
+    0.487719298,
+    0.490291262,
+    0.510460251,
+    0.51590106,
+    0.519756839,
+    0.54353562,
+    0.551963048,
+    0.562624254,
+    0.568221071,
+    0.560650888,
+    0.560880829,
+    0.565168539,
+    0.573267327,
+    0.587826087,
+    0.593846154,
+    0.597315436,
+    0.601190476,
+    0.602094241,
+    0.599078341,
+    0.600806452,
+    0.613138686,
+    0.616129032,
+    0.625360231,
+    0.637532134,
+    0.628440367,
+    0.636550308,
+    0.636697248,
+    0.638752053,
+    0.63649635,
+    0.632467532,
+    0.636682243,
+    0.636363636,
+    0.643796992,
+    0.652542373,
+    0.643609023,
+    0.65728022,
+    0.654769231,
+    0.64516129,
+    0.663341646,
+    0.652914798,
+    0.658427877,
+    0.665090909,
+    0.660843771,
+    0.663493008,
+    0.662906258,
+    0.667799903,
+    0.667399912,
+    0.665149416,
+    0.669363538,
+    0.669593496,
+    0.66813639,
+    0.671227418,
+    0.667466699,
+    0.666016894,
+    0.667778977,
+    0.668858285,
+    0.671204188,
+    0.668888084,
+    0.673786536,
+    0.668349169]
+
+S_SZ5 = [0.254867257,
+    0.263066202,
+    0.273972603,
+    0.307174888,
+    0.320143885,
+    0.336309524,
+    0.3441247,
+    0.361386139,
+    0.36557377,
+    0.380821918,
+    0.392982456,
+    0.404854369,
+    0.422594142,
+    0.431095406,
+    0.443768997,
+    0.451187335,
+    0.475750577,
+    0.475149105,
+    0.488773748,
+    0.486686391,
+    0.490932642,
+    0.486516854,
+    0.498019802,
+    0.503478261,
+    0.52,
+    0.518120805,
+    0.529761905,
+    0.528795812,
+    0.529953917,
+    0.524193548,
+    0.54379562,
+    0.541935484,
+    0.550432277,
+    0.557840617,
+    0.568807339,
+    0.562628337,
+    0.568807339,
+    0.569786535,
+    0.567883212,
+    0.566233766,
+    0.568925234,
+    0.569487983,
+    0.572368421,
+    0.580508475,
+    0.578947368,
+    0.587912088,
+    0.588923077,
+    0.581738655,
+    0.588528678,
+    0.596412556,
+    0.589951378,
+    0.590909091,
+    0.602834542,
+    0.596548646,
+    0.598979318,
+    0.599320058,
+    0.604927409,
+    0.600435385,
+    0.604279036,
+    0.605365854,
+    0.605232216,
+    0.603878852,
+    0.606384255,
+    0.602339181,
+    0.603592109,
+    0.604531319,
+    0.60636327,
+    0.603621876,
+    0.610633514,
+    0.605047506]
+
+S_SZ6 = [0.200696864,
+    0.206849315,
+    0.224215247,
+    0.246402878,
+    0.264880952,
+    0.270983213,
+    0.284158416,
+    0.299180328,
+    0.305479452,
+    0.325146199,
+    0.326213592,
+    0.348953975,
+    0.356890459,
+    0.370820669,
+    0.385224274,
+    0.394919169,
+    0.409542744,
+    0.412780656,
+    0.418639053,
+    0.426165803,
+    0.425842697,
+    0.428712871,
+    0.437391304,
+    0.445384615,
+    0.453691275,
+    0.45952381,
+    0.465968586,
+    0.465437788,
+    0.463709677,
+    0.474452555,
+    0.480645161,
+    0.484149856,
+    0.491002571,
+    0.497706422,
+    0.509240246,
+    0.502752294,
+    0.509031199,
+    0.506569343,
+    0.505194805,
+    0.509345794,
+    0.508881923,
+    0.512218045,
+    0.516101695,
+    0.515037594,
+    0.528846154,
+    0.526769231,
+    0.523236741,
+    0.530673317,
+    0.529147982,
+    0.538897893,
+    0.529454545,
+    0.535596572,
+    0.544183279,
+    0.538544185,
+    0.541525012,
+    0.542894853,
+    0.54423115,
+    0.545487235,
+    0.546504065,
+    0.547178131,
+    0.547024442,
+    0.545541822,
+    0.547216807,
+    0.545882815,
+    0.546423812,
+    0.548046718,
+    0.54530967,
+    0.551051448,
+    0.548337292]
+
+# Lilike1y = [160019.0824,
+#     176016.0867,
+#     192046.2412,
+#     208174.7975,
+#     224366.2665,
+#     240664.4452,
+#     257002.6298,
+#     257025.9398,
+#     290063.8151,
+#     306659.0546,
+#     323564.0181,
+#     357546.5517,
+#     374708.812,
+#     392012.2226,
+#     426995.7133,
+#     427161.0608,
+#     444850.0133,
+#     462843.0437,
+#     499262.2344,
+#     536608.1775,
+#     574610.6709,
+#     633479.2079,
+#     694467.4187,
+#     694467.4187,
+#     802039.2532,
+#     870380.1835,
+#     966363.177,
+#     966403.5057,
+#     966438.9949,
+#     1017185.342,
+#     1743278.488,
+#     1860360.625,
+#     2263606.796]
+
+# Lilike1x = [12,
+#     13,
+#     14,
+#     15,
+#     16,
+#     17,
+#     18,
+#     18,
+#     20,
+#     21,
+#     22,
+#     24,
+#     25,
+#     26,
+#     28,
+#     28,
+#     29,
+#     30,
+#     32,
+#     34,
+#     36,
+#     39,
+#     42,
+#     42,
+#     47,
+#     50,
+#     54,
+#     54,
+#     54,
+#     56,
+#     79,
+#     82,
+#     92]
+
+# Lilike2y = [129803.0027,
+#     146691.4315,
+#     163994.6808,
+#     181812.201,
+#     200232.8765,
+#     219428.1847,
+#     239428.7753,
+#     260435.1625,
+#     282588.4966,
+#     282555.4271,
+#     330925.6099,
+#     357387.8988,
+#     385662.88,
+#     448440.8763,
+#     483336.4505,
+#     520737.2405,
+#     604623.2523,
+#     651464.1727,
+#     701962.9016,
+#     814816.1761,
+#     946093.9975,
+#     1098334.651,
+#     1372262.974,
+#     1709466.948,
+#     2449296.032,
+#     3969742.597,
+#     13689963.53,
+#     21311755.75,
+#     22488376.38,
+#     32466418.37,
+#     35968074.39]
+
+# Lilike2x = [10,
+#     11,
+#     12,
+#     13,
+#     14,
+#     15,
+#     16,
+#     17,
+#     18,
+#     18,
+#     20,
+#     21,
+#     22,
+#     24,
+#     25,
+#     26,
+#     28,
+#     29,
+#     30,
+#     32,
+#     34,
+#     36,
+#     39,
+#     42,
+#     47,
+#     54,
+#     74,
+#     82,
+#     83,
+#     90,
+#     92]
+
+Lilikex = [10,
+    12,
+    15,
+    18,
+    20,
+    21,
+    26,
+    28,
+    30,
+    32,
+    36,
+    40,
+    42,
+    47,
+    50,
+    52,
+    54,
+    60,
+    64,
+    66,
+    70,
+    74,
+    79,
+    80,
+    82,
+    83,
+    90,
+    92]
+
+Lilike1y = [128293.50,
+    160282.19,
+    208773.36,
+    258143.69,
+    291672.93,
+    308651.29,
+    396035.41,
+    432347.33,
+    469514.21,
+    507657.05,
+    587169.01,
+    671609.14,
+    715873.87,
+    833431.88,
+    909330.40,
+    962322.25,
+    1017411.18,
+    1196712.36,
+    1329151.65,
+    1399726.78,
+    1549910.68,
+    1713645.00,
+    1937710.98,
+    1984895.50,
+    2082571.49,
+    2132417.70,
+    2493359.11,
+    2599020.18]
+
+Lilike2y = [129938.91,
+    164250.53,
+    219968.59,
+    283647.53,
+    332412.93,
+    359183.09,
+    524514.42,
+    609446.56,
+    708082.37,
+    822704.46,
+    1109844.45,
+    1493289.25,
+    1729211.85,
+    2477792.26,
+    3057153.64,
+    3507544.01,
+    4015765.65,
+    5947266.02,
+    7643166.41,
+    8638074.20,
+    10966327.82,
+    13818773.24,
+    18275734.32,
+    19303550.29,
+    21513640.97,
+    22699787.23,
+    32756623.33,
+    36285218.89]
+
+Hlikex = Lilikex 
+
+Hlike1y = [8238933.44,
+    11869972.40,
+    18564009.00,
+    26762782.00,
+    33069706.00,
+    36476892.00,
+    56070500.00,
+    65112900.00,
+    74851540.00,
+    85293320.00,
+    108310200.00,
+    134225900.00,
+    148290500.00,
+    186760800.00,
+    212172000.00,
+    230111000.00,
+    248858000.00,
+    310120000.00,
+    355338000.00,
+    379312000.00,
+    430102000.00,
+    484890000.00,
+    559330000.00,
+    575110000.00,
+    607420000.00,
+    624040000.00,
+    749530000.00,
+    788440000.00]
+
+Hlike2y = [8242606.05,
+    11877599.00,
+    18582678.80,
+    26801622.00,
+    33129056.00,
+    36549130.00,
+    56241580.00,
+    65343770.00,
+    75157110.00,
+    85690580.00,
+    108952500.00,
+    135215400.00,
+    149500200.00,
+    188688200.00,
+    214667500.00,
+    233052000.00,
+    252305000.00,
+    315511000.00,
+    362453000.00,
+    387442000.00,
+    440619000.00,
+    498344000.00,
+    577392000.00,
+    594235000.00,
+    628830000.00,
+    646690000.00,
+    782680000.00,
+    825300000.00]
+
+# Hlike1y = [33070709.57,
+#     36478048.72,
+#     40055169.16,
+#     43802629.2,
+#     47720963.77,
+#     51810803.2,
+#     56072738.02,
+#     60507449.49,
+#     65115582.57,
+#     69897895.94,
+#     74855089.88,
+#     79987991.55,
+#     85297374.38,
+#     90784091.5,
+#     96449049.97,
+#     102293110.7,
+#     108317313.8,
+#     114522581.2,
+#     120909976.3,
+#     127480540.6,
+#     134235387.4,
+#     141175637.1,
+#     148302452.9,
+#     155617251.1,
+#     163121116.5,
+#     170815570.3,
+#     178701815.7,
+#     186781420.3,
+#     195055654.7,
+#     203526297,
+#     212194734.5,
+#     221062682.6,
+#     230131629.2,
+#     239403840.5,
+#     248880655.3,
+#     258564238.9,
+#     268456288.8,
+#     278559095.3,
+#     288874542.7,
+#     299404949.8,
+#     310152334.7,
+#     321118604.7,
+#     332304973.5,
+#     343717305.5,
+#     355355993.8,
+#     367228285.5,
+#     379325324.5,
+#     391662156.3,
+#     404235009,
+#     417052032,
+#     430108170.7,
+#     443412579.4,
+#     456972331.1,
+#     470785197.9,
+#     484855525.6,
+#     499188691.4,
+#     513784388,
+#     528654686.9,
+#     543795461.8,
+#     559217511.2,
+#     574919682.6,
+#     590912379.6,
+#     607195349.7,
+#     623777547.7,
+#     640665239.7,
+#     657861388.7,
+#     675340337.5,
+#     693170728.5,
+#     711322295.3,
+#     729829715.8,
+#     748626191.3,
+#     767835398.7,
+#     787312272.8]
+
+# Hlike2y = [33131901.12,
+#     36552468.82,
+#     40144869.76,
+#     43909868.68,
+#     47848219.51,
+#     51960781.81,
+#     56248386.03,
+#     60711967.37,
+#     65352432.92,
+#     70170826.03,
+#     75168129.98,
+#     80345479.22,
+#     85703963.64,
+#     91244761.64,
+#     96969130.81,
+#     102878287.4,
+#     108973648.4,
+#     115256523,
+#     121728383.1,
+#     128390691.6,
+#     135245002.8,
+#     142292900.5,
+#     149536027,
+#     156976260.7,
+#     164615236.9,
+#     172454976.2,
+#     180497265.2,
+#     188744223.6,
+#     197197756.2,
+#     205860221.3,
+#     214733683.4,
+#     223820512.5,
+#     233122935.4,
+#     242643852.9,
+#     252385444.8,
+#     262350603.5,
+#     272541886.8,
+#     282962382.7,
+#     293614889.8,
+#     304502616.7,
+#     315628564.9,
+#     326995694,
+#     338606405.1,
+#     350467167.5,
+#     362579800.6,
+#     374952069.6,
+#     387577956.4,
+#     400472055.2,
+#     413632884.6,
+#     427069234.8,
+#     440778653.1,
+#     454770965.6,
+#     469054296.3,
+#     483628869.1,
+#     498500652.7,
+#     513676598.2,
+#     529158868.4,
+#     544960373.2,
+#     561080254.4,
+#     577530569.1,
+#     594313212.5,
+#     611440208.9,
+#     628914550.8,
+#     646747268.3,
+#     664947285.3,
+#     683520966.8,
+#     702450063,
+#     721797553.7,
+#     741541907.9,
+#     761717386.4,
+#     782271577.4,
+#     803315384.1,
+#     824730342.2]
+
+# Hlikex = [20,
+#     21,
+#     22,
+#     23,
+#     24,
+#     25,
+#     26,
+#     27,
+#     28,
+#     29,
+#     30,
+#     31,
+#     32,
+#     33,
+#     34,
+#     35,
+#     36,
+#     37,
+#     38,
+#     39,
+#     40,
+#     41,
+#     42,
+#     43,
+#     44,
+#     45,
+#     46,
+#     47,
+#     48,
+#     49,
+#     50,
+#     51,
+#     52,
+#     53,
+#     54,
+#     55,
+#     56,
+#     57,
+#     58,
+#     59,
+#     60,
+#     61,
+#     62,
+#     63,
+#     64,
+#     65,
+#     66,
+#     67,
+#     68,
+#     69,
+#     70,
+#     71,
+#     72,
+#     73,
+#     74,
+#     75,
+#     76,
+#     77,
+#     78,
+#     79,
+#     80,
+#     81,
+#     82,
+#     83,
+#     84,
+#     85,
+#     86,
+#     87,
+#     88,
+#     89,
+#     90,
+#     91,
+#     92]
+
+IPx = [20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    90,
+    91,
+    92]
+
+IPHe = [5128.8578,
+    5674.9037,
+    6249.0226,
+    6851.3109,
+    7481.8628,
+    8140.7872,
+    8828.1879,
+    9544.1833,
+    10288.8862,
+    11062.4313,
+    11864.9399,
+    12696.5575,
+    13557.4208,
+    14447.678,
+    15367.491,
+    16317.011,
+    17296.424,
+    18305.884,
+    19345.588,
+    20415.717,
+    21516.469,
+    22648.046,
+    23810.654,
+    25004.533,
+    26229.895,
+    27486.983,
+    28776.034,
+    30097.318,
+    31451.062,
+    32837.592,
+    34257.143,
+    35710.028,
+    37196.522,
+    38716.996,
+    40271.724,
+    41861.075,
+    43485.366,
+    45144.996,
+    46840.306,
+    48571.71,
+    50339.59,
+    52144.29,
+    53986.12,
+    55865.92,
+    57783.9,
+    59739.3,
+    61736.56,
+    63772.43,
+    65848.24,
+    67965.26,
+    70123.04,
+    72322.91,
+    74565.93,
+    76852.03,
+    79181.94,
+    81556.9,
+    83976.21,
+    86438.9,
+    88955.18,
+    91515.82,
+    94124.7,
+    96783.21,
+    99491.85,
+    102251.76,
+    105064.3,
+    107923.4,
+    110842,
+    113817.2,
+    116848.7,
+    119938.6,
+    123086.4,
+    126296.6,
+    129570.3]
+
+IPBe = [1086.8,
+    1213.1,
+    1346.3,
+    1486.7,
+    1634.1,
+    1788.7,
+    1950.4,
+    2119.4,
+    2295.6,
+    2479.1,
+    2669.9,
+    2868,
+    3074,
+    3287,
+    3507,
+    3735,
+    3971,
+    4214,
+    4465,
+    4724,
+    4991,
+    5265,
+    5548,
+    5838,
+    6137,
+    6444,
+    6759,
+    7082,
+    7414,
+    7754,
+    8103,
+    8455,
+    8821,
+    9196,
+    9581,
+    9974,
+    10376,
+    10789,
+    11210,
+    11641,
+    12082,
+    12532,
+    12992,
+    13462,
+    13943,
+    14434,
+    14936,
+    15448,
+    15971,
+    16510,
+    17050,
+    17610,
+    18180,
+    18760,
+    19362,
+    19950,
+    20570,
+    21200,
+    21840,
+    22500,
+    23170,
+    23850,
+    24550,
+    25260,
+    25990,
+    26730,
+    27490,
+    28260,
+    29050,
+    29850,
+    30680,
+    31520,
+    32400]
+
+IPMg = [188.54,
+    225.18,
+    265.07,
+    308.5,
+    354.7,
+    402.95,
+    456.2,
+    511.96,
+    571.07,
+    632.5,
+    697.5,
+    765.7,
+    837.1,
+    911.7,
+    989.6,
+    1070.6,
+    1155,
+    1242.5,
+    1333.4,
+    1427.6,
+    1525.1,
+    1625.9,
+    1730.1,
+    1838,
+    1949,
+    2063,
+    2181,
+    2302,
+    2427,
+    2555,
+    2687,
+    2815,
+    2954,
+    3096,
+    3243,
+    3392,
+    3546,
+    3704,
+    3865,
+    4030,
+    4198,
+    4371,
+    4548,
+    4729,
+    4914,
+    5103,
+    5296,
+    5494,
+    5695,
+    5901,
+    6111,
+    6326,
+    6545,
+    6769,
+    7000,
+    7230,
+    7468,
+    7710,
+    7960,
+    8210,
+    8470,
+    8730,
+    9000,
+    9270,
+    9550,
+    9830,
+    10120,
+    10420,
+    10720,
+    11030,
+    11340,
+    11660,
+    11990]
+
 ###################
 def poly3(x, a, b, c, d, e, f, g):
     return a*x**3+ + b*x**2 + c*x + d + e*x**4 + f*x**5 + g*x**6
 
 
+def uncFun1(t):
+    return np.sqrt(7.20*10**(-5) + 2*((0.593)/(np.sqrt(0.2*t)))**2)
 
-mod = Model(poly3) 
-params = Parameters() 
-params.add('a', value=0.000000, vary=True)
-params.add('b', value=0.00001, vary=True)
-params.add('c', value=0.0001, vary=True)
-params.add('d', value=0, vary=True)
-params.add('e', value=0, vary=True)
-params.add('f', value=0, vary=True)
-params.add('g', value=0, vary=True)
 
-fit = mod.fit(nonnucuncIC, params, x=xIC, weights=None, nfev=1e7)
-params.update(fit.params)
-xplot = np.linspace(np.min(xdat), np.max(xdat), num=1000)
-yplot = mod.eval(params=params, x=xplot)
+# #params.pretty_print()
+# # figs, axs = plt.subplots(nrows=4, ncols=1, sharex=True)
+# # axs[1].plot(xdat, yunc)
+# # axs[0].set_title('Na-like Isoelectronic Sequence D1 Energies')
+# # #axs[0].set_title('Na-like Isoelectronic Sequence D1 Energies')
+# # axs[1].set_ylabel('Theoretical Uncertainty [cm-1]')
 
-#params.pretty_print()
-# figs, axs = plt.subplots(nrows=4, ncols=1, sharex=True)
-# axs[1].plot(xdat, yunc)
-# axs[0].set_title('Na-like Isoelectronic Sequence D1 Energies')
-# #axs[0].set_title('Na-like Isoelectronic Sequence D1 Energies')
-# axs[1].set_ylabel('Theoretical Uncertainty [cm-1]')
-
-# axs[2].plot(xdat, nonNuc)
-# axs[2].set_ylabel('QED error [cm-1]')
+# # axs[2].plot(xdat, nonNuc)
+# # axs[2].set_ylabel('QED error [cm-1]')
 
 
 
-# axs[3].plot(xdat, nucFrac)
+# # axs[3].plot(xdat, nucFrac)
 
-# axs[3].set_ylabel('Fractional Nuclear Contribution')
+# # axs[3].set_ylabel('Fractional Nuclear Contribution')
 
-# axs[0].scatter(xdat, ydat)
-# axs[0].errorbar(xdat, ydat, yerr=yunc, ls='none')
-# axs[0].set_ylabel('Energy [cm-1]')
-# axs[3].set_xlabel('Z')
+# # axs[0].scatter(xdat, ydat)
+# # axs[0].errorbar(xdat, ydat, yerr=yunc, ls='none')
+# # axs[0].set_ylabel('Energy [cm-1]')
+# # axs[3].set_xlabel('Z')
+# # plt.minorticks_on()
+# # plt.show()
+
+# mod5 = Model(poly3) 
+# params5 = Parameters() 
+# params5.add('a', value=0.0001, vary=True)
+# params5.add('b', value=0.01, vary=True)
+# params5.add('c', value=0.1, vary=True)
+# params5.add('d', value=1, vary=True)
+# params5.add('e', value=0, vary=False)
+# params5.add('f', value=0, vary=False)
+# params5.add('g', value=0, vary=False)
+# fit5 = mod5.fit(ydat, params5, x=xdat, weights=None)
+# params5.update(fit5.params)
+# xplot5= np.linspace(np.min(xdat), np.max(xdat), num=1000)
+# yplot5= mod5.eval(params=params5, x=xplot5)
+# print('D1 T.E. Fit')
+# params5.pretty_print()
+# print('#################')
+# plt.figure() 
+# plt.yscale('log')
+# #plt.plot(xplot5, yplot5)
+# plt.scatter(xdat, ydat, s=4, label='Na-like D1')
+# plt.scatter(xdat, D2Energy, s=4, label='Na-like D2')
+# #plt.scatter(xdat, LiLikeE, s=4, label='Li-like 1s-2p1/2')
+# plt.scatter(Lilikex, Lilike1y, s=4, label='Li-like 1s-2p1/2')
+# plt.scatter(Lilikex, Lilike2y, s=4, label='Li-like 1s-2p3/2')
+# plt.scatter(Hlikex, Hlike1y, s=4, label='H-like 1s-2p1/2')
+# plt.scatter(Hlikex, Hlike2y, s=4, label='H-like 1s-2p3/2')
+# plt.legend()
+# plt.xlabel('Z')
+# plt.ylabel('Transition Energy [cm-1]')
 # plt.minorticks_on()
+# plt.fill_between(xdat,y1 = 3333333.33, y2=333333.33, alpha=0.15)
+# plt.xlim(left=np.min(xdat), right=np.max(xdat))
+# #plt.ylim(bottom=0, top=6*10**6)
 # plt.show()
+ptype = 'log'
+fig, ax = plt.subplots()
+ax2 = ax.twinx()
+ax.set_yscale(ptype)
+ax2.set_yscale(ptype)
+# ax.scatter(xdat, ydat, s=4, label='Na-like D1')
+# ax.scatter(xdat, D2Energy, s=4, label='Na-like D2')
+# ax.scatter(Lilikex, Lilike1y, s=4, label='Li-like 1s-$2p_{1/2}$')
+# ax.scatter(Lilikex, Lilike2y, s=4, label='Li-like 1s-$2p_{3/2}$')
+# ax.scatter(Hlikex, Hlike1y, s=4, label='H-like 1s-$2p_{1/2}$')
+# ax.scatter(Hlikex, Hlike2y, s=4, label='H-like 1s-$2p_{3/2}$')
+ax.plot(xdat, ydat, label='Na-like D1 3s-$3p_{1/2}$', c='r')
+ax.plot(xdat, D2Energy, label='Na-like D2 3s-$3p_{3/2}$', c='r', ls='--')
+ax.plot(Lilikex, Lilike1y, label='Li-like 2s-$2p_{1/2}$', c='b')
+ax.plot(Lilikex, Lilike2y,  label='Li-like 2s-$2p_{3/2}$', c='b', ls='--')
+ax.plot(Hlikex, Hlike1y,  label='H-like 1s-$2p_{1/2}$', c='g')
+ax.plot(Hlikex, Hlike2y, label='H-like 1s-$2p_{3/2}$', c='g', ls='--')
 
-plt.figure() 
-plt.scatter(xdat, ydat, s=4, label='Na-like D1')
-plt.scatter(xdat, D2Energy, s=4, label='Na-like D2')
-#plt.scatter(xdat, LiLikeE, s=4, label='Li-like transition')
-plt.legend()
-plt.xlabel('Z')
-plt.ylabel('Transition Energy [cm-1]')
-plt.minorticks_on()
-plt.fill_between(xdat,y1 = 3333333.33, y2=333333.33, alpha=0.15)
-plt.xlim(left=np.min(xdat), right=np.max(xdat))
-plt.ylim(bottom=0, top=6*10**6)
+ax.fill_between(xdat,y1 = 3333333.33, y2=333333.33, alpha=0.15)
+ax.set_ylabel("Transition energy [$cm^{-1}$]")
+ax2.set_ylabel("Transition energy [eV]")
+ax.set_xlabel("Z")
+ax.minorticks_on()
+ax2.minorticks_on()
+ax.set_xlim(left=20, right=np.max(xdat))
+EeV = lambda eVcm: eVcm/8065.73
+eVmin, eVmax = ax.get_ylim()
+ax2.set_ylim((EeV(eVmin),EeV(eVmax)))
+ax2.plot([],[])
+#ax.legend(fontsize=9, loc='upper left')
 plt.show()
 
-### 3nm ==  3333333.33 cm-1 
-### 30 nm == 333333.33 cm-1
-
-mod2 = Model(poly3) 
-params2 = Parameters() 
-params2.add('a', value=0.000000, vary=True)
-params2.add('b', value=0.00001, vary=True)
-params2.add('c', value=0.0001, vary=True)
-params2.add('d', value=0, vary=True)
-params2.add('e', value=0, vary=True)
-params2.add('f', value=0, vary=True)
-params2.add('g', value=0, vary=True)
-
-fit2 = mod2.fit(Sens, params2, x=xdat, weights=None, nfev=1e7)
-params2.update(fit2.params)
-xplot2= np.linspace(np.min(xdat), np.max(xdat), num=1000)
-yplot2 = mod2.eval(params=params2, x=xplot2)
-
-plt.figure() 
-plt.scatter(xdat, Sens, s=3, c='b')
-plt.plot(xplot2, yplot2, c='r')
-plt.ylabel('Nuclear sensitivity coefficient [cm-1/fm]')
-plt.xlabel('Z')
-plt.minorticks_on()
+ptype = 'log'
+fig, ax = plt.subplots()
+ax2 = ax.twinx()
+ax2.set_yscale(ptype)
+ax.set_yscale(ptype)
+# ax.scatter(xdat, ydat, s=4, label='Na-like D1')
+# ax.scatter(xdat, D2Energy, s=4, label='Na-like D2')
+# ax.scatter(Lilikex, Lilike1y, s=4, label='Li-like 1s-$2p_{1/2}$')
+# ax.scatter(Lilikex, Lilike2y, s=4, label='Li-like 1s-$2p_{3/2}$')
+# ax.scatter(Hlikex, Hlike1y, s=4, label='H-like 1s-$2p_{1/2}$')
+# ax.scatter(Hlikex, Hlike2y, s=4, label='H-like 1s-$2p_{3/2}$')
+ax.plot(IPx, np.array(IPMg)*8065.73, label='Na-like', c='r')
+#ax.plot(xdat, D2Energy, label='Na-like D2 3s-$3p_{3/2}$', c='r', ls='--')
+ax.plot(IPx, np.array(IPBe)*8065.73, label='Li-like', c='b')
+#ax.plot(Lilikex, Lilike2y,  label='Li-like 2s-$2p_{3/2}$', c='b', ls='--')
+ax.plot(IPx, np.array(IPHe)*8065.73,  label='H-like', c='g')
+#ax.plot(Hlikex, Hlike2y, label='H-like 1s-$2p_{3/2}$', c='g', ls='--')
+ax.fill_between(IPx,y1 = 0, y2=12000*8065.73, alpha=0.15)
+ax.set_ylabel("Ionization Potential [$cm^{-1}$]")
+ax2.set_ylabel("Ionization Potential [eV]")
+ax.set_xlabel("Z")
+ax.minorticks_on()
+ax2.minorticks_on()
+ax.set_xlim(left=np.min(IPx), right=np.max(IPx))
+EeV = lambda eVcm: eVcm/8065.73
+eVmin, eVmax = ax.get_ylim()
+ax2.set_ylim((EeV(eVmin),EeV(eVmax)))
+ax2.plot([],[])
+#ax.legend(fontsize=9, loc='upper left')
 plt.show()
-plt.close()
 
+# ### 3nm ==  3333333.33 cm-1 
+# ### 30 nm == 333333.33 cm-1
 
-mod3 = Model(poly3) 
-params3 = Parameters() 
-params3.add('a', value=0.000000, vary=True)
-params3.add('b', value=0.00001, vary=True)
-params3.add('c', value=0.0001, vary=True)
-params3.add('d', value=0, vary=True)
-params3.add('e', value=0, vary=True)
-params3.add('f', value=0, vary=False)
-params3.add('g', value=0, vary=False)
+# mod2 = Model(poly3) 
+# params2 = Parameters() 
+# params2.add('a', value=0.000000, vary=True)
+# params2.add('b', value=0.00001, vary=True)
+# params2.add('c', value=0.0001, vary=True)
+# params2.add('d', value=0, vary=True)
+# params2.add('e', value=0, vary=True)
+# params2.add('f', value=0, vary=True)
+# params2.add('g', value=0, vary=True)
 
-fit3 = mod3.fit(S_SZ1, params3, x=xdat2, weights=None, nfev=1e7)
-params3.update(fit3.params)
-xplot3= np.linspace(np.min(xdat2), np.max(xdat2), num=1000)
-yplot3 = mod3.eval(params=params3, x=xplot3)
-
-params3.pretty_print()
-
-mod4 = Model(poly3) 
-params4 = Parameters() 
-params4.add('a', value=0.000000, vary=True)
-params4.add('b', value=0.00001, vary=True)
-params4.add('c', value=0.0001, vary=True)
-params4.add('d', value=0, vary=True)
-params4.add('e', value=0, vary=True)
-params4.add('f', value=0, vary=False)
-params4.add('g', value=0, vary=False)
-
-fit4 = mod4.fit(S_SZ2, params4, x=xdat3, weights=None, nfev=1e7)
-params4.update(fit4.params)
-xplot4= np.linspace(np.min(xdat3), np.max(xdat3), num=1000)
-yplot4 = mod4.eval(params=params4, x=xplot4)
-
-plt.figure() 
-plt.scatter(xdat2, S_SZ1, s=3, c='b', label='S_Z / S_Z+1')
-plt.plot(xplot3, yplot3, c='c')
-plt.scatter(xdat3, S_SZ2, s=3, c='r', label='S_Z / S_Z+2')
-plt.plot(xplot4, yplot4, c='tab:orange')
-plt.ylabel('Nuclear sensitivity coefficient ratio [cm-1/fm]')
-plt.legend()
-plt.xlabel('Z')
-plt.minorticks_on()
-plt.show()
-plt.close()
+# fit2 = mod2.fit(Sens, params2, x=xdat, weights=None, nfev=1e7)
+# params2.update(fit2.params)
+# xplot2= np.linspace(np.min(xdat), np.max(xdat), num=1000)
+# yplot2 = mod2.eval(params=params2, x=xplot2)
+# print('Nuc. Sens. Coeff fit')
+# params2.pretty_print()
+# print('###################')
 
 # plt.figure() 
-# plt.scatter(xIC, yuncIC, s=3, c='tab:orange', label='Total theoretical uncertainty')
-# plt.scatter(xIC, nonnucuncIC, s=3, c='b', label='Non-nuclear contribution')
-# plt.plot(xplot, yplot, c='r')
-# plt.scatter(xIC, nucuncIC, s=3, c='g', label='Nuclear contribution')
-# #plt.errorbar(xdat, ydat, yerr=yunc, ls='none')
-# plt.legend()
-# #plt.ylabel('D1 Transition Energy [cm-1]')
-# #plt.ylabel('Non-nuclear Theoretical Uncertainty[cm-1]')
-# plt.ylabel('D1 transition energy uncertainty [cm-1]')
+# plt.scatter(xdat, Sens, s=3, c='b')
+# plt.plot(xplot2, yplot2, c='r')
+# plt.ylabel('Nuclear sensitivity coefficient [cm-1/fm]')
 # plt.xlabel('Z')
 # plt.minorticks_on()
 # plt.show()
+# plt.close()
+
+
+# mod3 = Model(poly3) 
+# params3 = Parameters() 
+# params3.add('a', value=0.000000, vary=True)
+# params3.add('b', value=0.00001, vary=True)
+# params3.add('c', value=0.0001, vary=True)
+# params3.add('d', value=0, vary=True)
+# params3.add('e', value=0, vary=True)
+# params3.add('f', value=0, vary=False)
+# params3.add('g', value=0, vary=False)
+
+# fit3 = mod3.fit(S_SZ1, params3, x=xdat2, weights=None, nfev=1e7)
+# params3.update(fit3.params)
+# xplot3= np.linspace(np.min(xdat2), np.max(xdat2), num=1000)
+# yplot3 = mod3.eval(params=params3, x=xplot3)
+
+# #params3.pretty_print()
+
+# mod4 = Model(poly3) 
+# params4 = Parameters() 
+# params4.add('a', value=0.000000, vary=True)
+# params4.add('b', value=0.00001, vary=True)
+# params4.add('c', value=0.0001, vary=True)
+# params4.add('d', value=0, vary=True)
+# params4.add('e', value=0, vary=True)
+# params4.add('f', value=0, vary=False)
+# params4.add('g', value=0, vary=False)
+
+# fit4 = mod4.fit(S_SZ2, params4, x=xdat3, weights=None, nfev=1e7)
+# params4.update(fit4.params)
+# xplot4= np.linspace(np.min(xdat3), np.max(xdat3), num=1000)
+# yplot4 = mod4.eval(params=params4, x=xplot4)
+
+############
+# ydatlist = [S_SZ1, S_SZ2, S_SZ3, S_SZ4, S_SZ5, S_SZ6]
+# xdatlist = [xdat2, xdat3, xdat4, xdat5, xdat6, xdat7]
+# labellist = ['$S_{Z} / S_{Z+1}$', '$S_{Z} / S_{Z+2}$', '$S_{Z} / S_{Z+3}$', '$S_{Z} / S_{Z+4}$', '$S_{Z} / S_{Z+5}$', '$S_{Z} / S_{Z+6}$']
+
+# plt.figure() 
+# # plt.scatter(xdat2, S_SZ1, s=3,  label='$S_{Z} / S_{Z+1}$')
+# # plt.scatter(xdat3, S_SZ2, s=3,  label='$S_{Z} / S_{Z+2}$')
+# # plt.scatter(xdat4, S_SZ3, s=3,  label='$S_{Z} / S_{Z+3}$')
+# # plt.scatter(xdat5, S_SZ4, s=3,  label='$S_{Z} / S_{Z+4}$')
+# # plt.scatter(xdat6, S_SZ5, s=3,  label='$S_{Z} / S_{Z+5}$')
+# # plt.scatter(xdat7, S_SZ6, s=3,  label='$S_{Z} / S_{Z+6}$')
+# plt.scatter(xdat2, S_SZ1, s=3,  c='k')
+# plt.scatter(xdat3, S_SZ2, s=3,  c='k')
+# plt.scatter(xdat4, S_SZ3, s=3,  c='k')
+# plt.scatter(xdat5, S_SZ4, s=3,  c='k')
+# plt.scatter(xdat6, S_SZ5, s=3,  c='k')
+# plt.scatter(xdat7, S_SZ6, s=3,  c='k')
+
+# for i in range(len(ydatlist)):
+#     mod4 = Model(poly3) 
+#     params4 = Parameters() 
+#     params4.add('a', value=0.000000, vary=True)
+#     params4.add('b', value=0.00001, vary=True)
+#     params4.add('c', value=0.0001, vary=True)
+#     params4.add('d', value=0, vary=True)
+#     params4.add('e', value=0, vary=True)
+#     params4.add('f', value=0, vary=False)
+#     params4.add('g', value=0, vary=False)
+
+#     fit4 = mod4.fit(ydatlist[i], params4, x=xdatlist[i], weights=None)
+#     params4.update(fit4.params)
+#     xplot4= np.linspace(np.min(xdatlist[i]), np.max(xdatlist[i]), num=1000)
+#     yplot4 = mod4.eval(params=params4, x=xplot4)
+
+#     plt.plot(xplot4, yplot4, label= labellist[i])
+
+
+
+# #plt.plot(xplot4, yplot4, c='tab:orange')
+# plt.ylabel('Nuclear sensitivity coefficient ratio')
+# plt.legend()
+# plt.xlabel('Z')
+# plt.minorticks_on()
+# plt.show()
+# #plt.savefig('C:\\Users\\ahosi\\OneDrive\\Pictures\\SRatiovsZ.eps', format='eps')
+# plt.close()
+
+# mod = Model(poly3) 
+# params = Parameters() 
+# params.add('a', value=0.000000, vary=True)
+# params.add('b', value=0.00001, vary=True)
+# params.add('c', value=0.0001, vary=True)
+# params.add('d', value=0, vary=True)
+# params.add('e', value=0, vary=True)
+# params.add('f', value=0, vary=True)
+# params.add('g', value=0, vary=True)
+
+# fit = mod.fit(nonnucuncIC, params, x=xIC, weights=None, nfev=1e7)
+# params.update(fit.params)
+# xplot = np.linspace(np.min(xdat), np.max(xdat), num=1000)
+# yplot = mod.eval(params=params, x=xplot)
+dsize = 7
+# plt.figure() 
+# plt.yscale('log')
+# plt.plot(xIC, yuncIC, c='tab:orange', label='Total theoretical uncertainty')
+# plt.plot(xIC, nonnucuncIC,  c='b', label='Non-nuclear contribution')
+# plt.plot(xIC, nucuncIC, c='g', label='Nuclear contribution')
+# plt.scatter(xIC, yuncIC, s=dsize, c='tab:orange')
+# plt.scatter(xIC, nonnucuncIC,  s=dsize, c='b')
+# plt.scatter(xIC, nucuncIC, c='g', s=dsize)
+# #plt.errorbar(xdat, ydat, yerr=yunc, ls='none')
+# plt.legend(loc='lower right')
+# #plt.plot(xplot, yplot, c='r')
+# #plt.ylabel('D1 Transition Energy [cm-1]')
+# #plt.ylabel('Non-nuclear Theoretical Uncertainty[cm-1]')
+# plt.ylabel('D1 transition energy uncertainty [$cm^{-1}$]')
+# plt.xlabel('Z')
+# plt.minorticks_on()
+# plt.xlim(left=np.min(xIC), right=np.max(xIC))
+# plt.show()
 # plt.close() 
+
+ptype = 'log'
+fig, ax = plt.subplots()
+ax2 = ax.twinx()
+ax2.set_yscale(ptype)
+ax.set_yscale(ptype)
+# ax.scatter(xdat, ydat, s=4, label='Na-like D1')
+# ax.scatter(xdat, D2Energy, s=4, label='Na-like D2')
+# ax.scatter(Lilikex, Lilike1y, s=4, label='Li-like 1s-$2p_{1/2}$')
+# ax.scatter(Lilikex, Lilike2y, s=4, label='Li-like 1s-$2p_{3/2}$')
+# ax.scatter(Hlikex, Hlike1y, s=4, label='H-like 1s-$2p_{1/2}$')
+# ax.scatter(Hlikex, Hlike2y, s=4, label='H-like 1s-$2p_{3/2}$')
+ax.plot(xIC, yuncIC, c='tab:orange', label='Total theoretical uncertainty')
+#ax.plot(xdat, D2Energy, label='Na-like D2 3s-$3p_{3/2}$', c='r', ls='--')
+ax.plot(xIC, nonnucuncIC,  c='b', label='Non-nuclear contribution')
+#ax.plot(Lilikex, Lilike2y,  label='Li-like 2s-$2p_{3/2}$', c='b', ls='--')
+ax.plot(xIC, nucuncIC, c='g', label='Nuclear contribution')
+ax.scatter(xIC, yuncIC, s=dsize, c='tab:orange')
+ax.scatter(xIC, nonnucuncIC,  s=dsize, c='b')
+ax.scatter(xIC, nucuncIC, c='g', s=dsize)
+#ax.plot(Hlikex, Hlike2y, label='H-like 1s-$2p_{3/2}$', c='g', ls='--')
+#ax.fill_between(IPx,y1 = 0, y2=12000*8065.73, alpha=0.15)
+ax.set_ylabel("D1 transition energy uncertainty [$cm^{-1}$]")
+ax2.set_ylabel("D1 transition energy uncertainty [eV]")
+ax.set_xlabel("Z")
+ax.minorticks_on()
+ax2.minorticks_on()
+ax.set_xlim(left=np.min(xIC), right=np.max(xIC))
+EeV = lambda eVcm: eVcm/8065.73
+eVmin, eVmax = ax.get_ylim()
+ax2.set_ylim((EeV(eVmin),EeV(eVmax)))
+ax2.plot([],[])
+ax.legend(fontsize=9, loc='lower right')
+plt.show()
+
+
+
+# def dispunc(x, a, b, c):
+#     return np.sqrt((a**2)+(2*b*x)**2 + (3*c*x**2)**2)
+
+# refpix = 414 
+# numpixsep = 102
+# a = 6.57003621848663E-06
+# b = 7.0827783914549E-09
+# c = 2.2571751846016E-12
+
+# dispcalunc = []
+# xloc = []
+# delx = []
+# wlen = 6.519200
+# cmval = 1534244.79
+# SB = 6804
+# cmunc = []
+# extRadunc = []
+# for i in range(numpixsep):
+#     xrang = np.arange(refpix, refpix+i+1)
+#     dispcalunc.append(np.sum(dispunc(xrang, a, b, c)))
+#     xloc.append(np.max(xrang))
+#     delx.append(np.max(xrang)-refpix)
+#     extRadunc.append(np.sqrt(7.20*10**(-5) + (np.sum(dispunc(xrang, a, b, c)) * (cmval/wlen)/(SB))**2))
+#     cmunc.append(np.sum(dispunc(xrang, a, b, c)) * (cmval/wlen))
+
+# plt.figure() 
+# #plt.xscale('log')
+# plt.plot(delx, extRadunc, c='b')
+# plt.ylabel('Extracted nuclear charge radius correction uncertainty [fm]')
+# plt.xlabel('Line separation (pixels)')
+# plt.minorticks_on() 
+# plt.axhline(y=0.01070, c='g', ls='--')
+# plt.axhline(y=0.02564, c='r', ls='--')
+# #plt.axhline(y=0.00018868128729407, c='r', ls='--')
+# #plt.axhline(y=44.4, c='r')
+# plt.xlim(left=1, right=101)
+# plt.show()
+
+
+# xuncplot = np.linspace(1000, 1000000, num=10000)
+# yuncplot = uncFun1(xuncplot)
+
+# plt.figure() 
+# plt.xscale('log')
+# plt.plot(xuncplot, yuncplot, c='b')
+# plt.ylabel('Extracted nuclear charge radius correction uncertainty [fm]')
+# plt.xlabel('Time [s]')
+# plt.minorticks_on() 
+# plt.axhline(y=0.01070, c='g', ls='--')
+# plt.axhline(y=0.02564, c='r', ls='--')
+# plt.xlim(left=1000, right=1000000)
+# plt.show()
+# plt.close()
+

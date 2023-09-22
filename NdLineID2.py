@@ -245,30 +245,58 @@ t_norm = [3163,
     365, 
     3109]
 
-npeak = 2
-lenergy = 1201
-npoints = 5
+
+tbd_lines = [1415.83,
+    1424.17,
+    1557.25,
+    1572.99,
+    1580.66,
+    1593.13,
+    1652.47,
+    1774.46,
+    1781.54,
+    1807.04,
+    1847.57,
+    1920.77,
+    1929.08,
+    1972.84]
+
+pltscale = []
+npeak = 1
+lenergy = 1973
+npoints = 3
 lback = False
 test2 = vfit(xd, yd, lenergy, npoints, num_peaks=npeak, linbackground=lback)
-rescolnames = ['line number', 'center', 'center unc', 'height', 'height unc', 'FWHM', 'FWHM unc', 'sigma', 'sigma unc', 'gamma', 'gamma unc']
-touttest = np.zeros((1,11))
+rescolnames = ['line number', 'center', 'center unc', 'height', 'height unc', 'FWHM', 'FWHM unc', 'sigma', 'sigma unc', 'gamma', 'gamma unc', 'state']
+touttest = np.zeros((1,12))
+plt.figure()
 for state in expstatelist:
     ptitle = str('20221221_0002_AIOAHcal_')+str(state)+str('_Counts')
     xd = df3['20221221_0002_AIOAH_cal']['20221221_0002_A_Energy']
     yd = df3['20221221_0002_AIOAH_cal'][ptitle]
     test3 = vfit(xd, yd, lenergy, npoints, num_peaks=npeak, linbackground=lback)
+    pltscale.append(np.max(test3['neweval']))
     paramlist = test3['Params'] 
-    outtest = np.zeros((1,11))
+    outtest = np.zeros((1,12))
     for ln in range(1,npeak+1): 
         outdat = np.array([[ln, 
                           paramlist['V'+str(ln)+'_center'].value, paramlist['V'+str(ln)+'_center'].stderr, 
                           paramlist['V'+str(ln)+'_height'].value, paramlist['V'+str(ln)+'_height'].stderr, 
                           paramlist['V'+str(ln)+'_fwhm'].value, paramlist['V'+str(ln)+'_fwhm'].stderr,
                           paramlist['V'+str(ln)+'_sigma'].value, paramlist['V'+str(ln)+'_sigma'].stderr, 
-                          paramlist['V'+str(ln)+'_gamma'].value, paramlist['V'+str(ln)+'_gamma'].stderr]])
+                          paramlist['V'+str(ln)+'_gamma'].value, paramlist['V'+str(ln)+'_gamma'].stderr, 
+                          str(state)]])
         
         touttest = np.vstack((touttest, outdat))
-    
+
+    plt.plot(xd, yd, label=state)
+    plt.plot(test3['newevalx'], test3['neweval'], label=state+' fit')
+plt.ylim(top=np.max(pltscale)*1.2, bottom=0)
+plt.xlim((lenergy-10, lenergy+10))
+plt.minorticks_on()
+plt.legend()
+plt.show()
+plt.close() 
 
 prepdata = pd.DataFrame(data = touttest, columns=rescolnames)
 prepdata.to_excel('C:\\Users\\ahosi\\anaconda3\\envs\\TESenv\\TEScode\\testout.xlsx', index=False)
@@ -350,7 +378,21 @@ fitted_lines = [842.64,
     1825.05,
     1898.39,
     1984.78,
-    1948.14]
+    1948.14,
+    1415.83,
+    1424.17,
+    1557.25,
+    1572.99,
+    1580.66,
+    1593.13,
+    1652.47,
+    1774.46,
+    1781.54,
+    1807.04,
+    1847.57,
+    1920.77,
+    1929.08,
+    1972.84]
 
 tbd_lines = [1415.83,
     1424.17,
@@ -371,13 +413,14 @@ tbd_lines = [1415.83,
 lcount = 1
 
 yd = np.array(yd)
-# for l in fitted_lines: 
-#     #plt.axvline(x=l, c='k', ls='--')
-#     # plt.text(l, yd[find_nearest(xd, l)]+300, str(lcount))
-#     #plt.text(l, yd[find_nearest(xd, l)]+0.02, str(lcount))
-#     plt.text(l, 1.025+0.025*(-1)**(lcount), str(lcount))
-#     lcount += 1 
+for l in fitted_lines: 
+    #plt.axvline(x=l, c='k', ls='--')
+    # plt.text(l, yd[find_nearest(xd, l)]+300, str(lcount))
+    #plt.text(l, yd[find_nearest(xd, l)]+0.02, str(lcount))
+    plt.text(l, 1.025+0.025*(-1)**(lcount), str(lcount))
+    lcount += 1 
 
+print(lcount)
 # for l in tbd_lines:
 #     # plt.text(l, yd[find_nearest(xd, l)]+300, str(lcount), c='g')
 #     plt.text(l, yd[find_nearest(xd, l)], str(lcount), c='g')
@@ -397,7 +440,7 @@ plt.minorticks_on()
 # plt.ylim((0, 1.05*np.max(test2['ydat'])))
 #plt.xlim((1125, 1300))
 #plt.xlim((700, 2100))
-plt.xlim((825, 1565))
+#plt.xlim((825, 1565))
 plt.show()
 plt.close() 
 #print(plottitle)
