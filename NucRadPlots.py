@@ -5,12 +5,14 @@ import pandas as pd
 import matplotlib.colors as mcolors
 from scipy.stats import binned_statistic_2d
 from scipy import stats
-from fit_utils import MultiPeakGaussian
+#from fit_utils import MultiPeakGaussian
 from lmfit import minimize, Parameters, report_fit, Model, Parameter
 from lmfit.models import GaussianModel
 from lmfit.models import SplitLorentzianModel 
 from matplotlib.ticker import MaxNLocator
 
+from mpl_toolkits.axes_grid.inset_locator import (inset_axes, InsetPosition,
+                                                  mark_inset)
 W1999A = [182,
     183,
     184,
@@ -362,23 +364,21 @@ Pt2013dR = [0.0036,
 0.0032
 ]
 
-IrEBIT2020A = [191
+IrEBIT2020A = [191,193
 ]
 
 # IrEBIT2020R = [5.4422,
 # 5.4486
 # ]
 
-# IrEBIT2020dR = [0.0064,
-# 0.0064
-# ]
+IrEBIT2020dR = [0.0077,
+    0.0076]
 
-# IrEBIT2020R = [5.4327,
-# 5.4391
-# ]
+IrEBIT2020R = [5.4307,
+    5.4371]
 
-IrEBIT2020R = [5.4327]
-IrEBIT2020dR = [0.0102]
+# IrEBIT2020R = [5.4307]
+# IrEBIT2020dR = [0.0077]
 
 plt.figure(figsize=(8.5,6)) 
 plt.ylabel('RMS Charge radius [fm]')
@@ -417,7 +417,8 @@ plt.errorbar(Pt2004A, Pt2004R, yerr=Pt2004dR, ls='none', c='tab:purple', alpha=0
 plt.scatter(Pt2013A, Pt2013R, c='tab:purple', label='Pt (2013)', alpha=0.7)
 plt.errorbar(Pt2013A, Pt2013R, yerr=Pt2013dR, ls='none', c='tab:purple', alpha=0.7,capsize=4)
 
-#plt.legend(bbox_to_anchor=(1.05, 1.0), loc='upper left')
+# plt.legend(bbox_to_anchor=(1.05, 1.0), loc='upper left')
+plt.legend( loc='lower right')
 #plt.legend()
 plt.xticks(np.arange(start=180, stop=200, step=2))
 #plt.show()
@@ -454,8 +455,8 @@ Ir2013DWR = [5.3968, 5.4032]
 Ir2013DWdR = [0.1061, 0.1061]
 
 # IrEBIT2020An = [191.2, 193.2]
-# IrEBIT2020An = [191, 193]
-IrEBIT2020An = [191]
+IrEBIT2020An = [191, 193]
+#IrEBIT2020An = [191]
 csize = 4
 # plt.figure() 
 # plt.ylabel('RMS Charge radius [fm]')
@@ -523,10 +524,10 @@ ax2.errorbar(IrEBIT2020An, IrEBIT2020R, yerr=IrEBIT2020dR, c='r', capsize=csize,
 ax1.set_xlim(182,184)
 ax1.xaxis.set_major_locator(MaxNLocator(integer=True))
 ax1.set_xticklabels(labels=[str('\n') ,183, str('\n')], rotation=0)
-ax2.set_xlim(188,192)
+ax2.set_xlim(188,194)
 ax2.xaxis.set_major_locator(MaxNLocator(integer=True))
-# ax2.set_xticklabels(labels=[str('\n') ,189, str('\n'), 191, str('\n'), 193, str('\n')], rotation=0)
-ax2.set_xticklabels(labels=[str('\n') ,189, str('\n'), 191, str('\n')], rotation=0)
+ax2.set_xticklabels(labels=[str('\n') ,189, str('\n'), 191, str('\n'), 193, str('\n')], rotation=0)
+#ax2.set_xticklabels(labels=[str('\n') ,189, str('\n'), 191, str('\n')], rotation=0)
 
 ax1.spines.right.set_visible(False)
 ax2.spines.left.set_visible(False)
@@ -553,5 +554,78 @@ ax2.plot((-d, +d), (1-d, 1+d), **kwargs)
 ax2.plot((-d, +d), (-d, +d), **kwargs)
 ax1.set_ylabel('Nuclear radius [fm]')
 fig.supxlabel('Nucleon number')
+#plt.show()
+plt.close()
+
+
+methNum = [1,2,3,4,5,6,7,8]
+methlab = ['A', 'B', 'C', 'D', 'F', 'G', 'H', 'I']
+measSep = [3.501, 3.502, 3.508, 3.506, 3.497, 3.502, 3.495, 3.499]
+dmeasSep = [0.007, 0.009, 0.007, 0.013, 0.005, 0.022, 0.007, 0.021]
+
+R191 = [5.4339,
+    5.436,
+    5.423,
+    5.4274,
+    5.4252,
+    5.4143,
+    5.4295,
+    5.4208]
+dR191 = [0.006722351,
+    0.009991997,
+    0.010220342,
+    0.017960484,
+    0.007239475,
+    0.02903739,
+    0.012492758,
+    0.032636942]
+plt.figure() 
+plt.scatter(methlab, R191, s=6)
+plt.errorbar(methlab, R191, dR191, capsize=4, ls='none')
+
+plt.scatter(3.5, 5.4339, c='g')
+plt.errorbar(3.5, 5.4339, 0.0101, c='g', capsize=4, ls='none')
+
+plt.scatter(4.5, 5.4307, c='r')
+plt.errorbar(4.5, 5.4307, 0.0077, c='r', capsize=4, ls='none')
+
+
+plt.minorticks_on()
+plt.xlabel('Method')
+plt.ylabel('Nuclear charge radius [fm]')
 plt.show()
 plt.close()
+
+dat = pd.read_csv(r'C:\\Users\\ahosi\\Downloads\\SpectraData.csv')
+plt.figure(figsize=(20,7))
+plt.plot(dat['Wavelength (nm)'], dat['Os_sum'])
+plt.plot(dat['Wavelength (nm)'],dat['Ir_sum'])
+plt.minorticks_on()
+plt.xlabel('Wavelength (nm)')
+plt.ylabel('Intensity (arb)')
+plt.xlim(left=4, right=19.5)
+plt.ylim(top=19000, bottom=8330)
+#plt.show()
+plt.close()
+
+
+fig, ax1 = plt.subplots(figsize=(15,7))
+ax1.plot(dat['Wavelength (nm)'], dat['Os_sum'])
+ax1.plot(dat['Wavelength (nm)'], dat['Ir_sum'])
+ax1.set_xlabel('Wavelength (nm)')
+ax1.set_ylabel('Intensity (arb)')
+ax1.minorticks_on()
+ax1.set_xlim(left=4, right=19.5)
+ax1.set_ylim(bottom=8000)
+ax2 = plt.axes([0,0,1,1])
+ip = InsetPosition(ax1, [0.35, 0.35, 0.3, 0.5])
+ax2.set_axes_locator(ip)
+
+ax2.plot(dat['Wavelength (nm)'], dat['Os_sum'])
+ax2.plot(dat['Wavelength (nm)'], dat['Ir_sum'])
+mark_inset(ax1, ax2, loc1=2, loc2=4, fc="none", ec='0.5')
+ax2.set_xlim(left=7.2, right=7.8)
+ax2.minorticks_on()
+ax2.set_ylim(bottom=8500, top=14000)
+
+plt.show()
